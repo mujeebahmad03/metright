@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Dashboard by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/bootstrap/css/bootstrap.min.css" %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/font-awesome/css/font-awesome.min.css" %}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="{% static "dashboard/css/fontastic.css" %}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href="{% static "dashboard/css/grasp_mobile_progress_circle-1.0.0.min.css" %}">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" %}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static "dashboard/css/style.default.premium.css" %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static "dashboard/css/custom.css" %}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static "dashboard/img/favicon.ico" %}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+      {% include "snippets/sidebar.html" %}
+        <div class="page">
+        <!-- navbar-->
+        {% include "snippets/header.html" %}
+        
+        <!-- Statistics Section-->
+        <section class="statistics">
+            <div class="container-fluid">
+            <div class="row d-flex">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-10">
+                  <br>
+                  <div class="form-inner">
+                    <div class="logo text-uppercase"><span>Dash</span><strong class="text-primary">Express</strong></div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+                      {% if messages %}
+                          {% for message in messages %}
+                          {% if message.tags == 'success' %}
+                            <span id="demoMessage4" class="btn btn-success">{{message}}</span>
+                          {% endif %}
+                          {% if message.tags == 'error' %}
+                            <span id="demoMessage4" class="btn btn-danger">{{message}}</span>
+                          {% endif %}
+                          {% endfor %}
+                      {% endif %}
+                    <br>
+                    <form class="text-left form-validate" method="POST" action="{% url "EditStudentSave" %}">
+                      {% csrf_token %}
+                      <div class="form-group-material">
+                        <input id="firstname" type="text" name="firstname" value="{{ student.admin.first_name }}" required data-msg="Please enter Student Firstname" class="input-material">
+                        <label for="firstname" class="label-material">FirstName</label>
+                      </div>
+                      <div class="form-group-material">
+                        <input id="lastname" type="text" name="lastname" value="{{ student.admin.last_name }}" required data-msg="Please enter Student Lastname" class="input-material">
+                        <label for="lastname" class="label-material">LastName</label>
+                      </div>
+                      <div class="form-group-material">
+                        <input id="username" type="text" name="username" value="{{ student.admin.username }}" required data-msg="Please enter Student Username" class="input-material">
+                        <label for="username" class="label-material">Username</label>
+                      </div>
+                      <div class="form-group-material">
+                        <input id="email" type="email" name="email" value="{{ student.admin.email }}" required data-msg="Please enter a valid email address" class="input-material">
+                        <label for="email" class="label-material">Email Address</label>
+                      </div>
+                      <div class="form-group-material">
+                        <input id="address" type="text" name="address" value="{{ student.address }}" required data-msg="Please enter Student Address" class="input-material">
+                        <label for="address" class="label-material">Address</label>
+                      </div>
+                      <div class="form-group-material">
+                        <label for="course" class="label-material">Course</label>
+                        <select id="course" type="text" name="course" value="" required data-msg="Please enter Student Course" class="form-control select-material">
+                            {% for course in courses %}
+                                <option value="{{ course.id }}" {% if course.id == student.course_id.id %} selected {% endif %}>{{ course.course }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <label for="gender" class="label-material">Gender</label>
+                      <div class="form-group-material">
+                        <select id="gender" type="text" name="gender" value="" required data-msg="Please enter Student Gender" class=" form-control select-material">
+                            <option {% if student.gender == "Male" %} selected {% endif %}>Male</option>
+                            <option {% if student.gender == "Female" %} selected {% endif %}>Female</option>
+                        </select>                        
+                      </div>
+                      <div class="form-group-material">
+                        <label for="session_start" class="label-material">Session Start year</label>
+                        <input id="session_start" type="date" name="session_start" value="{{ student.session_start | date:"Y-m-d" }}" required data-msg="Please enter Student Session_start Year" class="input-material">
+                      </div>
+                      <div class="form-group-material">
+                        <label for="session_end" class="label-material">Session End year</label>
+                        <input id="session_end" type="date" name="session_end" value="{{ student.session_end | date:"Y-m-d" }}" required data-msg="Please enter Student Session_end Year" class="input-material">
+                        <input type="hidden" name="student_id" id="student_id" value="{{ student.admin.id }}">
+                      </div>
+
+                      <div class="form-group text-center">
+                        <input id="register" type="submit" value="Update Student" class="btn btn-primary">
+                      </div>
+
+                      
+                    </form>
+                    
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                </div>
+            </div>
+            </div>
+        </section>
+
+        {% include "snippets/footer.html" %}
+        </div>
+      <!-- JavaScript files-->
+      <script src="{% static "dashboard/vendor/jquery/jquery.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery.cookie/jquery.cookie.js" %}"> </script>
+      <script src="{% static "dashboard/js/grasp_mobile_progress_circle-1.0.0.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/chart.js/Chart.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery-validation/jquery.validate.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js" %}"></script>
+      <script src="{% static "dashboard/js/charts-home.js" %}"></script>
+      <!-- Notifications-->
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger.min.js" %}">   </script>
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger-theme-flat.js" %}">       </script>
+      <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
+      <!-- Main File-->
+      <script src="{% static "dashboard/js/front.js" %}"></script>
+    </body>
+</html>
