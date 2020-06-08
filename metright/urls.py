@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from metright import  settings
 from django.conf.urls.static import  static
-from metapp import views, AdminView
+from metapp import views, AdminView, StaffView, StudentView
 
 urlpatterns = [
     path('', views.demo, name='demo'),
@@ -42,6 +42,13 @@ urlpatterns = [
     path('manageSubject/', AdminView.manageSubject, name="ManageSubject"),
     path('updateSubject/<str:subject_id>/', AdminView.updateSubject, name="UpdateSubject"),
     path('editSubjectSave/', AdminView.editSubjectSave, name="EditSubjectSave"),
+
+    # url patterns for the staff
+    path('staffHome/', StaffView.home, name="StaffHomePage"),
+
+    # url patterns for the student
+    path('studentHome/', StudentView.home, name="StudentHomePage"),
+
     path('login/', views.loginPage, name='login'),
     path('dologin/', views.doLogin, name='DoLogin'),
     path('profile/', views.profilePage, name='ProfilePage'),

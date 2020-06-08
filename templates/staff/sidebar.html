@@ -1,0 +1,31 @@
+{% load static %}
+<!-- Side Navbar -->
+<nav class="side-navbar">
+    <div class="side-navbar-wrapper">
+      <!-- Sidebar Header    -->
+      <div class="sidenav-header d-flex align-items-center justify-content-center">
+        <!-- User Info-->
+        <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/avatar-7.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+          <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
+        </div>
+        <!-- Small Brand information, appears on minimized sidebar-->
+        <div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong>B</strong><strong class="text-primary">D</strong></a></div>
+      </div>
+      <!-- Sidebar Navigation Menus-->
+      <div class="main-menu">
+        <h5 class="sidenav-heading">Main</h5>
+        <ul id="side-main-menu" class="side-menu list-unstyled">   
+            {% url "StaffHomePage" as StaffHomePage %}               
+          <li class="{% if request.path == StaffHomePage %} active {% endif %}">
+            <a href="{% url "StaffHomePage" %}" class="{% if request.path == StaffHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
+        </li>
+            
+          <li><a href="index.html"> <i class="icon-home"></i>Veiw Attendance</a></li>
+          <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
+          <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
+          <li><a href="index.html"> <i class="icon-home"></i>StudentFeedback </a></li>
+          <li><a href="index.html"> <i class="icon-home"></i>Staff Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>

@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'metapp.LoginCheckMiddleware.LoginCheckMiddleWare',
 ]
 
 ROOT_URLCONF = 'metright.urls'
