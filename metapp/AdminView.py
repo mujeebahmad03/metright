@@ -4,6 +4,7 @@ from django.http import  HttpResponseRedirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
 from .models import CustomUser, Staff, Student, Course, Subjects
+from django.core.files.storage import FileSystemStorage
 
 def AdminHome(request):
     return render(request, "admin/home.html")
@@ -54,7 +55,8 @@ def manageStaff(request):
 def updateStaff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     context = {
-        'staff': staff
+        'staff': staff,
+        'id': staff_id
     }
     return render(request, "admin/updateStaff.html", context)
 
@@ -113,6 +115,13 @@ def addStudentSave(request):
         gender = request.POST.get('gender')
         session_start = request.POST.get('session_start')
         session_end = request.POST.get('session_end')
+
+        profile_pic = request.FILES['image']
+        fs = FileSystemStorage()
+        filename = fs.save(profile_pic.name, profile_pic)
+        profile_pic_url = fs.url(filename)
+
+
         try:
             user = CustomUser.objects.create_user(
             username = username,
@@ -128,7 +137,7 @@ def addStudentSave(request):
             user.student.gender = gender
             user.student.session_start = session_start
             user.student.session_end = session_end
-            user.student.profile_pic = ""
+            user.student.profile_pic = profile_pic_url
             user.save()
             messages.success(request, "Student Added Successfully!")
             return HttpResponseRedirect("/addStudent")
@@ -151,7 +160,8 @@ def updateStudent(request, student_id):
     course = Course.objects.all()
     context = {
         'student':student, 
-        'courses':course
+        'courses':course,
+        'id': student_id
     }
     return render(request, "admin/updateStudent.html", context)
 
@@ -171,6 +181,15 @@ def editStudentSave(request):
         session_start = request.POST.get('session_start')
         session_end = request.POST.get('session_end')
         student_id = request.POST.get('student_id')
+
+        if request.FILES.get('image', False):
+            profile_pic = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+        else:
+            profile_pic_url = None
+
         try:
             user = CustomUser.objects.get(id=student_id)
             user.username = username
@@ -184,7 +203,8 @@ def editStudentSave(request):
             student_model.gender = gender
             student_model.session_start = session_start
             student_model.session_end = session_end
-
+            if profile_pic_url != None:
+                student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)
             student_model.course_id = course_model
             student_model.save()
@@ -227,8 +247,30 @@ def manageCourse(request):
 
 
 # For updating the information of the Courses
-def updateCourse(request):
-    return render(request, "admin/updateCourse.html")
+def updateCourse(request, course_id):
+    course = Course.objects.get(id=course_id)
+    context = {
+        'course': course,
+        'id': course_id
+    }
+    return render(request, "admin/updateCourse.html", context)
+
+def editCourseSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        course_id = request.POST.get('course_id')
+        course_name = request.POST.get('coursename')
+        try:
+            course = Course.objects.get(id=course_id)
+            course.course = course_name
+            course.save()
+
+            messages.success(request, "Course Updated Successfully!")
+            return HttpResponseRedirect("/updateCourse/" + course_id )
+        except:
+            messages.error(request, "Error Updating Course!")
+            return HttpResponseRedirect("/updateCourse/" + course_id )
 
 
 # Function for the adding of new subjects in a particular Subject
@@ -272,6 +314,35 @@ def manageSubject(request):
 
 
 # For updating the information of the Subjects
-def updateSubject(request):
-    return render(request, "admin/updateSubject.html")
+def updateSubject(request, subject_id):
+    staff = CustomUser.objects.filter(user_type=2)
+    course = Course.objects.all()
+    subject = Subjects.objects.get(id=subject_id)
 
+    context = {
+        'staffs': staff,
+        'courses': course,
+        'subject': subject,
+        'id': subject_id
+    }
+    
+    return render(request, "admin/updateSubject.html", context)
+
+# Function for saving the information updated in the subjects
+def editSubjectSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+
+    else:
+        subject_id = request.POST.get('subject_id')
+        subject_name = request.POST.get('subjectname')
+        try:
+            subject = Subjects.objects.get(id=subject_id)
+            subject.subject = subject_name
+            subject.save()
+
+            messages.success(request, "Subject Updated Successfully!")
+            return HttpResponseRedirect("/updateSubject/" + subject_id )
+        except:
+            messages.error(request, "Error Updating Subject!")
+            return HttpResponseRedirect("/updateSubject/" + subject_id)

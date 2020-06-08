@@ -58,7 +58,7 @@
                           {% endfor %}
                       {% endif %}
                     <br>
-                    <form class="text-left form-validate" method="POST" action="{% url "EditStudentSave" %}">
+                    <form class="text-left form-validate" method="POST" action="{% url "EditStudentSave" %}" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="form-group-material">
                         <input id="firstname" type="text" name="firstname" value="{{ student.admin.first_name }}" required data-msg="Please enter Student Firstname" class="input-material">
@@ -79,6 +79,10 @@
                       <div class="form-group-material">
                         <input id="address" type="text" name="address" value="{{ student.address }}" required data-msg="Please enter Student Address" class="input-material">
                         <label for="address" class="label-material">Address</label>
+                      </div>
+                      <div class="form-group-material">
+                        <label for="image" class="label-material">Image</label>
+                        <input id="image" type="file" name="image" required data-msg="Please Select Student Image" class="input-material">
                       </div>
                       <div class="form-group-material">
                         <label for="course" class="label-material">Course</label>

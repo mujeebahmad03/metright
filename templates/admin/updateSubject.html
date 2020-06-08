@@ -61,14 +61,14 @@
                     <form class="text-left form-validate" method="POST" action="{% url "EditSubjectSave" %}">
                       {% csrf_token %}
                       <div class="form-group-material">
-                        <input id="subjectname" type="text" name="subjectname" required data-msg="Please enter SubjectName" class="input-material">
+                        <input id="subjectname" type="text" name="subjectname" required data-msg="Please enter SubjectName" class="input-material" value="{{ subject.subject }}">
                         <label for="subjectname" class="label-material">SubjectName</label>
                       </div>
                       <div class="form-group-material">
                         <label for="course" class="label-material">Course</label>
                         <select id="course" type="text" name="course" required data-msg="Please Select Student Course" class="form-control select-material">
                             {% for course in courses %}         
-                                <option value="{{ course.id }}">{{ course.course }}</option>
+                                <option value="{{ course.id }}" {% if course.id == subject.course_id.id %} selected {% endif %}>{{ course.course }}</option>
                             {% endfor %}
                         </select>
                       </div>
@@ -76,9 +76,11 @@
                         <label for="staff" class="label-material">Staff</label>
                         <select id="staff" type="text" name="staff" required data-msg="Please Select Staff" class="form-control select-material">
                             {% for staff in staffs %}
-                                <option value="{{ staff.id }}">{{ staff.first_name }} {{ staff.last_name }}</option>
+                                <option value="{{ staff.id }}" {% if staff.id == subject.staff_id.id %} selected {% endif %}>{{ staff.first_name }} {{ staff.last_name }}</option>
                             {% endfor %}
                         </select>
+                        <input type="hidden" name="subject_id" id="subject_id" value="{{ subject.id }}">
+                        <input type="hidden" name="staff_id" id="staff_id" value="{{ staff.id }}">
                       </div>
                       <div class="form-group text-center">
                         <input id="register" type="submit" value="Add Subject" class="btn btn-primary">

@@ -48,7 +48,7 @@
                     </div>
                   </div>
                 </div>
-                  <a href="{% url "UpdateSubject" %}" class="btn btn-success">Update</a>
+                  <a href="{% url "UpdateSubject" subject_id=subject.id %}" class="btn btn-success">Update</a>
                 </div>
             </div>
             {% endfor %}

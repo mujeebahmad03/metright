@@ -31,7 +31,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
   </head>
   <body>
-      {% include "snippets/sidebar.html" %}
+      {% include "snippets/sidebar.html" with user=user id=id %}
         <div class="page">
         <!-- navbar-->
         {% include "snippets/header.html" %}
@@ -58,7 +58,7 @@
                           {% endfor %}
                       {% endif %}
                     <br>
-                    <form class="text-left form-validate" method="POST" action="{% url "AddStudentSave" %}">
+                    <form class="text-left form-validate" method="POST" action="{% url "AddStudentSave" %}" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="form-group-material">
                         <input id="firstname" type="text" name="firstname" required data-msg="Please enter Student Firstname" class="input-material">
@@ -83,6 +83,10 @@
                       <div class="form-group-material">
                         <input id="address" type="text" name="address" required data-msg="Please enter Student Address" class="input-material">
                         <label for="address" class="label-material">Address</label>
+                      </div>
+                      <div class="form-group-material">
+                        <label for="image" class="label-material">Image</label>
+                        <input id="image" type="file" name="image" required data-msg="Please Select Student Image" class="input-material">
                       </div>
                       <div class="form-group-material">
                         <label for="course" class="label-material">Course</label>

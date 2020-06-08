@@ -53,7 +53,7 @@ class Student(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     gender = models.CharField(max_length=100)
-    profile_pic = models.FileField()
+    profile_pic = models.FileField(upload_to="media/student_pic")
     address = models.TextField()
     session_start = models.DateField()
     session_end = models.DateField()
