@@ -47,6 +47,9 @@ urlpatterns = [
 
     # url patterns for the staff
     path('staffHome/', StaffView.home, name="StaffHomePage"),
+    path('attendanceStudent/', StaffView.studentAttendance, name="AttendanceStudent"),
+    path('getStudents/', StaffView.getStudents, name="GetStudents"),
+    path('saveAttendanceData/', StaffView.saveAttendanceData, name="SaveAttendanceData"),
 
     # url patterns for the student
     path('studentHome/', StudentView.home, name="StudentHomePage"),
