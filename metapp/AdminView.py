@@ -3,7 +3,7 @@ from metapp.EmailBackEnd import EmailBackEnd
 from django.http import  HttpResponseRedirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
-from .models import CustomUser, Staff, Student, Course, Subjects
+from .models import CustomUser, Staff, Student, Course, Subjects, Level
 from django.core.files.storage import FileSystemStorage
 
 def AdminHome(request):
@@ -94,8 +94,10 @@ def editStaffSave(request):
 # Function for displaying the page for adding new student
 def addStudent(request):
     courses = Course.objects.all()
+    level = Level.objects.all()
     context = {
-        'courses': courses
+        'courses': courses,
+        'levels':level
     }
     return render(request, "admin/addStudent.html", context)
 
@@ -113,8 +115,7 @@ def addStudentSave(request):
         address = request.POST.get('address')
         course_id = request.POST.get('course')
         gender = request.POST.get('gender')
-        session_start = request.POST.get('session_start')
-        session_end = request.POST.get('session_end')
+        level_id = request.POST.get('level')
 
         profile_pic = request.FILES['image']
         fs = FileSystemStorage()
@@ -135,8 +136,8 @@ def addStudentSave(request):
             user.student.course_id = course_obj
             user.student.address = address
             user.student.gender = gender
-            user.student.session_start = session_start
-            user.student.session_end = session_end
+            level_obj = Level.objects.get(id=level_id)
+            user.student.level = level_obj
             user.student.profile_pic = profile_pic_url
             user.save()
             messages.success(request, "Student Added Successfully!")
@@ -158,10 +159,12 @@ def manageStudent(request):
 def updateStudent(request, student_id):
     student = Student.objects.get(admin=student_id)
     course = Course.objects.all()
+    level = Level.objects.all()
     context = {
         'student':student, 
         'courses':course,
-        'id': student_id
+        'id': student_id, 
+        'levels':level
     }
     return render(request, "admin/updateStudent.html", context)
 
@@ -178,8 +181,7 @@ def editStudentSave(request):
         address = request.POST.get('address')
         course_id = request.POST.get('course')
         gender = request.POST.get('gender')
-        session_start = request.POST.get('session_start')
-        session_end = request.POST.get('session_end')
+        level_id = request.POST.get('level')
         student_id = request.POST.get('student_id')
 
         if request.FILES.get('image', False):
@@ -201,12 +203,12 @@ def editStudentSave(request):
             student_model = Student.objects.get(admin=student_id)
             student_model.address = address
             student_model.gender = gender
-            student_model.session_start = session_start
-            student_model.session_end = session_end
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)
             student_model.course_id = course_model
+            level_model = Level.objects.get(id=level_id)
+            student_model.level = level_model
             student_model.save()
 
             messages.success(request, "Student Updated Successfully!")
@@ -346,3 +348,23 @@ def editSubjectSave(request):
         except:
             messages.error(request, "Error Updating Subject!")
             return HttpResponseRedirect("/updateSubject/" + subject_id)
+
+
+
+# for addind levels in the site
+def addLevel(request):
+    return render(request, "admin/addLevel.html")
+
+def addLevelSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        level = request.POST.get('level')
+        try:
+            level_model = Level(level=level)
+            level_model.save()
+            messages.success(request, "level Added Successfully!")
+            return HttpResponseRedirect("/addLevel")
+        except:
+            messages.error(request, "Error Adding level!")
+            return HttpResponseRedirect("/addLevel")

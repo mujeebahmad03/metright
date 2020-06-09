@@ -42,6 +42,8 @@ urlpatterns = [
     path('manageSubject/', AdminView.manageSubject, name="ManageSubject"),
     path('updateSubject/<str:subject_id>/', AdminView.updateSubject, name="UpdateSubject"),
     path('editSubjectSave/', AdminView.editSubjectSave, name="EditSubjectSave"),
+    path('addLevel/', AdminView.addLevel, name="AddLevel"),
+    path('addLevelSave/', AdminView.addLevelSave, name="AddLevelSave"),
 
     # url patterns for the staff
     path('staffHome/', StaffView.home, name="StaffHomePage"),

@@ -83,6 +83,7 @@
                       <div class="form-group-material">
                         <label for="image" class="label-material">Image</label>
                         <input id="image" type="file" name="image" required data-msg="Please Select Student Image" class="input-material">
+                        <input id="student_id" type="hidden" name="student_id" value="{{ student.admin.id }}" class="input-material">
                       </div>
                       <div class="form-group-material">
                         <label for="course" class="label-material">Course</label>
@@ -100,13 +101,12 @@
                         </select>                        
                       </div>
                       <div class="form-group-material">
-                        <label for="session_start" class="label-material">Session Start year</label>
-                        <input id="session_start" type="date" name="session_start" value="{{ student.session_start | date:"Y-m-d" }}" required data-msg="Please enter Student Session_start Year" class="input-material">
-                      </div>
-                      <div class="form-group-material">
-                        <label for="session_end" class="label-material">Session End year</label>
-                        <input id="session_end" type="date" name="session_end" value="{{ student.session_end | date:"Y-m-d" }}" required data-msg="Please enter Student Session_end Year" class="input-material">
-                        <input type="hidden" name="student_id" id="student_id" value="{{ student.admin.id }}">
+                        <label for="level" class="label-material">Level</label>
+                        <select id="level" type="text" name="level" value="" required data-msg="Please enter Student Level" class="form-control select-material">
+                            {% for level in levels %}
+                                <option value="{{ level.id }}" {% if level.id == student.level.id %} selected {% endif %}>{{ level.level }}</option>
+                            {% endfor %}
+                        </select>
                       </div>
 
                       <div class="form-group text-center">

@@ -104,12 +104,12 @@
                         </select>                        
                       </div>
                       <div class="form-group-material">
-                        <label for="session_start" class="label-material">Session Start year</label>
-                        <input id="session_start" type="date" name="session_start" required data-msg="Please enter Student Session_start Year" class="input-material">
-                      </div>
-                      <div class="form-group-material">
-                        <label for="session_end" class="label-material">Session End year</label>
-                        <input id="session_end" type="date" name="session_end" required data-msg="Please enter Student Session_end Year" class="input-material">
+                        <label for="level" class="label-material">Level</label>
+                        <select id="level" type="text" name="level" required data-msg="Please enter Student level" class="form-control select-material">
+                            {% for level in levels %}
+                                <option value="{{ level.id }}">{{ level.level }}</option>
+                            {% endfor %}
+                        </select>
                       </div>
 
                       <div class="form-group text-center">

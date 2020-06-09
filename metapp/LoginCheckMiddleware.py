@@ -10,28 +10,28 @@ class LoginCheckMiddleWare(MiddlewareMixin):
             if user.user_type == "1":
                 if modulename == "metapp.AdminView":
                     pass
-                elif modulename == "metapp.views":
+                elif modulename == "metapp.views" or modulename == "django.views.static":
                     pass
                 else:
                     return HttpResponseRedirect(reverse("AdminHomePage"))
             elif user.user_type == "2":
                 if modulename == "metapp.StaffView":
                     pass
-                elif modulename == "metapp.views":
+                elif modulename == "metapp.views" or modulename == "django.views.static":
                     pass
                 else:
                     return HttpResponseRedirect(reverse("StaffHomePage"))
             elif user.user_type == "3":
                 if modulename == "metapp.StudentView":
                     pass
-                elif modulename == "metapp.views":
+                elif modulename == "metapp.views" or modulename == "django.views.static":
                     pass
                 else:
                     return HttpResponseRedirect(reverse("StudentHomePage"))
             else:
                 return HttpResponseRedirect(reverse('login'))
         else:
-            if request.path == reverse('login') or request.path == reverse('Dologin'):
+            if request.path == reverse('login') or request.path == reverse('DoLogin'):
                 pass
             else:
                 return HttpResponseRedirect(reverse('login'))

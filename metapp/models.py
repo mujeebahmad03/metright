@@ -48,6 +48,15 @@ class Subjects(models.Model):
     objects = models.Manager()
 
 
+# creating levels models in the app
+class Level(models.Model):
+    id = models.AutoField(primary_key=True)
+    level = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+
 # Model of the student in the site
 class Student(models.Model):
     id = models.AutoField(primary_key=True)
@@ -55,8 +64,7 @@ class Student(models.Model):
     gender = models.CharField(max_length=100)
     profile_pic = models.FileField(upload_to="media/student_pic")
     address = models.TextField()
-    session_start = models.DateField()
-    session_end = models.DateField()
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -159,7 +167,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         if instance.user_type == 2:
             Staff.objects.create(admin=instance)
         if instance.user_type == 3:
-            Student.objects.create(admin=instance, course_id = Course.objects.get(id=1), session_start="2020-01-01", session_end="2025-01-01", address= "", profile_pic = "", gender="")
+            Student.objects.create(admin=instance, course_id = Course.objects.get(id=1),level= Level.objects.get(id=1), address= "", profile_pic = "", gender="")
 
 
 @receiver(post_save, sender=CustomUser)

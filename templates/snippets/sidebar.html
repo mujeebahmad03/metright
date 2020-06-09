@@ -63,6 +63,12 @@
               <li class="{%if request.path == ManageSubject %} active {% endif %}{%if request.path == UpdateSubject %} active {% endif %}">
                   <a href="{% url "ManageSubject" %}"> <i class="{%if request.path == ManageSubject %} active {% endif %} icon-home"></i>Manage Subject</a>
                 </li>
+
+                {% url "AddLevel" as AddLevel %}
+              <li class="{% if request.path == AddLevel %} active {% endif %}">
+                  <a href="{% url "AddLevel" %}"> <i class="{%if request.path == AddLevel %} active {% endif %} icon-home"></i>Add Level</a>
+                </li>
+
               <li><a href="index.html"> <i class="icon-home"></i>Veiw Attendance</a></li>
               <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
               <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
