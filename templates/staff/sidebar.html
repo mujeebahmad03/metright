@@ -23,8 +23,12 @@
               <li class="{% if request.path == AttendanceStudent %} active {% endif %}">
                   <a href="{% url "AttendanceStudent" %}"> <i class="{%if request.path == AttendanceStudent %} active {% endif %} icon-home"></i> Student Attendance</a>
                 </li>
+
+                {% url "ManageAttendance" as ManageAttendance %}
+                <li class="{% if request.path == ManageAttendance %} active {% endif %}">
+                    <a href="{% url "ManageAttendance" %}"> <i class="{%if request.path == ManageAttendance %} active {% endif %} icon-home"></i> Manage Attendance</a>
+                  </li>
             
-          <li><a href="index.html"> <i class="icon-home"></i>Veiw Attendance</a></li>
           <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
           <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
           <li><a href="index.html"> <i class="icon-home"></i>StudentFeedback </a></li>

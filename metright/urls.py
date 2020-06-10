@@ -50,6 +50,11 @@ urlpatterns = [
     path('attendanceStudent/', StaffView.studentAttendance, name="AttendanceStudent"),
     path('getStudents/', StaffView.getStudents, name="GetStudents"),
     path('saveAttendanceData/', StaffView.saveAttendanceData, name="SaveAttendanceData"),
+    path('manageAttendance/', StaffView.manageAttendance, name="ManageAttendance"),
+    path('getAttendance/', StaffView.getAttendance, name="GetAttendance"),
+    path('getStudentAttendance/', StaffView.getStudentAttendance, name="GetStudentAttendance"),
+    path('saveUpdateAttendance/', StaffView.saveUpdateAttendance, name="saveUpdateAttendance"),
+
 
     # url patterns for the student
     path('studentHome/', StudentView.home, name="StudentHomePage"),
