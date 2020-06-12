@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from metright import  settings
 from django.conf.urls.static import  static
 from metapp import views, AdminView, StaffView, StudentView
@@ -62,11 +62,15 @@ urlpatterns = [
 
     # url patterns for the student
     path('studentHome/', StudentView.home, name="StudentHomePage"),
+    path('viewAttendance/', StudentView.viewAttendance, name="ViewAttendancePage"),
+    path('viewAttendanceData/', StudentView.viewAttendanceData, name="ViewAttendanceData"),
+
 
     path('login/', views.loginPage, name='login'),
     path('dologin/', views.doLogin, name='DoLogin'),
     path('profile/', views.profilePage, name='ProfilePage'),
     path('logout/', views.loginPage, name='Logout'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

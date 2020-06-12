@@ -18,9 +18,14 @@
             {% url "StudentHomePage" as StudentHomePage %}               
           <li class="{% if request.path == StudentHomePage %} active {% endif %}">
             <a href="{% url "StudentHomePage" %}" class="{% if request.path == StudentHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
-        </li>
+          </li>
+
+          {% url "ViewAttendancePage" as ViewAttendancePage %}               
+          {% url "ViewAttendanceData" as ViewAttendanceData %}               
+          <li class="{% if request.path == ViewAttendancePage %} active {% endif %}{% if request.path == ViewAttendanceData %} active {% endif %}">
+            <a href="{% url "ViewAttendancePage" %}" class="{% if request.path == ViewAttendancePage %} active {% endif %}"> <i class=" icon-home"></i>View Attendance</a>
+          </li>
             
-          <li><a href="index.html"> <i class="icon-home"></i>Veiw Attendance</a></li>
           <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
           <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
           <li><a href="index.html"> <i class="icon-home"></i>StudentFeedback </a></li>

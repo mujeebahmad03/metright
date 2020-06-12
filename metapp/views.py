@@ -11,7 +11,7 @@ def demo(request):
 
 # View to display the General Loginpage of the app
 def loginPage(request):
-    return render(request, "auth/login.html")
+    return render(request, "registration/login.html")
 
 
 def logoutPage(request):
@@ -20,7 +20,7 @@ def logoutPage(request):
 
 
 def profilePage(request):
-    return render(request, "auth/profile.html")
+    return render(request, "registration/profile.html")
 
 
 # Function for handling the login

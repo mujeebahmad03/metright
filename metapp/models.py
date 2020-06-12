@@ -75,7 +75,7 @@ class Student(models.Model):
 class Attendance(models.Model):
     id  = models.AutoField(primary_key=True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.CASCADE)
-    attendance_date = models.DateField(auto_now_add=True)
+    attendance_date = models.DateField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)

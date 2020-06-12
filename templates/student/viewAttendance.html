@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Dashboard by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/bootstrap/css/bootstrap.min.css" %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/font-awesome/css/font-awesome.min.css" %}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="{% static "dashboard/css/fontastic.css" %}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href="{% static "dashboard/css/grasp_mobile_progress_circle-1.0.0.min.css" %}">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" %}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static "dashboard/css/style.default.premium.css" %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static "dashboard/css/custom.css" %}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static "dashboard/img/favicon.ico" %}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+      {% include "student/sidebar.html" %}
+        <div class="page">
+        <!-- navbar-->
+        {% include "snippets/header.html" %}
+        
+        <!-- Statistics Section-->
+        <section class="statistics">
+            <div class="container-fluid">
+            <div class="row d-flex">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-10">
+                  <br>
+                  <form method="POST" action="{% url "ViewAttendanceData" %}">
+                      {% csrf_token %}
+                    <div class="form-inner">
+                        <div class="logo text-uppercase"><span>Dash</span><strong class="text-primary">Express</strong></div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+                        {% if messages %}
+                            {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <span id="demoMessage4" class="btn btn-success">{{message}}</span>
+                            {% endif %}
+                            {% if message.tags == 'error' %}
+                                <span id="demoMessage4" class="btn btn-danger">{{message}}</span>
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <br>
+                        <div class="form-group-material">
+                            <label for="subject" class="label-material">Subject</label>
+                            <select id="subject" type="text" name="subject" required data-msg="Please Select Student Subject" class="form-control select-material">
+                                {% for subject in subjects %}         
+                                    <option value="{{ subject.id }}">{{ subject.subject }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group-material">
+                                  <label for="subject" class="label-material">Start Date</label>
+                                  <input type='date' required data-msg='Please Select date' id='start_date' name='start_date' class='form-control required'>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group-material">
+                                  <label for="subject" class="label-material">End Date</label>
+                                  <input type='date' required data-msg='Please Select date' id='end_date' name='end_date' class='form-control required'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <input id="fetch_student" type="submit" value="Fetch Attendance" class="btn btn-primary">
+                        </div>
+
+                        <div id="student_data">
+                        
+                        </div>
+                        
+                    </div>
+                </form>
+                </div>
+                <div class="col-lg-1">
+                </div>
+            </div>
+            </div>
+        </section>
+
+        {% include "snippets/footer.html" %}
+        </div>
+      <!-- JavaScript files-->
+      <script src="{% static "dashboard/vendor/jquery/jquery.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery.cookie/jquery.cookie.js" %}"> </script>
+      <script src="{% static "dashboard/js/grasp_mobile_progress_circle-1.0.0.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/chart.js/Chart.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery-validation/jquery.validate.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js" %}"></script>
+      <script src="{% static "dashboard/js/charts-home.js" %}"></script>
+      <!-- Notifications-->
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger.min.js" %}">   </script>
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger-theme-flat.js" %}">       </script>
+      <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
+      <!-- Main File-->
+      <script src="{% static "dashboard/js/front.js" %}"></script>
+      <script>
+        $(document).ready(function(){
+            $('#fetch_student').click(function(){
+              var subject = $("#subject").val()
+              var level = $("#level").val()
+
+              $.ajax({
+                url: '{% url "GetStudents" %}',
+                type: "POST",
+                data: {subject:subject, level:level},
+              })
+              .done(function(response){
+                var json_data = JSON.parse(response)  
+                console.log(json_data)
+                var div_data = "<div class='form-group-material'><label for='attendance_date'  class='label-material'>Attendance Date</label><input type='date' required data-msg='Please Select Level' id='attendance_date' name='attendance_date' class='form-control required'></div><div class='row'>";
+                for (key in json_data){
+                    div_data+="<div class='col-lg-4'><div class='form-check'><input type='checkbox' checked='checked' name='student_data[]' value='"+json_data[key]['id']+"'>"+json_data[key]['name']+"</div></div>";
+                }
+                div_data += "</div></div>";
+                div_data += "<span>"
+                div_data += "<div class='form-group text-center'>";
+                div_data += "<button id='save_attendance' class='ml-1 btn btn-primary btn-block' type='button'>Save Attendance</button>";
+                div_data += "</div></span>"
+                $("#student_data").html(div_data)
+              })
+              .fail(function(){
+                alert("Error Fetching Students Data")
+              })
+
+
+              $(document).on("click", "#save_attendance", function(){
+
+                $(this).attr("disabled", "disabled");
+                $(this).text("Saving Attendance Data");
+
+                var student_data = $("input[name='student_data[]']").map(function(){
+                   if($(this).is(":checked")){
+                     return {"id":$(this).val(), "status":1};
+                   }
+                   else{
+                     return {"id":$(this).val(),"status":0};
+                   }
+                   return {"id":$(this).val()};
+                 }).get();
+                var attendance_date = $("#attendance_date").val();
+                var subject = $("#subject").val();
+                var level = $("#level").val();
+                console.log(student_data)
+                student_data =  JSON.stringify(student_data)
+
+                $.ajax({
+                  url: '{% url "SaveAttendanceData" %}',
+                  type: "POST",
+                  data: {student_ids:student_data, attendance_date:attendance_date, subject:subject, level:level},
+                })
+                .done(function(response){
+                  if(response == "OK"){
+                    alert("Attendance Saved")
+                  }
+                  else{
+                    alert("Error Saving Attendance")
+                  }
+                  location.reload()
+                })
+                .fail(function(){
+                  alert("Error Saving Students Data")
+                })
+              })
+            })
+        })
+      </script>
+    </body>
+</html>
