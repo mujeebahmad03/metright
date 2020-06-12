@@ -64,6 +64,10 @@ urlpatterns = [
     path('studentHome/', StudentView.home, name="StudentHomePage"),
     path('viewAttendance/', StudentView.viewAttendance, name="ViewAttendancePage"),
     path('viewAttendanceData/', StudentView.viewAttendanceData, name="ViewAttendanceData"),
+    path('leaveApplyStudent/', StudentView.leaveApplyStudent, name="LeaveApplyStudent"),
+    path('leaveApplySaveStudent/', StudentView.leaveApplySaveStudent, name="LeaveApplySaveStudent"),
+    path('feedbackMessageStudent/', StudentView.feedbackMessageStudent, name="FeedbackMessageStudent"),
+    path('feedbackSaveStudent/', StudentView.feedbackSaveStudent, name="FeedbackSaveStudent"),
 
 
     path('login/', views.loginPage, name='login'),
