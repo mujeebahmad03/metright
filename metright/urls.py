@@ -20,7 +20,8 @@ from django.conf.urls.static import  static
 from metapp import views, AdminView, StaffView, StudentView
 
 urlpatterns = [
-    path('', views.demo, name='demo'),
+    path('checkEmail', AdminView.checkEmail, name='CheckEmail'),
+    path('checkUsername', AdminView.checkUsername, name='CheckUsername'),
     path('adminHome/', AdminView.AdminHome, name="AdminHomePage"),
     path('addStaff/', AdminView.addStaff, name="AddStaff"),
     path('addStaffSave/', AdminView.addStaffSave, name="AddStaffSave"),
@@ -44,6 +45,10 @@ urlpatterns = [
     path('editSubjectSave/', AdminView.editSubjectSave, name="EditSubjectSave"),
     path('addLevel/', AdminView.addLevel, name="AddLevel"),
     path('addLevelSave/', AdminView.addLevelSave, name="AddLevelSave"),
+    path('staffFeedback/', AdminView.staffFeedback, name="StaffFeedback"),
+    path('studentFeedback/', AdminView.studentFeedback, name="StudentFeedback"),
+    path('studentFeedbackReply/', AdminView.studentFeedbackReply, name="StudentFeedbackReply"),
+    path('staffFeedbackReply/', AdminView.staffFeedbackReply, name="StaffFeedbackReply"),
 
     # url patterns for the staff
     path('staffHome/', StaffView.home, name="StaffHomePage"),

@@ -144,5 +144,65 @@
       <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
       <!-- Main File-->
       <script src="{% static "dashboard/js/front.js" %}"></script>
+      <script>
+        $(document).ready(function(){
+          $("#email").keyup(function(){
+            var email = $(this).val();
+
+            if(email != ""){
+              $.ajax({
+                url: "{% url 'CheckEmail' %}",
+                type: 'POST',
+                data: {email:email}
+              })
+              .done(function(response){
+                  if(response == "True"){
+                    $(".email_error").remove();
+                    $("<span id='demoMessage4' class='email_error' style='padding:1px;color:red; font-size:9px'> Email Already In Use</span>").insertAfter("#email")
+                  }
+                  else{
+                    $(".email_error").remove();
+                    $("<span id='demoMessage4' class='email_error' style='padding:1px;color:green; font-size:9px'>Email Available</span>").insertAfter("#email")
+                  }
+              })
+              .fail(function(){
+                console.log('failed')
+              })
+            }
+            else{
+              $(".email_error").remove();
+            }
+          });
+
+          $("#username").keyup(function(){
+            var username = $(this).val();
+
+            if(username != ""){
+              $.ajax({
+                url: "{% url 'CheckUsername' %}",
+                type: 'POST',
+                data: {username:username}
+              })
+              .done(function(response){
+                  console.log(response)
+                  if(response == "True"){
+                    $(".username_error").remove();
+                    $("<span id='demoMessage4' class='username_error' style='padding:1px;color:red; font-size:9px'> Username Already In Use</span>").insertAfter("#username")
+                  }
+                  else{
+                    $(".username_error").remove();
+                    $("<span id='demoMessage4' class='username_error' style='padding:1px;color:green; font-size:9px'>Username Available</span>").insertAfter("#username")
+                  }
+              })
+              .fail(function(){
+                console.log('failed')
+              })
+            }
+            else{
+              $(".username_error").remove();
+            }
+          })
+        })
+      </script>
     </body>
 </html>

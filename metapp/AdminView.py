@@ -3,8 +3,14 @@ from metapp.EmailBackEnd import EmailBackEnd
 from django.http import  HttpResponseRedirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
-from .models import CustomUser, Staff, Student, Course, Subjects, Level
+from .models import ( 
+    CustomUser, Staff, Student, Course, Subjects, Level,
+    FeedBackStaff, FeedBackStudent
+
+)
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_exempt
+
 
 def AdminHome(request):
     return render(request, "admin/home.html")
@@ -369,4 +375,72 @@ def addLevelSave(request):
             messages.error(request, "Error Adding level!")
             return HttpResponseRedirect("/addLevel")
 
+# for feedback reply of staff
+def staffFeedback(request):
+    feedback_data = FeedBackStaff.objects.all()
+    context = {
+        'feedback_data': feedback_data
+    }
+    return render(request, "admin/staffFeedback.html", context)
+
+@csrf_exempt
+# reply function for the staff feedback
+def staffFeedbackReply(request):
+    feedback_id = request.POST.get('id')
+    feedback_message = request.POST.get('message')
+
+    try:
+        feedback = FeedBackStaff.objects.get(id=feedback_id)
+        feedback.feedback_reply = feedback_message
+        feedback.save()
+
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+
+
+# for feedback reply of students
+def studentFeedback(request):
+    feedback_data = FeedBackStudent.objects.all()
+    context = {
+        'feedback_data': feedback_data
+    }
+    return render(request, "admin/studentFeedback.html", context)
+
+@csrf_exempt
+# reply function for the student feedback
+def studentFeedbackReply(request):
+    feedback_id = request.POST.get('id')
+    feedback_message = request.POST.get('message')
+
+    try:
+        feedback = FeedBackStudent.objects.get(id=feedback_id)
+        feedback.feedback_reply = feedback_message
+        feedback.save()
+
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+
+
+# function for checking the email that already exists
+@csrf_exempt
+def checkEmail(request):
+    email = request.POST.get('email')
+    user_obj = CustomUser.objects.filter(email=email).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
+# function for checking the username that already exists
+@csrf_exempt
+def checkUsername(request):
+    username = request.POST.get('username')
+    user_obj = CustomUser.objects.filter(username=username).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
 

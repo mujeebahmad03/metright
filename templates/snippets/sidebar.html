@@ -69,12 +69,19 @@
                   <a href="{% url "AddLevel" %}"> <i class="{%if request.path == AddLevel %} active {% endif %} icon-home"></i>Add Level</a>
                 </li>
                 
+                {% url "StaffFeedback" as StaffFeedback %}
+                <li class="{% if request.path == StaffFeedback %} active {% endif %}">
+                    <a href="{% url "StaffFeedback" %}"> <i class="{%if request.path == StaffFeedback %} active {% endif %} icon-home"></i>Staff Feedback</a>
+                </li>
+
+                {% url "StudentFeedback" as StudentFeedback %}
+                <li class="{% if request.path == StudentFeedback %} active {% endif %}">
+                    <a href="{% url "StudentFeedback" %}"> <i class="{%if request.path == StudentFeedback %} active {% endif %} icon-home"></i>Student Feedback</a>
+                </li>
                 
               <li><a href="index.html"> <i class="icon-home"></i>Veiw Attendance</a></li>
               <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
               <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
-              <li><a href="index.html"> <i class="icon-home"></i>StudentFeedback </a></li>
-              <li><a href="index.html"> <i class="icon-home"></i>Staff Feedback</a></li>
             </ul>
           </div>
         </div>
