@@ -1,9 +1,15 @@
 from django.shortcuts import render, HttpResponse, redirect
 from metapp.EmailBackEnd import EmailBackEnd
 from django.http import  HttpResponseRedirect, JsonResponse
+from django.urls import reverse
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
-from .models import CustomUser, Staff, Student, Course, Subjects, Level, Attendance, AttendanceReport
+from .models import (
+    CustomUser, Staff, Student,
+    Course, Subjects, Level, 
+    Attendance, AttendanceReport,
+    LeaveReportStaff
+    )
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 from django.core import  serializers
@@ -128,3 +134,36 @@ def saveUpdateAttendance(request):
         return HttpResponse("OK")
     except:
         return HttpResponse("ERR")
+
+
+# Leave apply module
+def leaveApply(request):
+    staff_obj = Staff.objects.get(admin=request.user.id)
+    leave_data = LeaveReportStaff.filter
+    return render(request, "staff/leaveApply.html")
+
+
+def leaveApplySave(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("LeaveApply"))
+    else:
+        leave_date = request.POST.get('leave_date')
+        reason = request.POST.get('reason')
+        
+        staff_id = Staff.objects.get(admin=request.user.id)
+
+        try:
+            leave_report = LeaveReportStaff(staff_id=staff_id, leave_date=leave_date, leave_message=reason, leave_status=0)
+            leave_report.save()
+
+            messages.success(request, "Leave Application Submitted")
+            return HttpResponseRedirect(reverse("LeaveApply"))
+
+        except:
+            messages.error(request, "Error Submitting Leave Application")
+            return HttpResponseRedirect(reverse("LeaveApply"))
+
+
+# Message Feedback Module
+def feedbackMessage(request):
+    return render(request, "staff/feedback.html")
