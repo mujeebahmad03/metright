@@ -8,7 +8,7 @@ from .models import (
     CustomUser, Staff, Student,
     Course, Subjects, Level, 
     Attendance, AttendanceReport,
-    LeaveReportStaff
+    LeaveReportStaff, FeedBackStaff
     )
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
@@ -139,8 +139,11 @@ def saveUpdateAttendance(request):
 # Leave apply module
 def leaveApply(request):
     staff_obj = Staff.objects.get(admin=request.user.id)
-    leave_data = LeaveReportStaff.filter
-    return render(request, "staff/leaveApply.html")
+    leave_data = LeaveReportStaff.objects.filter(staff_id=staff_obj)
+    context = {
+        'leave_data': leave_data
+    }
+    return render(request, "staff/leaveApply.html", context)
 
 
 def leaveApplySave(request):
@@ -166,4 +169,29 @@ def leaveApplySave(request):
 
 # Message Feedback Module
 def feedbackMessage(request):
-    return render(request, "staff/feedback.html")
+    staff_obj = Staff.objects.get(admin=request.user.id)
+    feedback_data = FeedBackStaff.objects.filter(staff_id=staff_obj)
+    context = {
+        'feedback_data': feedback_data
+    }
+    return render(request, "staff/feedback.html", context)
+
+
+# function for the saving of the feedback 
+def feedbackSave(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("FeedbackMessage"))
+    else:
+        feedback_message = request.POST.get("feedback_message")
+        staff_obj = Staff.objects.get(admin=request.user.id)
+
+        try:
+            feedback = FeedBackStaff(staff_id=staff_obj, feedback=feedback_message, feedback_reply="")
+            feedback.save()
+
+            messages.success(request, "Feedback Submitted")
+            return HttpResponseRedirect(reverse("FeedbackMessage"))
+
+        except:
+            messages.error(request, "Error Submitting Feedback")
+            return HttpResponseRedirect(reverse("FeedbackMessage"))

@@ -131,7 +131,7 @@ class FeedBackStudent(models.Model):
 # For creation of Feedback by the admin for the staff
 class FeedBackStaff(models.Model):
     id = models.AutoField(primary_key=True)
-    staff_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
