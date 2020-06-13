@@ -4,6 +4,7 @@ from django.urls import  reverse
 from django.http import  HttpResponseRedirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 from .models import ( 
@@ -12,6 +13,29 @@ from .models import (
 
 )
 from django.core.files.storage import FileSystemStorage
+
+
+
+# function for checking the email that already exists
+@csrf_exempt
+def checkEmailStudent(request):
+    email = request.POST.get('email')
+    user_obj = CustomUser.objects.filter(email=email).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
+# function for checking the username that already exists
+@csrf_exempt
+def checkUsernameStudent(request):
+    username = request.POST.get('username')
+    user_obj = CustomUser.objects.filter(username=username).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
 
 
 def home(request):
@@ -112,3 +136,44 @@ def feedbackSaveStudent(request):
         except:
             messages.error(request, "Error Submitting Feedback")
             return HttpResponseRedirect(reverse("FeedbackMessageStudent"))
+
+#  profile page for the Student of the app
+def userProfileStudent(request):
+    student = Student.objects.get(admin=request.user.id)
+    user_data = CustomUser.objects.get(id=request.user.id)
+    context = {
+        'user_data': user_data,
+        'student':student
+    }
+    return render(request, "student/profile.html", context)
+
+
+def editProfileSaveStudent(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("UserProfileStudent"))
+    else:
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get("lastname")
+        username = request.POST.get("username")
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        address = request.POST.get('address')
+        try:
+            customuser = CustomUser.objects.get(id=request.user.id)
+            customuser.first_name = first_name
+            customuser.last_name = last_name
+            customuser.username = username
+            customuser.email = email
+            if password != None and password != "":
+                customuser.set_password(password)
+            customuser.save()
+
+            student = Student.objects.get(admin=customuser)
+            student.address = address
+            student.save()
+
+            messages.success(request, "Student Profile Updated Successfully")
+            return HttpResponseRedirect(reverse("UserProfileStudent"))
+        except:
+            messages.error(request, "Error Updating Student Profile")
+            return HttpResponseRedirect(reverse("UserProfileStudent"))

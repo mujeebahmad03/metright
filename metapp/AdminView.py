@@ -531,3 +531,38 @@ def getStudentAttendanceAdmin(request):
         data_select = {"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
         list_data.append(data_select)
     return JsonResponse(json.dumps(list_data), content_type='application/json', safe=False)
+
+
+#  profile page for the admin of the app
+def userProfile(request):
+    user_data = CustomUser.objects.get(id=request.user.id)
+    context = {
+        'user_data': user_data
+    }
+    return render(request, "admin/profile.html", context)
+
+
+def editProfileSave(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("UserProfile"))
+    else:
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get("lastname")
+        username = request.POST.get("username")
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        try:
+            customuser = CustomUser.objects.get(id=request.user.id)
+            customuser.first_name = first_name
+            customuser.last_name = last_name
+            customuser.username = username
+            customuser.email = email
+            if password != None and password != "":
+                customuser.set_password(password)
+            customuser.save()
+
+            messages.success(request, "Admin Profile Updated Successfully")
+            return HttpResponseRedirect(reverse("UserProfile"))
+        except:
+            messages.error(request, "Error Updating Admin Profile")
+            return HttpResponseRedirect(reverse("UserProfile"))

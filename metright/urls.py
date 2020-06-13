@@ -58,6 +58,8 @@ urlpatterns = [
     path('viewAttendance/', AdminView.viewAttendance, name="ViewAttendance"),
     path('getAttendanceDate/', AdminView.getAttendanceDate, name="GetAttendanceDate"),
     path('getStudentAttendanceAdmin/', AdminView.getStudentAttendanceAdmin, name="GetStudentAttendanceAdmin"),
+    path('userProfile/', AdminView.userProfile, name="UserProfile"),
+    path('editProfileSave/', AdminView.editProfileSave, name="EditProfileSave"),
 
 
     # url patterns for the staff
@@ -73,6 +75,10 @@ urlpatterns = [
     path('leaveApplySave/', StaffView.leaveApplySave, name="LeaveApplySave"),
     path('feedbackMessage/', StaffView.feedbackMessage, name="FeedbackMessage"),
     path('feedbackSave/', StaffView.feedbackSave, name="FeedbackSave"),
+    path('userProfileStaff/', StaffView.userProfileStaff, name="UserProfileStaff"),
+    path('editProfileSaveStaff/', StaffView.editProfileSaveStaff, name="EditProfileSaveStaff"),
+    path('checkEmailStaff', StaffView.checkEmailStaff, name='CheckEmailStaff'),
+    path('checkUsernameStaff', StaffView.checkUsernameStaff, name='CheckUsernameStaff'),
 
 
     # url patterns for the student
@@ -83,6 +89,12 @@ urlpatterns = [
     path('leaveApplySaveStudent/', StudentView.leaveApplySaveStudent, name="LeaveApplySaveStudent"),
     path('feedbackMessageStudent/', StudentView.feedbackMessageStudent, name="FeedbackMessageStudent"),
     path('feedbackSaveStudent/', StudentView.feedbackSaveStudent, name="FeedbackSaveStudent"),
+    path('userProfileStudent/', StudentView.userProfileStudent, name="UserProfileStudent"),
+    path('editProfileSaveStudent/', StudentView.editProfileSaveStudent, name="EditProfileSaveStudent"),
+    path('checkEmailStudent', StudentView.checkEmailStudent, name='CheckEmailStudent'),
+    path('checkUsernameStudent', StudentView.checkUsernameStudent, name='CheckUsernameStudent'),
+
+
 
 
     path('login/', views.loginPage, name='login'),

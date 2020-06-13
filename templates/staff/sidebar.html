@@ -6,7 +6,8 @@
       <div class="sidenav-header d-flex align-items-center justify-content-center">
         <!-- User Info-->
         <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/avatar-7.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
-          <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
+              <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
+              <a href="{% url "UserProfileStaff" %}" class="btn btn-success btn-block">Update Profile</a>
         </div>
         <!-- Small Brand information, appears on minimized sidebar-->
         <div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong>B</strong><strong class="text-primary">D</strong></a></div>
@@ -38,11 +39,6 @@
                 <li class="{% if request.path == FeedbackMessage %} active {% endif %}">
                     <a href="{% url "FeedbackMessage" %}"> <i class="{%if request.path == FeedbackMessage %} active {% endif %} icon-home"></i> FeedBack</a>
                 </li>
-            
-          <li><a href="index.html"> <i class="icon-home"></i>Staff Leave</a></li>
-          <li><a href="index.html"> <i class="icon-home"></i>Student Leave </a></li>
-          <li><a href="index.html"> <i class="icon-home"></i>StudentFeedback </a></li>
-          <li><a href="index.html"> <i class="icon-home"></i>Staff Feedback</a></li>
         </ul>
       </div>
     </div>

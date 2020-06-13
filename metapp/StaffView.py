@@ -15,6 +15,30 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import  serializers
 import json
 
+
+
+# function for checking the email that already exists
+@csrf_exempt
+def checkEmailStaff(request):
+    email = request.POST.get('email')
+    user_obj = CustomUser.objects.filter(email=email).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
+# function for checking the username that already exists
+@csrf_exempt
+def checkUsernameStaff(request):
+    username = request.POST.get('username')
+    user_obj = CustomUser.objects.filter(username=username).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
 def home(request):
     return render(request, 'staff/home.html')
 
@@ -195,3 +219,46 @@ def feedbackSave(request):
         except:
             messages.error(request, "Error Submitting Feedback")
             return HttpResponseRedirect(reverse("FeedbackMessage"))
+
+
+#  profile page for the staff of the app
+def userProfileStaff(request):
+    user_data = CustomUser.objects.get(id=request.user.id)
+    staff = Staff.objects.get(id=request.user.id)
+    context = {
+        'user_data': user_data,
+        'staff':staff
+    }
+    return render(request, "staff/profile.html", context)
+
+
+def editProfileSaveStaff(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("UserProfileStaff"))
+    else:
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get("lastname")
+        username = request.POST.get("username")
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        address = request.POST.get('address')
+        try:
+            staff = Staff.objects.get(id=request.user.id)
+            customuser = CustomUser.objects.get(id=request.user.id)
+            customuser.first_name = first_name
+            customuser.last_name = last_name
+            customuser.username = username
+            customuser.email = email
+            if password != None and password != "":
+                customuser.set_password(password)
+            customuser.save()
+
+            staff = Staff.objects.get(admin=customuser)
+            staff.address = address
+            staff.save()
+
+            messages.success(request, "Staff Profile Updated Successfully")
+            return HttpResponseRedirect(reverse("UserProfileStaff"))
+        except:
+            messages.error(request, "Error Updating Staff Profile")
+            return HttpResponseRedirect(reverse("UserProfileStaff"))
