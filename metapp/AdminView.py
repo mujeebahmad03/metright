@@ -1,14 +1,16 @@
 from django.shortcuts import render, HttpResponse, redirect
 from metapp.EmailBackEnd import EmailBackEnd
-from django.http import  HttpResponseRedirect
+from django.http import  HttpResponseRedirect, JsonResponse
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
 from .models import ( 
     CustomUser, Staff, Student, Course, Subjects, Level,
     FeedBackStaff, FeedBackStudent,
-    LeaveReportStaff, LeaveReportStudent
+    LeaveReportStaff, LeaveReportStudent, Attendance,
+    AttendanceReport        
 )
 from django.core.files.storage import FileSystemStorage
+import json
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -492,3 +494,40 @@ def studentLeaveDisapprove(request, leave_id):
     leave.save()
     return HttpResponseRedirect(reverse("StudentLeave"))
     
+
+def viewAttendance(request):
+    subject = Subjects.objects.all()
+    level = Level.objects.all()
+    attendance = Attendance.objects.all()
+    context = {
+        'subjects': subject,
+        'levels': level,
+        'attendances': attendance
+    }
+    return render(request, "admin/viewAttendance.html", context)
+
+@csrf_exempt
+def getAttendanceDate(request):
+    subject = request.POST.get('subject')
+    level_id = request.POST.get('level')
+    subject_obj = Subjects.objects.get(id=subject)
+    level_obj = Level.objects.get(id=level_id)
+    attendance = Attendance.objects.filter(subject_id=subject_obj, level=level_obj)
+    attendance_obj=[]
+    for event in attendance:
+        data= {"id":event.id, "attendance_date":str(event.attendance_date), "level":event.level.id}
+        attendance_obj.append(data)
+    
+    return JsonResponse(json.dumps(attendance_obj), safe=False)
+
+@csrf_exempt
+def getStudentAttendanceAdmin(request):
+    attendance_date = request.POST.get('attendance_date')
+    attendance = Attendance.objects.get(id=attendance_date)
+
+    attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
+    list_data = []
+    for student in attendance_data:
+        data_select = {"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
+        list_data.append(data_select)
+    return JsonResponse(json.dumps(list_data), content_type='application/json', safe=False)

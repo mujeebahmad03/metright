@@ -55,6 +55,10 @@ urlpatterns = [
     path('studentLeave/', AdminView.studentLeave, name="StudentLeave"),
     path('studentLeaveApprove/<str:leave_id>/', AdminView.studentLeaveApprove, name="StudentLeaveApprove"),
     path('studentLeaveDisapprove/<str:leave_id>/', AdminView.studentLeaveDisapprove, name="StudentLeaveDisapprove"),
+    path('viewAttendance/', AdminView.viewAttendance, name="ViewAttendance"),
+    path('getAttendanceDate/', AdminView.getAttendanceDate, name="GetAttendanceDate"),
+    path('getStudentAttendanceAdmin/', AdminView.getStudentAttendanceAdmin, name="GetStudentAttendanceAdmin"),
+
 
     # url patterns for the staff
     path('staffHome/', StaffView.home, name="StaffHomePage"),

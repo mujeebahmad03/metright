@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Dashboard by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/bootstrap/css/bootstrap.min.css" %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/font-awesome/css/font-awesome.min.css" %}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="{% static "dashboard/css/fontastic.css" %}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href="{% static "dashboard/css/grasp_mobile_progress_circle-1.0.0.min.css" %}">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" %}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static "dashboard/css/style.default.premium.css" %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static "dashboard/css/custom.css" %}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static "dashboard/img/favicon.ico" %}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+      {% include "snippets/sidebar.html" %}
+        <div class="page">
+        <!-- navbar-->
+        {% include "snippets/header.html" %}
+        
+        <!-- Statistics Section-->
+        <section class="statistics">
+            <div class="container-fluid">
+            <div class="row d-flex">
+                <div class="col-lg-1">
+                </div>
+                <div class="col-lg-10">
+                  <br>
+                  <div class="form-inner">
+                    <div class="logo text-uppercase"><span>Dash</span><strong class="text-primary">Express</strong></div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+                      <div class="form-group">
+                            <div id="demoMessage4 success_attendance" class="btn btn-success" style="display: none;">
+                              
+                            </div>
+                            <div id="error_attendance" class="btn btn-danger"  style="display: none;">
+
+                            </div>
+                      </div>
+                    <br>
+                      <div class="form-group-material">
+                        <label for="subject" class="label-material">Subject</label>
+                        <select id="subject" type="text" name="subject" required data-msg="Please Select Student Subject" class="form-control select-material">
+                            {% for subject in subjects %}         
+                                <option value="{{ subject.id }}">{{ subject.subject }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group-material">
+                        <label for="subject" class="label-material">Level</label>
+                        <select id="level" type="text" name="level" required data-msg="Please Select Student Level" class="form-control select-material">
+                            {% for level in levels %}         
+                                <option value="{{ level.id }}">{{ level.level }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+
+                      <div class="form-group text-center">
+                        <input id="fetch_attendance" type="submit" value="Fetch Attendance Data" class="btn btn-primary">
+                      </div>
+                      
+                      <div class="form-group" id="attendance_block" style="display: none;">
+                        <div class="form-group-material">
+                          <label for="subject" class="label-material">Attendance Date</label>
+                          <select id="attendance_date" type="text" name="attendance" required data-msg="Please Select Student Attendance Date" class="form-control select-material">
+                              
+                          </select>
+                        </div>
+                      </div>
+                     <div id="student_data">
+                       
+                     </div>
+
+                     <div class="form-group text-center" id="fetch_student_block" style="display: none;">
+                      <input id="fetch_student" type="submit" value="Fetch Student Data" class="btn btn-primary">
+                    </div>
+
+                    
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                </div>
+            </div>
+            </div>
+        </section>
+
+        {% include "snippets/footer.html" %}
+        </div>
+      <!-- JavaScript files-->
+      <script src="{% static "dashboard/vendor/jquery/jquery.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery.cookie/jquery.cookie.js" %}"> </script>
+      <script src="{% static "dashboard/js/grasp_mobile_progress_circle-1.0.0.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/chart.js/Chart.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/jquery-validation/jquery.validate.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js" %}"></script>
+      <script src="{% static "dashboard/js/charts-home.js" %}"></script>
+      <!-- Notifications-->
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger.min.js" %}">   </script>
+      <script src="{% static "dashboard/vendor/messenger-hubspot/build/js/messenger-theme-flat.js" %}">       </script>
+      <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
+      <!-- Main File-->
+      <script src="{% static "dashboard/js/front.js" %}"></script>
+      <script>
+        $(document).ready(function(){
+            $("#fetch_attendance").click(function(){
+                  var subject = $("#subject").val()
+                  var level = $("#level").val()
+
+                  $.ajax({
+                    url: '{% url "GetAttendanceDate" %}',
+                    type: "POST",
+                    data: {subject:subject, level:level},
+                  })
+                  .done(function(response){
+                    var json_data = JSON.parse(response)
+                    if(json_data.length > 0)
+                    {
+                        var html_data = "";
+                        for(key in json_data){
+                          html_data += "<option value="+json_data[key]["id"]+">" + json_data[key]["attendance_date"] + "</option>";
+                        }
+                        $("#error_attendance").html("");
+                        $("#error_attendance").hide();
+                        $("#attendance_block").show();
+                        $("#fetch_student_block").show();
+                        $("#attendance_date").html(html_data);
+                    }
+                    else{
+                      $("#error_attendance").html("No Attendance Data Found");
+                      $("#attendance_block").hide();
+                      $("#fetch_student_block").hide();
+                      $("#error_attendance").show();
+                      $("#attendance_date").html("");
+                    }
+                  })
+                  .fail(function(){
+                    alert("Error Fetching Attendance Data");
+                    $("#fetch_student_block").hide();
+                    $("#attendance_block").hide();
+                    $("#error_attendance").html("");
+                  });
+              
+                  
+
+            })
+          
+            $('#fetch_student').click(function(){
+              var attendance_date= $("#attendance_date").val()
+
+              $.ajax({
+                url: '{% url "GetStudentAttendanceAdmin" %}',
+                type: "POST",
+                data: {attendance_date:attendance_date},
+              })
+              .done(function(response){
+                var json_data = JSON.parse(response)  
+                var div_data = "<div class='form-group'><label for='subject' class='label-material'>Student Attendance:</label><div class='form-group'><div class='row'>";
+                for (key in json_data){
+                    div_data+="<div class='col-lg-4'>";
+                    div_data += "<label class='lead form-check-label'>"+json_data[key]['name']+"</label>";
+                  
+                    if(json_data[key]['status']){
+                      div_data += "<b class='lead'> [ Present ]</b>";
+                      }
+                      else{
+                      div_data += "<b class='lead'> [ Absent ]</b>";
+                      }
+                    div_data += "</div>";
+                }
+                div_data += "</div></div>";
+                $("#student_data").html(div_data)
+              })
+              .fail(function(){
+                alert("Error Fetching Students Data")
+              })
+
+
+             
+            })
+        })
+      </script>
+    </body>
+</html>
