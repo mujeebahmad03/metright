@@ -49,6 +49,12 @@ urlpatterns = [
     path('studentFeedback/', AdminView.studentFeedback, name="StudentFeedback"),
     path('studentFeedbackReply/', AdminView.studentFeedbackReply, name="StudentFeedbackReply"),
     path('staffFeedbackReply/', AdminView.staffFeedbackReply, name="StaffFeedbackReply"),
+    path('staffLeave/', AdminView.staffLeave, name="StaffLeave"),
+    path('staffLeaveApprove/<str:leave_id>/', AdminView.staffLeaveApprove, name="StaffLeaveApprove"),
+    path('staffLeaveDisapprove/<str:leave_id>/', AdminView.staffLeaveDisapprove, name="StaffLeaveDisapprove"),
+    path('studentLeave/', AdminView.studentLeave, name="StudentLeave"),
+    path('studentLeaveApprove/<str:leave_id>/', AdminView.studentLeaveApprove, name="StudentLeaveApprove"),
+    path('studentLeaveDisapprove/<str:leave_id>/', AdminView.studentLeaveDisapprove, name="StudentLeaveDisapprove"),
 
     # url patterns for the staff
     path('staffHome/', StaffView.home, name="StaffHomePage"),

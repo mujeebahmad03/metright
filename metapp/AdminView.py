@@ -5,10 +5,11 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import  messages
 from .models import ( 
     CustomUser, Staff, Student, Course, Subjects, Level,
-    FeedBackStaff, FeedBackStudent
-
+    FeedBackStaff, FeedBackStudent,
+    LeaveReportStaff, LeaveReportStudent
 )
 from django.core.files.storage import FileSystemStorage
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -444,3 +445,50 @@ def checkUsername(request):
     else:
         return HttpResponse(False)
 
+# staff leave views
+def staffLeave(request):
+    leave_data = LeaveReportStaff.objects.all()
+    context = {
+        'leave_data': leave_data
+    }
+    return render(request, "admin/staffLeave.html", context)
+
+# function for the approval of the Staff leave
+def staffLeaveApprove(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return HttpResponseRedirect(reverse("StaffLeave"))
+
+
+# function for the disapproval of the Staff leave
+def staffLeaveDisapprove(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return HttpResponseRedirect(reverse("StaffLeave"))
+    
+
+# student leave views
+def studentLeave(request):
+    leave_data = LeaveReportStudent.objects.all()
+    context = {
+        'leave_data': leave_data
+    }
+    return render(request, "admin/studentLeave.html", context)
+
+# function for the approval of the student leave
+def studentLeaveApprove(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return HttpResponseRedirect(reverse("StudentLeave"))
+
+
+# function for the disapproval of the student leave
+def studentLeaveDisapprove(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return HttpResponseRedirect(reverse("StudentLeave"))
+    
