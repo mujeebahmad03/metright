@@ -24,46 +24,46 @@
                 
                 {% url 'AddStaff' as AddStaff %}
                 <li class="{% if request.path == AddStaff %} active {% endif %}">
-                  <a href="{{ AddStaff }}" class="{%if request.path == AddStaff %} active {% endif %} href="{% url "AddStaff" %}"> <i class="icon-home"></i>Add Staff</a>
+                  <a href="{{ AddStaff }}" class="{%if request.path == AddStaff %} active {% endif %} href="{% url "AddStaff" %}"> <i class="icon-padnote"></i>Add Staff</a>
                 </li>
 
                   {% url 'ManageStaff' as ManageStaff  %}
                   {% url 'UpdateStaff' staff_id=id as UpdateStaff  %}
                 <li class="{% if request.path == ManageStaff %} active {% endif %}{% if request.path == UpdateStaff %} active {% endif %}">
-                  <a href="{% url "ManageStaff" %}"> <i class="{%if request.path  == ManageStaff %} active {% endif %} icon-home"></i>Manage Staff</a>
+                  <a href="{% url "ManageStaff" %}"> <i class="{%if request.path  == ManageStaff %} active {% endif %} icon-padnote"></i>Manage Staff</a>
                 </li>
 
                 {% url "AddStudent" as AddStudent %}
                 <li class="{% if request.path == AddStudent %} active {% endif %}">
-                  <a href="{% url "AddStudent" %}"> <i class="{%if request.path == AddStudent %} active {% endif %} icon-home"></i>Add Student</a>
+                  <a href="{% url "AddStudent" %}"> <i class="{%if request.path == AddStudent %} active {% endif %} icon-user"></i>Add Student</a>
                 </li>
 
                 {% url 'ManageStudent' as ManageStudent  %}
                 {% url 'UpdateStudent' student_id=id as UpdateStudent  %}
               <li class="{% if request.path == ManageStudent %} active {% endif %}{% if request.path == UpdateStudent %} active {% endif %}">
-                  <a href="{% url "ManageStudent" %}"> <i class="{%if request.path == ManageStudent %} active {% endif %} icon-home"></i>Manage Student</a>
+                  <a href="{% url "ManageStudent" %}"> <i class="{%if request.path == ManageStudent %} active {% endif %} icon-user"></i>Manage Student</a>
                 </li>
                 
                 {% url "AddCourse" as AddCourse %}
               <li class="{% if request.path == AddCourse %} active {% endif %}">
-                  <a href="{% url "AddCourse" %}"> <i class="{%if request.path == AddCourse %} active {% endif %} icon-home"></i>Add Course</a>
+                  <a href="{% url "AddCourse" %}"> <i class="{%if request.path == AddCourse %} active {% endif %} icon-check"></i>Add Course</a>
                 </li>
 
                 {% url 'ManageCourse' as ManageCourse  %}
                 {% url 'UpdateCourse' course_id=id as UpdateCourse  %}
               <li class="{% if request.path == ManageCourse %} active {% endif %}{% if request.path == UpdateCourse %} active {% endif %}">
-                  <a href="{% url "ManageCourse" %}"> <i class="{% if request.path == ManageCourse %} active {% endif %} icon-home"></i>Manage Course</a>
+                  <a href="{% url "ManageCourse" %}"> <i class="{% if request.path == ManageCourse %} active {% endif %} icon-check"></i>Manage Course</a>
                 </li>
 
                 {% url "AddStuject" as AddSubject %}
               <li class="{% if request.path == AddStudent %} active {% endif %}">
-                  <a href="{% url "AddSubject" %}"> <i class="{%if request.path == AddSubject %} active {% endif %} icon-home"></i>Add Subject</a>
+                  <a href="{% url "AddSubject" %}"> <i class="{%if request.path == AddSubject %} active {% endif %} icon-list-1"></i>Add Subject</a>
                 </li>
 
                 {% url 'ManageSubject' as ManageSubject %}
                 {% url 'UpdateSubject' subject_id=id as UpdateSubject %}
               <li class="{%if request.path == ManageSubject %} active {% endif %}{%if request.path == UpdateSubject %} active {% endif %}">
-                  <a href="{% url "ManageSubject" %}"> <i class="{%if request.path == ManageSubject %} active {% endif %} icon-home"></i>Manage Subject</a>
+                  <a href="{% url "ManageSubject" %}"> <i class="{%if request.path == ManageSubject %} active {% endif %} icon-list-1"></i>Manage Subject</a>
                 </li>
 
                 {% url "AddLevel" as AddLevel %}
@@ -73,27 +73,27 @@
                 
                 {% url "StaffFeedback" as StaffFeedback %}
                 <li class="{% if request.path == StaffFeedback %} active {% endif %}">
-                    <a href="{% url "StaffFeedback" %}"> <i class="{%if request.path == StaffFeedback %} active {% endif %} icon-home"></i>Staff Feedback</a>
+                    <a href="{% url "StaffFeedback" %}"> <i class="{%if request.path == StaffFeedback %} active {% endif %} icon-rss-feed"></i>Staff Feedback</a>
                 </li>
 
                 {% url "StudentFeedback" as StudentFeedback %}
                 <li class="{% if request.path == StudentFeedback %} active {% endif %}">
-                    <a href="{% url "StudentFeedback" %}"> <i class="{%if request.path == StudentFeedback %} active {% endif %} icon-home"></i>Student Feedback</a>
+                    <a href="{% url "StudentFeedback" %}"> <i class="{%if request.path == StudentFeedback %} active {% endif %} icon-rss-feed"></i>Student Feedback</a>
                 </li>
 
                 {% url "StaffLeave" as StaffLeave %}
                 <li class="{% if request.path == StaffLeave %} active {% endif %}">
-                    <a href="{% url "StaffLeave" %}"> <i class="{%if request.path == StaffLeave %} active {% endif %} icon-home"></i>Staff Leave</a>
+                    <a href="{% url "StaffLeave" %}"> <i class="{%if request.path == StaffLeave %} active {% endif %} icon-clock"></i>Staff Leave</a>
                 </li>
 
                 {% url "StudentLeave" as StudentLeave %}
                 <li class="{% if request.path == StudentLeave %} active {% endif %}">
-                    <a href="{% url "StudentLeave" %}"> <i class="{%if request.path == StudentLeave %} active {% endif %} icon-home"></i>Student Leave</a>
+                    <a href="{% url "StudentLeave" %}"> <i class="{%if request.path == StudentLeave %} active {% endif %} icon-clock"></i>Student Leave</a>
                 </li>
 
                 {% url "ViewAttendance" as ViewAttendance %}
                 <li class="{% if request.path == ViewAttendance %} active {% endif %}">
-                    <a href="{% url "ViewAttendance" %}"> <i class="{%if request.path == ViewAttendance %} active {% endif %} icon-home"></i>Veiw Attendance</a>
+                    <a href="{% url "ViewAttendance" %}"> <i class="{%if request.path == ViewAttendance %} active {% endif %} icon-line-chart"></i>Veiw Attendance</a>
                 </li>
                 
             </ul>

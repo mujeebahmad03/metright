@@ -97,7 +97,7 @@ urlpatterns = [
 
 
 
-    path('login/', views.loginPage, name='login'),
+    path('', views.loginPage, name='login'),
     path('dologin/', views.doLogin, name='DoLogin'),
     path('profile/', views.profilePage, name='ProfilePage'),
     path('logout/', views.loginPage, name='Logout'),

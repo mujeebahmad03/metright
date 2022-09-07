@@ -79,8 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'metright',
-        'USER': 'metright',
-        'PASSWORD': 'Born?1996',
+        'USER': 'root',
+        #'PASSWORD': 'Born?1996',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306'
     }

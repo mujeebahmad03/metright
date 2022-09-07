@@ -37,44 +37,47 @@
         {% include "snippets/header.html" %}
         
         <!-- Statistics Section-->
+        <br>
         <section class="statistics">
             <div class="container-fluid">
             <div class="row d-flex">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                 <!-- Income-->
                 <div class="card income text-center">
                     <div class="icon"><i class="icon-line-chart"></i></div>
-                    <div class="number">126,418</div><strong class="text-primary">All Income</strong>
+                    <div class="number">{{ total_attendance }}</div><strong class="text-primary">Total Attendance</strong>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
                 </div>
                 </div>
-                <div class="col-lg-4">
-                <!-- Monthly Usage-->
-                <div class="card data-usage">
-                    <h2 class="display h4">Monthly Usage</h2>
-                    <div class="row d-flex align-items-center">
-                    <div class="col-sm-6">
-                        <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
-                    </div>
-                    <div class="col-sm-6"><strong class="text-primary">80.56 Gb</strong><small>Current Plan</small><span>100 Gb Monthly</span></div>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                </div>
-                </div>
-                <div class="col-lg-4">
-                <!-- User Actibity-->
-                <div class="card user-activity">
-                    <h2 class="display h4">User Activity</h2>
-                    <div class="number">210</div>
-                    <h3 class="h4 display">Social Users</h3>
-                    <div class="progress">
-                    <div role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
-                    </div>
-                    <div class="page-statistics d-flex justify-content-between">
-                    <div class="page-statistics-left"><span>Pages Visits</span><strong>230</strong></div>
-                    <div class="page-statistics-right"><span>New Visits</span><strong>73.4%</strong></div>
+                <div class="col-lg-3">
+                    <!-- Income-->
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">{{ present }}</div><strong class="text-primary">Present</strong>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
                     </div>
                 </div>
+                <div class="col-lg-3">
+                    <!-- Income-->
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">{{ absent }}</div><strong class="text-primary">Absent</strong>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <!-- Income-->
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">{{ subjects }}</div><strong class="text-primary">Total Subjects</strong>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <!-- Income-->
+                <div class="card income text-center">
+                <canvas id="myChart" width="400" height="400"></canvas>
                 </div>
             </div>
             </div>
@@ -87,7 +90,7 @@
       <script src="{% static "dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
       <script src="{% static "dashboard/vendor/jquery.cookie/jquery.cookie.js" %}"> </script>
       <script src="{% static "dashboard/js/grasp_mobile_progress_circle-1.0.0.min.js" %}"></script>
-      <script src="{% static "dashboard/vendor/chart.js/Chart.min.js" %}"></script>
+      <script src="{% static "dashboard/vendor/chart.js/Chart.js" %}"></script>
       <script src="{% static "dashboard/vendor/jquery-validation/jquery.validate.min.js" %}"></script>
       <script src="{% static "dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js" %}"></script>
       <script src="{% static "dashboard/js/charts-home.js" %}"></script>
@@ -97,5 +100,48 @@
       <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
       <!-- Main File-->
       <script src="{% static "dashboard/js/front.js" %}"></script>
+      <script>
+          $(document).ready(function(){
+              var absent = parseInt("{{ attendance_absent }}");
+              var present = parseInt("{{ attendance_present }}");
+
+              var ctx = document.getElementById("myChart");
+
+
+              var data = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                label: "My Second dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [28, 48, 40, 19, 86, 27, 90]
+                }
+                ]
+                };
+
+                var options = {
+                        ///Boolean - Whether grid lines are shown across the chart
+                        scaleShowGridLines : true,
+                        //String - Colour of the grid lines
+                        scaleGridLineColor : "rgba(0,0,0,.05)",
+                }
+              var myLineChart = new Chart(ctx).Line(data, options);
+          })
+      </script>
     </body>
 </html>

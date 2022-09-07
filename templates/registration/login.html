@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Zedd Infomatics</title>
+    <title>Dash Express</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -36,7 +36,7 @@
       <div class="container">
         <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
-            <div class="logo text-uppercase"><span>Zedd</span><strong class="text-primary">Dashboard</strong></div>
+            <div class="logo text-uppercase"><span>Zedd</span><strong class="text-primary">Dash Express</strong></div>
             <p>Education Information Management System with data driven Platform and Performance Tracking.</p>
             <form method="POST" action="{% url "DoLogin" %}" class="text-left form-validate">
               {% csrf_token %}
@@ -61,7 +61,6 @@
                 {% endfor %}
             {% endif %}
             <a href="{% url "password_reset" %}" class="forgot-pass">Forgot Password?</a>
-            <small>Do not have an account? </small><a href="register.html" class="signup">Signup</a>
           </div>
           <div class="copyrights text-center">
             <p>Design by <a href="#" class="external">IntellHights &circledR;2020</a>                        </p>
