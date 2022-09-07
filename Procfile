@@ -1,1 +1,1 @@
-web: gunicorn <nameOfProject>.wsgi --log-file -
+web: gunicorn Metright.wsgi  --log-file -
