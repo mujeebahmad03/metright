@@ -135,9 +135,6 @@ pyrsistent==0.14.11
 python-dateutil==2.8.0
 python-dotenv==0.10.1
 python3-openid==3.1.0
-pywin32==301
-pywin32-ctypes==0.2.0
-pywinpty==1.1.2
 PyYAML==5.4.1
 pyzmq==22.1.0
 Quandl==3.4.8
