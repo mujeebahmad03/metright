@@ -100,8 +100,20 @@ WSGI_APPLICATION = 'metright.wsgi.application'
 # }
 
 
+# DATABASES = {
+# 	"default": dj_database_url.parse("postgres://metright_user:pNWO1XPrjVUGuUAWQepKN0qW9RHBo41B@dpg-cm2v73mn7f5s73eku420-a.oregon-postgres.render.com/metright")
+# }
+
 DATABASES = {
-	"default": dj_database_url.parse("postgres://metright_user:pNWO1XPrjVUGuUAWQepKN0qW9RHBo41B@dpg-cm2v73mn7f5s73eku420-a.oregon-postgres.render.com/metright")
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': 'postgresql://postgres:-33CdeE3cgDge152GdE6334bD22gD4eb@roundhouse.proxy.rlwy.net:13739/railway',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '-33CdeE3cgDge152GdE6334bD22gD4eb',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': 13739,
+    }
 }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
