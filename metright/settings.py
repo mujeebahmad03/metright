@@ -99,8 +99,9 @@ WSGI_APPLICATION = 'metright.wsgi.application'
 #     )
 # }
 
+
 DATABASES = {
-	"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+	"default": dj_database_url.parse("postgres://metright_user:pNWO1XPrjVUGuUAWQepKN0qW9RHBo41B@dpg-cm2v73mn7f5s73eku420-a.oregon-postgres.render.com/metright")
 }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
