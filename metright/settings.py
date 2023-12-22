@@ -85,15 +85,17 @@ WSGI_APPLICATION = 'metright.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'metright',
-        'USER': 'root',
-        #'PASSWORD': 'Born?1996',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'metright',
+    #     'USER': 'root',
+    #     #'PASSWORD': 'Born?1996',
+    #     'PASSWORD': '',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306'
+    # }
+    'default': dj_database_url.config(
+        default="sqlite:///"+ os.path.join(BASE_URL, "db.sqlite3")
 }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
