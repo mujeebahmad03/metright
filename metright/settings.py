@@ -113,6 +113,9 @@ DATABASES = {
         'PASSWORD': '-33CdeE3cgDge152GdE6334bD22gD4eb',
         'HOST': 'roundhouse.proxy.rlwy.net',
         'PORT': 13739,
+         'OPTIONS': {
+            'options': '-c timezone=UTC'  # Set timezone to UTC
+        },
     }
 }
 
