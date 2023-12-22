@@ -107,12 +107,12 @@ WSGI_APPLICATION = 'metright.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'URL': 'postgresql://postgres:-33CdeE3cgDge152GdE6334bD22gD4eb@roundhouse.proxy.rlwy.net:13739/railway',
+        'URL': 'postgresql://postgres:bD2gAFgG1e4BgC6D1fbaE642ge13F3bC@roundhouse.proxy.rlwy.net:20291/railway',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': '-33CdeE3cgDge152GdE6334bD22gD4eb',
+        'PASSWORD': 'bD2gAFgG1e4BgC6D1fbaE642ge13F3bC',
         'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': 13739,
+        'PORT': 20291,
          'OPTIONS': {
             'options': '-c timezone=UTC'  # Set timezone to UTC
         },
