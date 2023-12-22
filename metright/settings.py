@@ -96,6 +96,7 @@ DATABASES = {
     # }
     'default': dj_database_url.config(
         default="sqlite:///"+ os.path.join(BASE_URL, "db.sqlite3")
+    )
 }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
