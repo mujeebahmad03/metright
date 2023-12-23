@@ -51,6 +51,8 @@
               <div class="logo text-uppercase"><span>Brint</span><strong class="text-primary">School</strong></div>
               <p>online school management platform</p>
 
+              {% if messages %}
+              {% for message in messages %}
               {% if message.tags == 'success' %}
               <span id="demoMessage4" class="btn btn-success">{{message}}</span>
               {% endif %}
