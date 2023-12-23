@@ -52,7 +52,7 @@ class Subjects(models.Model):
 # creating levels models in the app
 class Level(models.Model):
     id = models.AutoField(primary_key=True)
-    level = models.CharField()
+    level = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
