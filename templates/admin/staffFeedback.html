@@ -74,7 +74,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form class="text-left form-validate" method="POST" action="{% url " FeedbackSaveStudent" %}">
+                      <form class="text-left form-validate" method="POST" action="{% url "FeedbackSaveStudent" %}">
                         {% csrf_token %}
                         <input type="hidden" id="reply_id" name="reply_id">
                         <div class="form-group-material">

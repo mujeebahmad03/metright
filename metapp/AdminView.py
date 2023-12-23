@@ -43,9 +43,9 @@ def addStaffSave(request):
             email = email,
             password = password,
             user_type = 2,
-            link = link
             )
             user.staff.address = address
+            user.staff.link = link
             user.save()
             messages.success(request, "Staff Added Successfully!")
             return HttpResponseRedirect("/addStaff")

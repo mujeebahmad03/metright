@@ -94,15 +94,15 @@
                       <td>
                         {% if feed.leave_status == 0 %}
                         <!-- Button trigger modal -->
-                        <a href="{% url " StaffLeaveApprove" leave_id=feed.id %}"><button type="button"
+                        <a href="{% url "StaffLeaveApprove" leave_id=feed.id %}"><button type="button"
                             class="btn btn-primary">Approve</button></a>
-                        <a href="{% url " StaffLeaveDisapprove" leave_id=feed.id %}"><button type="button"
+                        <a href="{% url "StaffLeaveDisapprove" leave_id=feed.id %}"><button type="button"
                             class="btn btn-danger">Disapprove</button></a>
                         {% elif feed.leave_status == 1 %}
-                        <a href="{% url " StaffLeaveApprove" leave_id=feed.id %}"><button type="button"
+                        <a href="{% url "StaffLeaveApprove" leave_id=feed.id %}"><button type="button"
                             class="btn btn-primary" disabled="disabled">Approved</button></a>
                         {% else %}
-                        <a href="{% url " StaffLeaveDisapprove" leave_id=feed.id %}"><button type="button"
+                        <a href="{% url "StaffLeaveDisapprove" leave_id=feed.id %}"><button type="button"
                             class="btn btn-danger" disabled="disabled">Disapproved</button></a>
                         {% endif %}
                       </td>

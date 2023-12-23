@@ -61,7 +61,7 @@
               {% endfor %}
               {% endif %}
               <br>
-              <form class="text-left form-validate" method="POST" action="{% url " AddSubjectSave" %}">
+              <form class="text-left form-validate" method="POST" action="{% url "AddSubjectSave" %}">
                 {% csrf_token %}
                 <div class="form-group-material">
                   <input id="subjectname" type="text" name="subjectname" required data-msg="Please enter SubjectName"

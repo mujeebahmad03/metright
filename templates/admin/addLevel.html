@@ -62,7 +62,7 @@
               {% endfor %}
               {% endif %}
               <br>
-              <form class="text-left form-validate" method="POST" action="{% url " AddLevelSave" %}">
+              <form class="text-left form-validate" method="POST" action="{% url "AddLevelSave" %}">
                 {% csrf_token %}
                 <div class="form-group-material">
                   <input id="level" type="text" name="level" required data-msg="Please enter level"

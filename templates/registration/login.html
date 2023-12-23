@@ -36,7 +36,7 @@
       <div class="container">
         <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
-            <div class="logo text-uppercase"><span>Zedd</span><strong class="text-primary">Dash Express</strong></div>
+            <div class="logo text-uppercase"><span>Brint</span><strong class="text-primary">School</strong></div>
             <p>Education Information Management System with data driven Platform and Performance Tracking.</p>
             <form method="POST" action="{% url "DoLogin" %}" class="text-left form-validate">
               {% csrf_token %}
@@ -60,11 +60,11 @@
                 {% endif %}
                 {% endfor %}
             {% endif %}
-            <a href="{% url "password_reset" %}" class="forgot-pass">Forgot Password?</a>
+            <!-- <a href="{% url "password_reset" %}" class="forgot-pass">Forgot Password?</a> -->
           </div>
-          <div class="copyrights text-center">
+          <!-- <div class="copyrights text-center">
             <p>Design by <a href="#" class="external">IntellHights &circledR;2020</a>                        </p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
