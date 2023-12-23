@@ -22,6 +22,7 @@ class Staff(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.TextField()
+    link = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -51,7 +52,7 @@ class Subjects(models.Model):
 # creating levels models in the app
 class Level(models.Model):
     id = models.AutoField(primary_key=True)
-    level = models.IntegerField()
+    level = models.CharField()
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()

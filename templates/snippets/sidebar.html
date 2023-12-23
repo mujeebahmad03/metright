@@ -5,7 +5,7 @@
           <!-- Sidebar Header    -->
           <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
-            <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/avatar-7.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+            <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/mockup5.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
               <h2 class="h5">{{ request.user.first_name }} {{ request.user.last_name }} </h2><span>{{ request.user.username }}</span>
               <br>
               <a href="{% url "UserProfile" %}" class="btn btn-success btn-block">Update Profile</a>
@@ -15,7 +15,7 @@
           </div>
           <!-- Sidebar Navigation Menus-->
           <div class="main-menu">
-            <h5 class="sidenav-heading">Main</h5>
+            <!-- <h5 class="sidenav-heading">Main</h5> -->
             <ul id="side-main-menu" class="side-menu list-unstyled">   
                 {% url "AdminHomePage" as AdminHomePage %}               
               <li class="{% if request.path == AdminHomePage %} active {% endif %}">
@@ -68,7 +68,7 @@
 
                 {% url "AddLevel" as AddLevel %}
               <li class="{% if request.path == AddLevel %} active {% endif %}">
-                  <a href="{% url "AddLevel" %}"> <i class="{%if request.path == AddLevel %} active {% endif %} icon-home"></i>Add Level</a>
+                  <a href="{% url "AddLevel" %}"> <i class="{%if request.path == AddLevel %} active {% endif %} icon-home"></i>Add Subscription</a>
                 </li>
                 
                 {% url "StaffFeedback" as StaffFeedback %}

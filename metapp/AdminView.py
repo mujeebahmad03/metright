@@ -34,6 +34,7 @@ def addStaffSave(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
+        link = request.POST.get('link')
         try:
             user = CustomUser.objects.create_user(
             username = username,
@@ -41,7 +42,8 @@ def addStaffSave(request):
             last_name = last_name,
             email = email,
             password = password,
-            user_type = 2
+            user_type = 2,
+            link = link
             )
             user.staff.address = address
             user.save()
