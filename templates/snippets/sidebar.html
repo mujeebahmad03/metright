@@ -44,7 +44,7 @@
                   <a href="{% url "ManageStudent" %}"> <i class="{%if request.path == ManageStudent %} active {% endif %} icon-user"></i>Manage Student</a>
                 </li>
                 
-                {% url "AddCourse" as AddCourse %}
+                <!-- {% url "AddCourse" as AddCourse %}
               <li class="{% if request.path == AddCourse %} active {% endif %}">
                   <a href="{% url "AddCourse" %}"> <i class="{%if request.path == AddCourse %} active {% endif %} icon-check"></i>Add Course</a>
                 </li>
@@ -53,17 +53,17 @@
                 {% url 'UpdateCourse' course_id=id as UpdateCourse  %}
               <li class="{% if request.path == ManageCourse %} active {% endif %}{% if request.path == UpdateCourse %} active {% endif %}">
                   <a href="{% url "ManageCourse" %}"> <i class="{% if request.path == ManageCourse %} active {% endif %} icon-check"></i>Manage Course</a>
-                </li>
+                </li> -->
 
                 {% url "AddStuject" as AddSubject %}
               <li class="{% if request.path == AddStudent %} active {% endif %}">
-                  <a href="{% url "AddSubject" %}"> <i class="{%if request.path == AddSubject %} active {% endif %} icon-list-1"></i>Add Subject</a>
+                  <a href="{% url "AddSubject" %}"> <i class="{%if request.path == AddSubject %} active {% endif %} icon-list-1"></i>Add Subject Teacher</a>
                 </li>
 
                 {% url 'ManageSubject' as ManageSubject %}
                 {% url 'UpdateSubject' subject_id=id as UpdateSubject %}
               <li class="{%if request.path == ManageSubject %} active {% endif %}{%if request.path == UpdateSubject %} active {% endif %}">
-                  <a href="{% url "ManageSubject" %}"> <i class="{%if request.path == ManageSubject %} active {% endif %} icon-list-1"></i>Manage Subject</a>
+                  <a href="{% url "ManageSubject" %}"> <i class="{%if request.path == ManageSubject %} active {% endif %} icon-list-1"></i>Subject Teachers</a>
                 </li>
 
                 {% url "AddLevel" as AddLevel %}

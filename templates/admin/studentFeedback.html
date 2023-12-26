@@ -92,17 +92,11 @@
                         </div>
                     </div>
                     <br><br>
-                    <div class="form-inner">
-                    <div class="logo text-uppercase"><span>Dash</span><strong class="text-primary">Express</strong></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
-                    <br><br>
-                    </div>
-                    
                     <div class="table">
                         <table class=" table table-striped table-hover">
                           <thead>
                             <tr>
-                              <th>ID</th>
+                              <!-- <th>ID</th> -->
                               <th>Date Sent</th>
                               <th>Name</th>
                               <th>Level</th>
@@ -113,7 +107,7 @@
                           <tbody>
                               {% for feed in feedback_data %}
                             <tr>
-                              <th scope="row">{{ feed.id }}</th>
+                              <!-- <th scope="row">{{ feed.id }}</th> -->
                               <td>{{ feed.created }}</td>
                               <td>{{ feed.student_id.admin.first_name }} {{ feed.student_id.admin.last_name }}</td>
                               <td>{{ feed.student_id.level.level }}</td>
