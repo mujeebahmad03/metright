@@ -29,7 +29,7 @@ def doLogin(request):
         return HttpResponse("<p>Method Not Allowed</p>")
     else:
         user = EmailBackEnd.authenticate(request, username = request.POST.get("loginEmail"), password = request.POST.get('loginPassword'))
-        if user != None:
+        if user:
             login(request, user)
             if user.user_type == "1":
                 return HttpResponseRedirect('/adminHome')  
