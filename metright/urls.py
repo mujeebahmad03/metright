@@ -79,6 +79,7 @@ urlpatterns = [
     path('editProfileSaveStaff/', StaffView.editProfileSaveStaff, name="EditProfileSaveStaff"),
     path('checkEmailStaff', StaffView.checkEmailStaff, name='CheckEmailStaff'),
     path('checkUsernameStaff', StaffView.checkUsernameStaff, name='CheckUsernameStaff'),
+    path('uploadReport/', StaffView.uploadReport, name='UploadReport'),
 
 
     # url patterns for the student

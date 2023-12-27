@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brint Online school | Attendance</title>
+    <title>Brint Online school | Feedback</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -47,7 +47,7 @@
                   <div class="form-inner">
                     <div class="logo text-uppercase"><span>Brint</span><strong class="text-primary">Online School</strong></div>
                     <p>online school management platform</p>
-                       {% if messages %}
+                        {% if messages %}
                           {% for message in messages %}
                           {% if message.tags == 'success' %}
                             <span id="demoMessage4" class="btn btn-success">{{message}}</span>
@@ -58,32 +58,26 @@
                           {% endfor %}
                       {% endif %}
                     <br>
-                      <div class="form-group-material">
-                        <label for="subject" class="label-material">Subject</label>
-                        <select id="subject" type="text" name="subject" required data-msg="Please Select Student Subject" class="form-control select-material">
-                            {% for subject in subjects %}         
-                                <option value="{{ subject.id }}">{{ subject.subject }}</option>
-                            {% endfor %}
+                    
+                    <br><br>
+                    <div class="form-group-material">
+                        <label for="file" class="label-material">file</label>
+                        <input id="file" type="file" name="file" required data-msg="Please Select Student Report"
+                          class="input-material">
+                      </div>
+                    <div class="form-group-material">
+                        <label for="course" class="label-material">Course</label>
+                        <select id="course" type="text" name="course" required data-msg="Please enter Student Course"
+                          class="form-control select-material">
+                          {% for course in courses %}
+                          <option value="{{ course.id }}">{{ course.course }}</option>
+                          {% endfor %}
                         </select>
                       </div>
-                      <div class="form-group-material">
-                        <label for="level" class="label-material">Subscription Plan</label>
-                        <select id="level" type="text" name="level" required data-msg="Please Select Level" class="form-control select-material">
-                            {% for level in levels %}
-                                <option value="{{ level.id }}">{{ level.level }}</option>
-                            {% endfor %}
-                        </select>
-                      </div>
-
 
                       <div class="form-group text-center">
-                        <input id="fetch_student" type="submit" value="Fetch Students" class="btn btn-primary">
+                        <input id="register" type="submit" value="Upload Report" class="btn btn-primary">
                       </div>
-
-                     <div id="student_data">
-                       
-                     </div>
-                    
                   </div>
                 </div>
                 <div class="col-lg-1">
@@ -109,76 +103,6 @@
       <script src="{% static "dashboard/js/home-premium.js" %}"> </script>
       <!-- Main File-->
       <script src="{% static "dashboard/js/front.js" %}"></script>
-      <script>
-        $(document).ready(function(){
-            $('#fetch_student').click(function(){
-              var subject = $("#subject").val()
-              var level = $("#level").val()
-
-              $.ajax({
-                url: '{% url "GetStudents" %}',
-                type: "POST",
-                data: {subject:subject, level:level},
-              })
-              .done(function(response){
-                var json_data = JSON.parse(response)  
-                console.log(json_data)
-                var div_data = "<div class='form-group-material'><label for='attendance_date'  class='label-material'>Attendance Date</label><input type='date' required data-msg='Please Select Level' id='attendance_date' name='attendance_date' class='form-control required'></div><div class='row'>";
-                for (key in json_data){
-                    div_data+="<div class='col-lg-4'><div class='form-check'><input type='checkbox' checked='checked' name='student_data[]' value='"+json_data[key]['id']+"'>"+json_data[key]['name']+"</div></div>";
-                }
-                div_data += "</div></div>";
-                div_data += "<span>"
-                div_data += "<div class='form-group text-center'>";
-                div_data += "<button id='save_attendance' class='ml-1 btn btn-primary btn-block' type='button'>Save Attendance</button>";
-                div_data += "</div></span>"
-                $("#student_data").html(div_data)
-              })
-              .fail(function(){
-                alert("Error Fetching Students Data")
-              })
-
-
-              $(document).on("click", "#save_attendance", function(){
-
-                $(this).attr("disabled", "disabled");
-                $(this).text("Saving Attendance Data");
-
-                var student_data = $("input[name='student_data[]']").map(function(){
-                   if($(this).is(":checked")){
-                     return {"id":$(this).val(), "status":1};
-                   }
-                   else{
-                     return {"id":$(this).val(),"status":0};
-                   }
-                   return {"id":$(this).val()};
-                 }).get();
-                var attendance_date = $("#attendance_date").val();
-                var subject = $("#subject").val();
-                var level = $("#level").val();
-                console.log(student_data)
-                student_data =  JSON.stringify(student_data)
-
-                $.ajax({
-                  url: '{% url "SaveAttendanceData" %}',
-                  type: "POST",
-                  data: {student_ids:student_data, attendance_date:attendance_date, subject:subject, level:level},
-                })
-                .done(function(response){
-                  if(response == "OK"){
-                    alert("Attendance Saved")
-                  }
-                  else{
-                    alert("Error Saving Attendance")
-                  }
-                  location.reload()
-                })
-                .fail(function(){
-                  alert("Error Saving Students Data")
-                })
-              })
-            })
-        })
-      </script>
+   
     </body>
 </html>

@@ -40,11 +40,38 @@ def checkUsernameStaff(request):
 
 
 def home(request):
-    return render(request, 'staff/home.html')
+    staff_name = request.user.first_name +" "+ request.user.last_name
+    students = Student.objects.filter(staff=staff_name)
+    staff_count = students.count()
+    context = {
+        "student": students,
+        'staff_name':staff_name,
+        'staff_count':staff_count
+    }
+    return render(request, 'staff/home.html', context)
+
+def uploadReport(request):
+    staff_name = request.user.first_name +" "+ request.user.last_name
+    students = Student.objects.filter(staff=staff_name)
+    
+    staff_name = request.POST.get("staff_name")
+    # file = request.FILES['file']
+    # fs = FileSystemStorage()
+    # filename = fs.save(file.name, file)
+    # file_url = fs.url(filename)
+    
+    context = {
+        "student": students,
+        'staff_name':staff_name,
+    }
+    
+    return render(request, 'staff/uploadReport.html', context)
+
 
 # Taking the students attendance information views
 def studentAttendance(request):
-    subjects = Subjects.objects.filter(staff_id=request.user.id)
+    # subjects = Subjects.objects.filter(staff_id=request.user.id)
+    subjects = Subjects.objects.all()
     levels = Level.objects.all()
     context = {
         'subjects':subjects,
@@ -224,10 +251,10 @@ def feedbackSave(request):
 #  profile page for the staff of the app
 def userProfileStaff(request):
     user_data = CustomUser.objects.get(id=request.user.id)
-    staff = Staff.objects.get(id=request.user.id)
+    #staff = Staff.objects.get(id=request.user.id)
     context = {
         'user_data': user_data,
-        'staff':staff
+        #'staff':staff
     }
     return render(request, "staff/profile.html", context)
 

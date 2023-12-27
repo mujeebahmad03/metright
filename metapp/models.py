@@ -65,6 +65,7 @@ class Student(models.Model):
     gender = models.CharField(max_length=100)
     profile_pic = models.FileField(upload_to="media/student_pic")
     address = models.TextField()
+    staff = models.TextField(blank=True, null=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -169,7 +170,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         if instance.user_type == 2:
             Staff.objects.create(admin=instance)
         if instance.user_type == 3:
-            Student.objects.create(admin=instance, course_id = Course.objects.get(id=1),level= Level.objects.get(id=1), address= "", profile_pic = "", gender="")
+            Student.objects.create(admin=instance, course_id = Course.objects.get(id=1),level= Level.objects.get(id=1), address= "", profile_pic = "", gender="", staff="")
 
 
 @receiver(post_save, sender=CustomUser)

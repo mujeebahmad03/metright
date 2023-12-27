@@ -108,6 +108,15 @@
                     {% endfor %}
                   </select>
                 </div>
+                <div class="form-group-material">
+                  <label for="staff" class="label-material">Staff</label>
+                  <select id="staff" type="text" name="staff" required data-msg="Please enter Student Staff"
+                    class="form-control select-material">
+                    {% for staff in staffs %}
+                    <option value="{{ staff.first_name }} {{ staff.last_name }}">{{ staff.first_name }} {{ staff.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
                 <label for="gender" class="label-material">Gender</label>
                 <div class="form-group-material">
                   <select id="gender" type="text" name="gender" required data-msg="Please enter Student Gender"

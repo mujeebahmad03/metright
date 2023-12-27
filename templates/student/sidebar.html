@@ -5,7 +5,7 @@
       <!-- Sidebar Header    -->
       <div class="sidenav-header d-flex align-items-center justify-content-center">
         <!-- User Info-->
-        <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/avatar-7.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+        <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{{ student.profile_pic }}" alt="person" class="img-fluid rounded-circle"></a>
           <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
           <a href="{% url "UserProfileStudent" %}" class="btn btn-success btn-block">Update Profile</a>
         </div>
@@ -20,12 +20,12 @@
           <li class="{% if request.path == StudentHomePage %} active {% endif %}">
             <a href="{% url "StudentHomePage" %}" class="{% if request.path == StudentHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
           </li>
-
+<!-- 
           {% url "ViewAttendancePage" as ViewAttendancePage %}               
           {% url "ViewAttendanceData" as ViewAttendanceData %}               
           <li class="{% if request.path == ViewAttendancePage %} active {% endif %}{% if request.path == ViewAttendanceData %} active {% endif %}">
             <a href="{% url "ViewAttendancePage" %}" class="{% if request.path == ViewAttendancePage %} active {% endif %}"> <i class=" icon-home"></i>View Attendance</a>
-          </li>
+          </li> -->
 
           
           {% url "LeaveApplyStudent" as LeaveApplyStudent %}

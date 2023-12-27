@@ -16,10 +16,16 @@
       <div class="main-menu">
         <h5 class="sidenav-heading">Main</h5>
         <ul id="side-main-menu" class="side-menu list-unstyled">   
-            {% url "StaffHomePage" as StaffHomePage %}               
-          <li class="{% if request.path == StaffHomePage %} active {% endif %}">
-            <a href="{% url "StaffHomePage" %}" class="{% if request.path == StaffHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
-        </li>
+                {% url "StaffHomePage" as StaffHomePage %}               
+                  <li class="{% if request.path == StaffHomePage %} active {% endif %}">
+                    <a href="{% url "StaffHomePage" %}" class="{% if request.path == StaffHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
+                </li>
+
+                {% url "UploadReport" as UploadReport %}
+                <li class="{% if request.path == UploadReport %} active {% endif %}">
+                    <a href="{% url "UploadReport" %}"> <i class="{%if request.path == UploadReport %} active {% endif %} icon-home"></i> Upload Report</a>
+                </li>
+
                 {% url "AttendanceStudent" as AttendanceStudent %}
               <li class="{% if request.path == AttendanceStudent %} active {% endif %}">
                   <a href="{% url "AttendanceStudent" %}"> <i class="{%if request.path == AttendanceStudent %} active {% endif %} icon-home"></i> Student Attendance</a>

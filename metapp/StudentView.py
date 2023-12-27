@@ -45,11 +45,15 @@ def home(request):
     attendance_absent = AttendanceReport.objects.filter(student_id=student, status=False).count()
     course = Course.objects.get(id=student.course_id.id)
     subjects = Subjects.objects.filter(course_id=course).count()
+    staff = Staff.objects.all()
     context = {
         'total_attendance': attendance,
         'present': attendance_present,
         'present': attendance_absent,
-        'subjects': subjects
+        'subjects': subjects,
+        'student':student,
+        'course':course,
+        'staff': staff,
     }
     return render(request, 'student/home.html', context)
 

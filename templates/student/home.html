@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brintschool | Student </title>
+    <title>Brint Online school | Student </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -45,16 +45,22 @@
                 <!-- Income-->
                 <div class="card income text-center">
                     <div class="icon"><i class="icon-line-chart"></i></div>
-                    <div class="number">{{ total_attendance }}</div><strong class="text-primary">Total Attendance</strong>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+                    <div class="number">{{ student.staff }}</div><strong class="text-primary">Staff</strong>
+                    <p>Responsible for your tutoring.</p>
                 </div>
                 </div>
                 <div class="col-lg-3">
                     <!-- Income-->
                     <div class="card income text-center">
                         <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">{{ present }}</div><strong class="text-primary">Present</strong>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+                        <div class="number">
+                            {% for sta in staff %}
+                                {% if sta.admin.first_name|add:" "|add:sta.admin.last_name == student.staff %}
+                                    <a href="{{ sta.link }}" blank="true">Join Class</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div><strong class="text-primary">Class Link</strong>
+                        <p>Use this to access your classroom.</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -69,17 +75,12 @@
                     <!-- Income-->
                     <div class="card income text-center">
                         <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">{{ subjects }}</div><strong class="text-primary">Total Subjects</strong>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+                        <div class="number">{{ course.course }}</div><strong class="text-primary">Registered Subject</strong>
+                        <p>You will recieve tutoring on this subject</p>
                     </div>
                 </div>
             </div>
-            <div class="row d-flex">
-                <!-- Income-->
-                <div class="card income text-center">
-                <canvas id="myChart" width="400" height="400"></canvas>
-                </div>
-            </div>
+           
             </div>
         </section>
 

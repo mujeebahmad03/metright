@@ -82,6 +82,7 @@ def editStaffSave(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
+        link = request.POST.get('link')
         staff_id = request.POST.get('staff_id')
         try:
             user = CustomUser.objects.get(id=staff_id)
@@ -93,6 +94,7 @@ def editStaffSave(request):
 
             staff_model = Staff.objects.get(id=staff_id)
             staff_model.address = address
+            staff_model.link = link
             staff_model.save()
 
             messages.success(request, "Staff Updated Successfully!")
@@ -106,9 +108,11 @@ def editStaffSave(request):
 def addStudent(request):
     courses = Course.objects.all()
     level = Level.objects.all()
+    staff = CustomUser.objects.filter(user_type= 2)
     context = {
         'courses': courses,
-        'levels':level
+        'levels':level,
+        'staffs':staff
     }
     return render(request, "admin/addStudent.html", context)
 
@@ -127,11 +131,9 @@ def addStudentSave(request):
         course_id = request.POST.get('course')
         gender = request.POST.get('gender')
         level_id = request.POST.get('level')
+        staff = request.POST.get("staff")
 
-        profile_pic = request.FILES['image']
-        fs = FileSystemStorage()
-        filename = fs.save(profile_pic.name, profile_pic)
-        profile_pic_url = fs.url(filename)
+        
 
 
         try:
@@ -147,6 +149,7 @@ def addStudentSave(request):
             user.student.course_id = course_obj
             user.student.address = address
             user.student.gender = gender
+            user.student.staff = staff
             level_obj = Level.objects.get(id=level_id)
             user.student.level = level_obj
             user.student.profile_pic = profile_pic_url
@@ -161,7 +164,7 @@ def addStudentSave(request):
 def manageStudent(request):
     students = Student.objects.all()
     context = {
-        'students': students
+        'students': students,
     }
     return render(request, "admin/manageStudent.html", context)
 
@@ -171,11 +174,13 @@ def updateStudent(request, student_id):
     student = Student.objects.get(admin=student_id)
     course = Course.objects.all()
     level = Level.objects.all()
+    staff = CustomUser.objects.filter(user_type= 2)
     context = {
         'student':student, 
         'courses':course,
         'id': student_id, 
-        'levels':level
+        'levels':level,
+        'staffs':staff
     }
     return render(request, "admin/updateStudent.html", context)
 
@@ -194,6 +199,7 @@ def editStudentSave(request):
         gender = request.POST.get('gender')
         level_id = request.POST.get('level')
         student_id = request.POST.get('student_id')
+        staff = request.POST.get('staff')
 
         if request.FILES.get('image', False):
             profile_pic = request.FILES['image']
@@ -209,11 +215,13 @@ def editStudentSave(request):
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
+            
             user.save()
 
             student_model = Student.objects.get(admin=student_id)
             student_model.address = address
             student_model.gender = gender
+            student_model.staff = staff
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)
