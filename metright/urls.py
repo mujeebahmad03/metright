@@ -80,6 +80,7 @@ urlpatterns = [
     path('checkEmailStaff', StaffView.checkEmailStaff, name='CheckEmailStaff'),
     path('checkUsernameStaff', StaffView.checkUsernameStaff, name='CheckUsernameStaff'),
     path('uploadReport/', StaffView.uploadReport, name='UploadReport'),
+    path('uploadReportSave/', StaffView.uploadReportSave, name='UploadReportSave'),
 
 
     # url patterns for the student

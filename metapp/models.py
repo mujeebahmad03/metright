@@ -73,6 +73,14 @@ class Student(models.Model):
     objects = models.Manager()
 
 
+# model for the reports upload by staff
+class Reports(models.Model):
+    id = models.AutoField(primary_key=True)
+    staff = models.TextField()
+    student = models.TextField()
+    report = models.FileField(upload_to="media")
+
+
 # Model of the creation of attendance by the admin of the app
 class Attendance(models.Model):
     id  = models.AutoField(primary_key=True)

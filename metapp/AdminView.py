@@ -7,7 +7,7 @@ from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level,
     FeedBackStaff, FeedBackStudent,
     LeaveReportStaff, LeaveReportStudent, Attendance,
-    AttendanceReport        
+    AttendanceReport, Reports   
 )
 from django.core.files.storage import FileSystemStorage
 import json
@@ -16,7 +16,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def AdminHome(request):
-    return render(request, "admin/home.html")
+    reports = Reports.objects.all()
+    context = {
+        "reports":reports,
+    }
+    return render(request, "admin/home.html", context)
 
 # Function for displaying the page for adding new staff
 def addStaff(request):
@@ -152,6 +156,15 @@ def addStudentSave(request):
             user.student.staff = staff
             level_obj = Level.objects.get(id=level_id)
             user.student.level = level_obj
+            
+            if request.FILES.get('image', False):
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+            else:
+                profile_pic_url = None
+
             user.student.profile_pic = profile_pic_url
             user.save()
             messages.success(request, "Student Added Successfully!")

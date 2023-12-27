@@ -1,19 +1,18 @@
 from django.shortcuts import render, HttpResponse, redirect
 from metapp.EmailBackEnd import EmailBackEnd
-from django.urls import  reverse
-from django.http import  HttpResponseRedirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth import logout, authenticate, login
-from django.contrib import  messages
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 
-from .models import ( 
+from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level, Attendance, AttendanceReport,
-    LeaveReportStudent, FeedBackStudent
+    LeaveReportStudent, FeedBackStudent, Reports
 
 )
 from django.core.files.storage import FileSystemStorage
-
 
 
 # function for checking the email that already exists
@@ -40,20 +39,26 @@ def checkUsernameStudent(request):
 
 def home(request):
     student = Student.objects.get(admin=request.user.id)
+    student_name = request.user.first_name + " " + request.user.last_name
+    print(student_name)
     attendance = AttendanceReport.objects.filter(student_id=student).count()
-    attendance_present = AttendanceReport.objects.filter(student_id=student, status=True).count()
-    attendance_absent = AttendanceReport.objects.filter(student_id=student, status=False).count()
+    attendance_present = AttendanceReport.objects.filter(
+        student_id=student, status=True).count()
+    attendance_absent = AttendanceReport.objects.filter(
+        student_id=student, status=False).count()
     course = Course.objects.get(id=student.course_id.id)
     subjects = Subjects.objects.filter(course_id=course).count()
     staff = Staff.objects.all()
+    reports = Reports.objects.filter(student=student_name)
     context = {
         'total_attendance': attendance,
         'present': attendance_present,
         'present': attendance_absent,
         'subjects': subjects,
-        'student':student,
-        'course':course,
+        'student': student,
+        'course': course,
         'staff': staff,
+        'reports':reports,
     }
     return render(request, 'student/home.html', context)
 
@@ -66,7 +71,7 @@ def viewAttendance(request):
     level = Level.objects.all()
 
     context = {
-        'subjects':subject,
+        'subjects': subject,
         'levels': level
     }
     return render(request, "student/viewAttendance.html", context)
@@ -78,20 +83,23 @@ def viewAttendanceData(request):
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
 
-    start_date_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+    start_date_parse = datetime.datetime.strptime(
+        start_date, "%Y-%m-%d").date()
     end_date_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
     subject_model = Subjects.objects.get(id=subject)
     stud_obj = Student.objects.get(admin=request.user.id)
 
-    attendance = Attendance.objects.filter(attendance_date__range=(start_date_parse, end_date_parse), subject_id=subject_model)
-    attendance_report = AttendanceReport.objects.filter(attendance_id__in=attendance, student_id=stud_obj)
+    attendance = Attendance.objects.filter(attendance_date__range=(
+        start_date_parse, end_date_parse), subject_id=subject_model)
+    attendance_report = AttendanceReport.objects.filter(
+        attendance_id__in=attendance, student_id=stud_obj)
 
     context = {
         'attendance_report': attendance_report
     }
-    
+
     return render(request, "student/attendanceData.html", context)
-    
+
 
 # Leave apply module
 def leaveApplyStudent(request):
@@ -109,11 +117,12 @@ def leaveApplySaveStudent(request):
     else:
         leave_date = request.POST.get('leave_date')
         reason = request.POST.get('reason')
-        
+
         student_id = Student.objects.get(admin=request.user.id)
 
         try:
-            leave_report = LeaveReportStudent(student_id=student_id, leave_date=leave_date, leave_message=reason, leave_status=0)
+            leave_report = LeaveReportStudent(
+                student_id=student_id, leave_date=leave_date, leave_message=reason, leave_status=0)
             leave_report.save()
 
             messages.success(request, "Leave Application Submitted")
@@ -134,7 +143,7 @@ def feedbackMessageStudent(request):
     return render(request, "student/feedbackStudent.html", context)
 
 
-# function for the saving of the feedback 
+# function for the saving of the feedback
 def feedbackSaveStudent(request):
     if request.method != "POST":
         return HttpResponseRedirect(reverse("FeedbackMessage"))
@@ -143,7 +152,8 @@ def feedbackSaveStudent(request):
         student_obj = Student.objects.get(admin=request.user.id)
 
         try:
-            feedback = FeedBackStudent(student_id=student_obj, feedback=feedback_message, feedback_reply="")
+            feedback = FeedBackStudent(
+                student_id=student_obj, feedback=feedback_message, feedback_reply="")
             feedback.save()
 
             messages.success(request, "Feedback Submitted")
@@ -154,12 +164,14 @@ def feedbackSaveStudent(request):
             return HttpResponseRedirect(reverse("FeedbackMessageStudent"))
 
 #  profile page for the Student of the app
+
+
 def userProfileStudent(request):
     student = Student.objects.get(admin=request.user.id)
     user_data = CustomUser.objects.get(id=request.user.id)
     context = {
         'user_data': user_data,
-        'student':student
+        'student': student
     }
     return render(request, "student/profile.html", context)
 

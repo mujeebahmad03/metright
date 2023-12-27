@@ -59,25 +59,31 @@
                       {% endif %}
                     <br>
                     
-                    <br><br>
-                    <div class="form-group-material">
-                        <label for="file" class="label-material">file</label>
-                        <input id="file" type="file" name="file" required data-msg="Please Select Student Report"
-                          class="input-material">
-                      </div>
-                    <div class="form-group-material">
-                        <label for="course" class="label-material">Course</label>
-                        <select id="course" type="text" name="course" required data-msg="Please enter Student Course"
-                          class="form-control select-material">
-                          {% for course in courses %}
-                          <option value="{{ course.id }}">{{ course.course }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
+              <form class="text-left form-validate" method="POST" action="{% url "UploadReportSave" %}"  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input id="staff_name" type="text" hidden name="staff_name" value="{{ staff_name }}" required>
+               
+                
+                <div class="form-group-material">
+                  <label for="image" class="label-material">Report File</label>
+                  <input id="image" type="file" name="image" required data-msg="Please Select Student report"
+                    class="input-material">
+                </div>
 
-                      <div class="form-group text-center">
-                        <input id="register" type="submit" value="Upload Report" class="btn btn-primary">
-                      </div>
+                  <div class="form-group-material">
+                    <label for="student" class="label-material">Student</label>
+                    <select id="student" type="text" name="student" required data-msg="Please enter Student Name"
+                      class="form-control select-material">
+                      {% for stud in student %}
+                      <option value="{{ stud.admin.first_name }} {{stud.admin.last_name }}">{{ stud.admin.first_name }} {{stud.admin.last_name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group text-center">
+                    <input id="register" type="submit" value="Upload Report" class="btn btn-primary">
+                  </div>
+              </form>
                   </div>
                 </div>
                 <div class="col-lg-1">

@@ -63,14 +63,13 @@
                         <p>Use this to access your classroom.</p>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <!-- Income-->
+                <!-- <div class="col-lg-3">
                     <div class="card income text-center">
                         <div class="icon"><i class="icon-line-chart"></i></div>
                         <div class="number">{{ absent }}</div><strong class="text-primary">Absent</strong>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-lg-3">
                     <!-- Income-->
                     <div class="card income text-center">
@@ -82,6 +81,15 @@
             </div>
            
             </div>
+        </section>
+
+        <br/>
+        <br/>
+        <section class="container-fluid card">
+            <p>All Reports</p>
+            {% for report in reports %}
+                <a href="{{report.report}}" target="_blank">View report</a>
+            {% endfor %}
         </section>
 
         {% include "snippets/footer.html" %}

@@ -1,20 +1,20 @@
 from django.shortcuts import render, HttpResponse, redirect
 from metapp.EmailBackEnd import EmailBackEnd
-from django.http import  HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import logout, authenticate, login
-from django.contrib import  messages
+from django.contrib import messages
 from .models import (
     CustomUser, Staff, Student,
-    Course, Subjects, Level, 
+    Course, Subjects, Level,
     Attendance, AttendanceReport,
-    LeaveReportStaff, FeedBackStaff
-    )
+    LeaveReportStaff, FeedBackStaff,
+    Reports,
+)
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
-from django.core import  serializers
+from django.core import serializers
 import json
-
 
 
 # function for checking the email that already exists
@@ -40,32 +40,63 @@ def checkUsernameStaff(request):
 
 
 def home(request):
-    staff_name = request.user.first_name +" "+ request.user.last_name
+    staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
     staff_count = students.count()
     context = {
         "student": students,
-        'staff_name':staff_name,
-        'staff_count':staff_count
+        'staff_name': staff_name,
+        'staff_count': staff_count
     }
     return render(request, 'staff/home.html', context)
 
+
 def uploadReport(request):
-    staff_name = request.user.first_name +" "+ request.user.last_name
+    staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
-    
-    staff_name = request.POST.get("staff_name")
     # file = request.FILES['file']
     # fs = FileSystemStorage()
     # filename = fs.save(file.name, file)
     # file_url = fs.url(filename)
-    
+
     context = {
         "student": students,
-        'staff_name':staff_name,
+        'staff_name': staff_name,
     }
-    
+
     return render(request, 'staff/uploadReport.html', context)
+
+# save report
+
+
+def uploadReportSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        staff_name = request.POST.get('staff_name')
+        student = request.POST.get('student')
+        report = request.POST.get('file')
+
+        try:
+            if 'image' in request.FILES:
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+                print(profile_pic_url)
+                print(filename)
+
+                report_model = Reports(
+                    staff=staff_name, student=student, report=profile_pic_url)
+                report_model.save()
+                messages.success(request, "Report Added Successfully!")
+                return HttpResponseRedirect("/uploadReport")
+            else:
+                messages.error(request, "No image uploaded!")
+                return HttpResponseRedirect("/uploadReport")
+        except:
+            messages.error(request, "Error Adding report Info..!")
+            return HttpResponseRedirect("/uploadReport")
 
 
 # Taking the students attendance information views
@@ -74,12 +105,14 @@ def studentAttendance(request):
     subjects = Subjects.objects.all()
     levels = Level.objects.all()
     context = {
-        'subjects':subjects,
-        'levels':levels
+        'subjects': subjects,
+        'levels': levels
     }
     return render(request, "staff/studentAttendance.html", context)
 
 # creating the function to get the students according to the subjects
+
+
 @csrf_exempt
 def getStudents(request):
     subject_id = request.POST.get('subject')
@@ -88,11 +121,12 @@ def getStudents(request):
     subject = Subjects.objects.get(id=subject_id)
     level_model = Level.objects.get(id=level)
     students = Student.objects.filter(course_id=subject.course_id, level=level)
-    student_data = serializers.serialize("python",students)
+    student_data = serializers.serialize("python", students)
     # selection of information from the students database
     list_data = []
     for student in students:
-        data_select = {"id":student.admin.id, "name":student.admin.first_name+" "+student.admin.last_name,}
+        data_select = {"id": student.admin.id,
+                       "name": student.admin.first_name+" "+student.admin.last_name, }
         list_data.append(data_select)
     return JsonResponse(json.dumps(list_data), content_type='application/json', safe=False)
 
@@ -111,12 +145,14 @@ def saveAttendanceData(request):
     json_student = json.loads(student_ids)
 
     try:
-        attendance = Attendance(subject_id=subject_model, attendance_date=attendance_date, level=level)
+        attendance = Attendance(subject_id=subject_model,
+                                attendance_date=attendance_date, level=level)
         attendance.save()
 
         for stud in json_student:
             student = Student.objects.get(admin=stud['id'])
-            attendance_report = AttendanceReport(student_id=student, attendance_id=attendance, status=stud['status'])
+            attendance_report = AttendanceReport(
+                student_id=student, attendance_id=attendance, status=stud['status'])
             attendance_report.save()
         return HttpResponse("OK")
     except:
@@ -143,12 +179,14 @@ def getAttendance(request):
     level_id = request.POST.get('level')
     subject_obj = Subjects.objects.get(id=subject)
     level_obj = Level.objects.get(id=level_id)
-    attendance = Attendance.objects.filter(subject_id=subject_obj, level=level_obj)
-    attendance_obj=[]
+    attendance = Attendance.objects.filter(
+        subject_id=subject_obj, level=level_obj)
+    attendance_obj = []
     for event in attendance:
-        data= {"id":event.id, "attendance_date":str(event.attendance_date), "level":event.level.id}
+        data = {"id": event.id, "attendance_date": str(
+            event.attendance_date), "level": event.level.id}
         attendance_obj.append(data)
-    
+
     return JsonResponse(json.dumps(attendance_obj), safe=False)
 
 
@@ -161,7 +199,8 @@ def getStudentAttendance(request):
     attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
     list_data = []
     for student in attendance_data:
-        data_select = {"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
+        data_select = {"id": student.student_id.admin.id, "name": student.student_id.admin.first_name +
+                       " "+student.student_id.admin.last_name, "status": student.status}
         list_data.append(data_select)
     return JsonResponse(json.dumps(list_data), content_type='application/json', safe=False)
 
@@ -179,7 +218,8 @@ def saveUpdateAttendance(request):
 
         for stud in json_student:
             student = Student.objects.get(admin=stud['id'])
-            attendance_report = AttendanceReport.objects.get(student_id=student, attendance_id=attendance)
+            attendance_report = AttendanceReport.objects.get(
+                student_id=student, attendance_id=attendance)
             attendance_report.status = stud['status']
             attendance_report.save()
         return HttpResponse("OK")
@@ -203,11 +243,12 @@ def leaveApplySave(request):
     else:
         leave_date = request.POST.get('leave_date')
         reason = request.POST.get('reason')
-        
+
         staff_id = Staff.objects.get(admin=request.user.id)
 
         try:
-            leave_report = LeaveReportStaff(staff_id=staff_id, leave_date=leave_date, leave_message=reason, leave_status=0)
+            leave_report = LeaveReportStaff(
+                staff_id=staff_id, leave_date=leave_date, leave_message=reason, leave_status=0)
             leave_report.save()
 
             messages.success(request, "Leave Application Submitted")
@@ -228,7 +269,7 @@ def feedbackMessage(request):
     return render(request, "staff/feedback.html", context)
 
 
-# function for the saving of the feedback 
+# function for the saving of the feedback
 def feedbackSave(request):
     if request.method != "POST":
         return HttpResponseRedirect(reverse("FeedbackMessage"))
@@ -237,7 +278,8 @@ def feedbackSave(request):
         staff_obj = Staff.objects.get(admin=request.user.id)
 
         try:
-            feedback = FeedBackStaff(staff_id=staff_obj, feedback=feedback_message, feedback_reply="")
+            feedback = FeedBackStaff(
+                staff_id=staff_obj, feedback=feedback_message, feedback_reply="")
             feedback.save()
 
             messages.success(request, "Feedback Submitted")
@@ -251,10 +293,10 @@ def feedbackSave(request):
 #  profile page for the staff of the app
 def userProfileStaff(request):
     user_data = CustomUser.objects.get(id=request.user.id)
-    #staff = Staff.objects.get(id=request.user.id)
+    # staff = Staff.objects.get(id=request.user.id)
     context = {
         'user_data': user_data,
-        #'staff':staff
+        # 'staff':staff
     }
     return render(request, "staff/profile.html", context)
 

@@ -80,6 +80,15 @@
             </div>
         </section>
 
+        <br/>
+        <br/>
+        <section class="container-fluid card">
+            <p>All Reports</p>
+            {% for report in reports %}
+                <a href="{{report.report}}" blank="True">View report</a>
+            {% endfor %}
+        </section>
+
         {% include "snippets/footer.html" %}
         </div>
       <!-- JavaScript files-->
