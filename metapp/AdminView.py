@@ -49,6 +49,7 @@ def addStaffSave(request):
         password = request.POST.get('password')
         address = request.POST.get('address')
         link = request.POST.get('link')
+        gender = request.POST.get('gender')
         try:
             user = CustomUser.objects.create_user(
             username = username,
@@ -58,8 +59,20 @@ def addStaffSave(request):
             password = password,
             user_type = 2,
             )
+            
+            if request.FILES.get('image', False):
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+            else:
+                profile_pic_url = None
+
+            user.staff.profile_pic = profile_pic_url
+            
             user.staff.address = address
             user.staff.link = link
+            user.staff.gender = gender
             user.save()
             messages.success(request, "Staff Added Successfully!")
             return HttpResponseRedirect("/addStaff")
@@ -97,18 +110,34 @@ def editStaffSave(request):
         password = request.POST.get('password')
         address = request.POST.get('address')
         link = request.POST.get('link')
+        gender = request.POST.get('gender')
         staff_id = request.POST.get('staff_id')
+        
+        if request.FILES.get('image', False):
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+        else:
+            profile_pic_url = None
+            
         try:
             user = CustomUser.objects.get(id=staff_id)
             user.username = username
             user.first_name = first_name
             user.last_name = last_name
-            user.email = email
-            user.save()
+            user.email = email                        
 
-            staff_model = Staff.objects.get(id=staff_id)
+            user.save()
+             
+            staff_model = Staff.objects.get(admin=staff_id)
+            if profile_pic_url != None:
+                staff_model.profile_pic = profile_pic_url
+              
             staff_model.address = address
+            staff_model.gender = gender
             staff_model.link = link
+            staff_model.profile_pic = profile_pic_url
             staff_model.save()
 
             messages.success(request, "Staff Updated Successfully!")

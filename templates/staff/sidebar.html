@@ -5,7 +5,7 @@
       <!-- Sidebar Header    -->
       <div class="sidenav-header d-flex align-items-center justify-content-center">
         <!-- User Info-->
-        <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/avatar-7.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+        <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{{ user.staff.profile_pic }}" alt="person" class="img-fluid rounded-circle"></a>
               <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
               <a href="{% url "UserProfileStaff" %}" class="btn btn-success btn-block">Update Profile</a>
         </div>

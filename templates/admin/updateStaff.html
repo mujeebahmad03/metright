@@ -58,7 +58,7 @@
                           {% endfor %}
                       {% endif %}
                     <br>
-                    <form class="text-left form-validate" method="POST" action="{% url "EditStaffSave" %}">
+                    <form class="text-left form-validate" method="POST" action="{% url "EditStaffSave" %}" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="form-group-material">
                         <input id="firstname" type="text" name="firstname" value="{{ staff.admin.first_name }}" required data-msg="Please enter Staff Firstname" class="input-material">
@@ -82,8 +82,22 @@
                         <label for="address" class="label-material">Address</label>
                       </div>
                       <div class="form-group-material">
-                        <input id="link" type="text" name="link" value="{{ staff.link }}" required data-msg="Please enter Staff link" class="input-material">
-                        <label for="link" class="label-material">Address</label>
+                        <label for="image" class="label-material">Image</label>
+                        <input id="image" type="file" name="image" required data-msg="Please Select Staff Image"
+                          class="input-material">
+                      </div>
+                      
+                    <div class="form-group-material">
+                    <label for="gender" class="label-material">Gender</label>
+                      <select id="gender" type="text" name="gender" value="" required data-msg="Please enter Student Gender"
+                        class=" form-control select-material">
+                        <option {% if staff.gender == "Male" %} selected {% endif %} >Male</option>
+                        <option {% if staff.gender == "Female" %} selected {% endif %}>Female</option>
+                      </select>
+                    </div>
+                      <div class="form-group-material">
+                        <input id="link" type="text" name="link" value="{{staff.link}}" required data-msg="Please enter Staff Meeting Link" class="input-material">
+                        <label for="link" class="label-material">Link</label>
                       </div>
                       
                       <div class="form-group text-center">

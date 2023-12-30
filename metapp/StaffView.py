@@ -359,8 +359,20 @@ def editProfileSaveStaff(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
+        link = request.POST.get('link')
+        gender = request.POST.get('gender')
+        staff_id = request.POST.get('Admin_id')
+        
+        if request.FILES.get('image', False):
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+        else:
+            profile_pic_url = None
+            
         try:
-            staff = Staff.objects.get(id=request.user.id)
+            #staff = Staff.objects.get(id=request.user.id)
             customuser = CustomUser.objects.get(id=request.user.id)
             customuser.first_name = first_name
             customuser.last_name = last_name
@@ -370,8 +382,15 @@ def editProfileSaveStaff(request):
                 customuser.set_password(password)
             customuser.save()
 
-            staff = Staff.objects.get(admin=customuser)
+            staff = Staff.objects.get(admin=staff_id)
+            
+            if profile_pic_url != None:
+                staff.profile_pic = profile_pic_url
+              
             staff.address = address
+            staff.gender = gender
+            staff.link = link
+            staff.profile_pic = profile_pic_url
             staff.save()
 
             messages.success(request, "Staff Profile Updated Successfully")

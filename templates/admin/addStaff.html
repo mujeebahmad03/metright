@@ -58,7 +58,7 @@
                           {% endfor %}
                       {% endif %}
                     <br>
-                    <form class="text-left form-validate" method="POST" action="{% url "AddStaffSave" %}">
+                    <form class="text-left form-validate" method="POST" action="{% url "AddStaffSave" %}" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="form-group-material">
                         <input id="firstname" type="text" name="firstname" required data-msg="Please enter Staff Firstname" class="input-material">
@@ -90,14 +90,14 @@
                           class="input-material">
                       </div>
                       
-                <label for="gender" class="label-material">Gender</label>
-                <div class="form-group-material">
-                  <select id="gender" type="text" name="gender" required data-msg="Please enter Student Gender"
-                    class=" form-control select-material">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
+                    <label for="gender" class="label-material">Gender</label>
+                    <div class="form-group-material">
+                      <select id="gender" type="text" name="gender" required data-msg="Please enter Student Gender"
+                        class=" form-control select-material">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
                       <div class="form-group-material">
                         <input id="link" type="text" name="link" required data-msg="Please enter Staff Meeting Link" class="input-material">
                         <label for="link" class="label-material">Link</label>
