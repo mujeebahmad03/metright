@@ -40,7 +40,7 @@
         <section class="statistics">
             <div class="container-fluid">
             <div class="row d-flex">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                 <!-- Income-->
                 <div class="card income text-center">
                     <div class="icon"><i class="icon-line-chart"></i></div>
@@ -54,8 +54,17 @@
                     {% endfor %}
                 </div>
                 </div>
-                <div class="col-lg-4">
-                <!-- Monthly Usage-->
+                <div class="col-lg-6">
+                    <!-- Income-->
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">
+                                    <a href="{{ link }}" blank="true">Join Class</a>
+                        </div><strong class="text-primary">Class Link</strong>
+                        <p>Use this to access your classroom.</p>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-4">
                 <div class="card data-usage">
                     <h2 class="display h4">Monthly Usage</h2>
                     <div class="row d-flex align-items-center">
@@ -66,9 +75,8 @@
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
                 </div>
-                </div>
-                <div class="col-lg-4">
-                <!-- User Actibity-->
+                </div> -->
+                <!-- <div class="col-lg-4">
                 <div class="card user-activity">
                     <h2 class="display h4">User Activity</h2>
                     <div class="number">210</div>
@@ -81,8 +89,39 @@
                     <div class="page-statistics-right"><span>New Visits</span><strong>73.4%</strong></div>
                     </div>
                 </div>
-                </div>
+                </div> -->
             </div>
+            </div>
+        </section>
+
+        <br/>
+        <br/>
+        <section class="container-fluid card">
+            <div class="row d-flex" style="padding: 20px;">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <strong class="text-primary" style="font-size: 25px;">Reports Sent</strong>
+                    {% for report in reports %}
+                        <a href="{{report.report}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View report Posted On: {{report.created}} For {{report.student}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <strong class="text-primary" style="font-size: 25px;">Assignments Sent</strong>
+                    {% for assignment in assignments %}
+                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Assignment Posted On: {{assignment.created}} For {{assignment.student}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card" >
+                        <strong class="text-primary" style="font-size: 25px;">Assignments Submitted</strong>
+                    {% for assignment in assignmentsubmit %}
+                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Assignment Submitted On: {{assignment.created}} By {{assignment.student}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
         </section>
 

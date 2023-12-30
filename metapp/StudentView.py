@@ -9,8 +9,8 @@ import datetime
 
 from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level, Attendance, AttendanceReport,
-    LeaveReportStudent, FeedBackStudent, Reports
-
+    LeaveReportStudent, FeedBackStudent, Reports, Assignments,
+    AssignmentSubmission,
 )
 from django.core.files.storage import FileSystemStorage
 
@@ -40,7 +40,6 @@ def checkUsernameStudent(request):
 def home(request):
     student = Student.objects.get(admin=request.user.id)
     student_name = request.user.first_name + " " + request.user.last_name
-    print(student_name)
     attendance = AttendanceReport.objects.filter(student_id=student).count()
     attendance_present = AttendanceReport.objects.filter(
         student_id=student, status=True).count()
@@ -50,6 +49,10 @@ def home(request):
     subjects = Subjects.objects.filter(course_id=course).count()
     staff = Staff.objects.all()
     reports = Reports.objects.filter(student=student_name)
+    assignments = Assignments.objects.filter(student=student_name)
+    student_staff = request.user.student.staff
+    assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name)
+    
     context = {
         'total_attendance': attendance,
         'present': attendance_present,
@@ -58,9 +61,55 @@ def home(request):
         'student': student,
         'course': course,
         'staff': staff,
-        'reports':reports,
+        'reports': reports,
+        'assignmentsubmit':assignmentSubmissions,
+        'assignments': assignments,
     }
     return render(request, 'student/home.html', context)
+
+# save assignement
+def studentUploadAssignmentSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        staff_name = request.POST.get('student_staff')
+        student = request.POST.get('student_name')
+        assignment = request.POST.get('file')
+
+        try:
+            if 'image' in request.FILES:
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+                assignment_model = AssignmentSubmission(
+                    staff=staff_name, student=student, assignment=profile_pic_url)
+                assignment_model.save()
+                messages.success(request, "Assignment Added Successfully!")
+                return HttpResponseRedirect("/studentUploadAssignment")
+            else:
+                messages.error(request, "No file uploaded!")
+                return HttpResponseRedirect("/studentUploadAssignment")
+        except:
+            messages.error(request, "Error Submitting Assignement Info..!")
+            return HttpResponseRedirect("/studentUploadAssignment")
+
+# upload student assignement
+def studentUploadAssignment(request):
+    #staff_name = request.user.first_name + " " + request.user.last_name
+    #students = Student.objects.filter(staff=staff_name)
+    student = Student.objects.get(admin=request.user.id)
+    student_name = request.user.first_name + " " + request.user.last_name
+    student_staff = request.user.student.staff
+    assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name)
+    context = {
+        "student": student,
+        'student_name': student_name,
+        'student_staff': student_staff,
+        'assignments':assignmentSubmissions,
+    }
+
+    return render(request, 'student/uploadAssignment.html', context)
 
 
 # module for the view of the attendance records by the student
@@ -105,8 +154,11 @@ def viewAttendanceData(request):
 def leaveApplyStudent(request):
     student_obj = Student.objects.get(admin=request.user.id)
     leave_data = LeaveReportStudent.objects.filter(student_id=student_obj)
+    student = Student.objects.get(admin=request.user.id)
     context = {
-        'leave_data': leave_data
+        'leave_data': leave_data,
+        'student': student,
+        
     }
     return render(request, "student/leaveApplyStudent.html", context)
 
@@ -136,9 +188,11 @@ def leaveApplySaveStudent(request):
 # Message Feedback Module
 def feedbackMessageStudent(request):
     student_obj = Student.objects.get(admin=request.user.id)
+    student = Student.objects.get(admin=request.user.id)
     feedback_data = FeedBackStudent.objects.filter(student_id=student_obj)
     context = {
-        'feedback_data': feedback_data
+        'feedback_data': feedback_data,
+        'student':student,
     }
     return render(request, "student/feedbackStudent.html", context)
 
@@ -186,6 +240,16 @@ def editProfileSaveStudent(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
+        gender = request.POST.get('gender')
+        
+        if request.FILES.get('image', False):
+            profile_pic = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+        else:
+            profile_pic_url = None
+            
         try:
             customuser = CustomUser.objects.get(id=request.user.id)
             customuser.first_name = first_name
@@ -198,6 +262,10 @@ def editProfileSaveStudent(request):
 
             student = Student.objects.get(admin=customuser)
             student.address = address
+            student.gender = gender
+            print(profile_pic_url)
+            if profile_pic_url != None:
+                student.profile_pic = profile_pic_url
             student.save()
 
             messages.success(request, "Student Profile Updated Successfully")

@@ -7,7 +7,7 @@ from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level,
     FeedBackStaff, FeedBackStudent,
     LeaveReportStaff, LeaveReportStudent, Attendance,
-    AttendanceReport, Reports   
+    AttendanceReport, Reports, Assignments, AssignmentSubmission       
 )
 from django.core.files.storage import FileSystemStorage
 import json
@@ -16,9 +16,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def AdminHome(request):
+    staff_count = Staff.objects.count()
+    student_count = Student.objects.count()
+    subject_count = Subjects.objects.count()
     reports = Reports.objects.all()
+    assignment = Assignments.objects.all()
+    assignmentsubmit = AssignmentSubmission.objects.all()
     context = {
+        'staff_count':staff_count,
+        'student_count':student_count,
+        'subject_count':subject_count,
         "reports":reports,
+        'assignments':assignment,
+        'assignmentsubmit':assignmentsubmit,
     }
     return render(request, "admin/home.html", context)
 
@@ -235,6 +245,8 @@ def editStudentSave(request):
             student_model.address = address
             student_model.gender = gender
             student_model.staff = staff
+            print(profile_pic_url)
+            
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)

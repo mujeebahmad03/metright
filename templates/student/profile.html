@@ -51,7 +51,7 @@
                           {% for message in messages %}
                           {% if message.tags == 'success' %}
                             <span id="demoMessage4" class="btn btn-success">{{message}}</span>
-                          {% endif %}
+                          {% endif %} 
                           {% if message.tags == 'error' %}
                             <span id="demoMessage4" class="btn btn-danger">{{message}}</span>
                           {% endif %}
@@ -84,6 +84,19 @@
                             <input id="address" type="text" name="address" value="{{ student.address }}" required data-msg="Please enter Staff Address" class="input-material">
                             <label for="address" class="label-material">Address</label>
                           </div>
+                          <div class="form-group-material">
+                            <label for="image" class="label-material">Image</label>
+                            <input id="image" type="file" name="image" required data-msg="Please Select Student Image" class="input-material">
+                            <input id="student_id" type="hidden" name="student_id" value="{{ student.admin.id }}" class="input-material">
+                          </div>
+                          <label for="gender" class="label-material">Gender</label>
+                          <div class="form-group-material">
+                            <select id="gender" type="text" name="gender" value="{{student.gender}}" required data-msg="Please enter Student Gender" class=" form-control select-material">
+                                <option {% if student.gender == "Male" %} selected {% endif %}>Male</option>
+                                <option {% if student.gender == "Female" %} selected {% endif %}>Female</option>
+                            </select>                        
+                          </div>
+
                           <input id="Admin_id" type="hidden" name="Admin_id" value="{{ user_data.id }}" class="input-material">
                         
                         <div class="form-group text-center">

@@ -1,11 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import  AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.dispatch.dispatcher import receiver
 from django.db.models.signals import post_save
 
+
 class CustomUser(AbstractUser):
-    user_type_data = ((1,"HOD"), (2, "Staff"), (3, "Student"))
-    user_type = models.CharField(default=1, choices=user_type_data, max_length=100)
+    user_type_data = ((1, "HOD"), (2, "Staff"), (3, "Student"))
+    user_type = models.CharField(
+        default=1, choices=user_type_data, max_length=100)
 
 
 # Model for the admin of the site
@@ -26,7 +28,6 @@ class Staff(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
 
 
 # Courses in the site
@@ -78,12 +79,30 @@ class Reports(models.Model):
     id = models.AutoField(primary_key=True)
     staff = models.TextField()
     student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     report = models.FileField(upload_to="media")
+
+# model for the assignement upload by staff
+class Assignments(models.Model):
+    id = models.AutoField(primary_key=True)
+    staff = models.TextField()
+    student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    assignment = models.FileField(upload_to="media")
+
+# for students assignments submissions
+class AssignmentSubmission(models.Model):
+    id = models.AutoField(primary_key=True)
+    staff = models.TextField()
+    student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    assignment = models.FileField(upload_to="media")
+
 
 
 # Model of the creation of attendance by the admin of the app
 class Attendance(models.Model):
-    id  = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     attendance_date = models.DateField()
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
@@ -169,7 +188,7 @@ class NotificationStudent(models.Model):
     objects = models.Manager()
 
 
-# Creating django signals to automatically create profiles for the students and tje staff upon adding new 
+# Creating django signals to automatically create profiles for the students and tje staff upon adding new
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -178,7 +197,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         if instance.user_type == 2:
             Staff.objects.create(admin=instance)
         if instance.user_type == 3:
-            Student.objects.create(admin=instance, course_id = Course.objects.get(id=1),level= Level.objects.get(id=1), address= "", profile_pic = "", gender="", staff="")
+            Student.objects.create(admin=instance, course_id=Course.objects.get(
+                id=1), level=Level.objects.get(id=1), address="", profile_pic="", gender="", staff="")
 
 
 @receiver(post_save, sender=CustomUser)
@@ -189,4 +209,3 @@ def save_user_profile(sender, instance, **kwargs):
         instance.staff.save()
     if instance.user_type == 3:
         instance.student.save()
-

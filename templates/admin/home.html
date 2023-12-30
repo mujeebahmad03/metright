@@ -41,15 +41,27 @@
             <div class="container-fluid">
                 <div class="row d-flex">
                     <div class="col-lg-4">
-                    <!-- Income-->
                     <div class="card income text-center">
                         <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">426</div><strong class="text-primary">All Students</strong>
+                        <div class="number">{{student_count}}</div><strong class="text-primary">All Students</strong>
                         <p>Every Students on the platform is carefully monitored and attended to.</p>
+                    </div>
+                     </div>
+                    <div class="col-lg-4">
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">{{staff_count}}</div><strong class="text-primary">All Staff</strong>
+                        <p>Staffs that are duely qualified to carry out their assigned assignment and activities.</p>
                     </div>
                     </div>
                     <div class="col-lg-4">
-                    <!-- Monthly Usage-->
+                    <div class="card income text-center">
+                        <div class="icon"><i class="icon-line-chart"></i></div>
+                        <div class="number">{{subject_count}}</div><strong class="text-primary">All Subjects</strong>
+                        <p>Every Subject on the platform is carefully monitored and attended to.</p>
+                    </div>
+                    </div>
+                    <!--<div class="col-lg-4">
                     <div class="card data-usage">
                         <h2 class="display h4">Monthly Usage</h2>
                         <div class="row d-flex align-items-center">
@@ -62,7 +74,6 @@
                     </div>
                     </div>
                     <div class="col-lg-4">
-                    <!-- User Actibity-->
                     <div class="card user-activity">
                         <h2 class="display h4">User Activity</h2>
                         <div class="number">210</div>
@@ -75,7 +86,7 @@
                         <div class="page-statistics-right"><span>New Visits</span><strong>73.4%</strong></div>
                         </div>
                     </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </section>
@@ -83,10 +94,32 @@
         <br/>
         <br/>
         <section class="container-fluid card">
-            <p>All Reports</p>
-            {% for report in reports %}
-                <a href="{{report.report}}" blank="True">View report</a>
-            {% endfor %}
+            <div class="row d-flex" style="padding: 20px;">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <strong class="text-primary" style="font-size: 25px; ">Reports Sent</strong>
+                    {% for report in reports %}
+                        <a href="{{report.report}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i> View report Posted On: {{report.created}} By {{report.staff}} For {{report.student}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <strong class="text-primary" style="font-size: 25px;">Assignments Sent</strong>
+                    {% for assignment in assignments %}
+                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Assignment Posted On: {{assignment.created}} By {{assignment.staff}} For {{assignment.student}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card" >
+                        <strong class="text-primary" style="font-size: 25px;">Assignments Submitted</strong>
+                    {% for assignment in assignmentsubmit %}
+                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>  View Assignment Submitted On: {{assignment.created}} By {{assignment.student}} For {{assignment.staff}}</a>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
         </section>
 
         {% include "snippets/footer.html" %}

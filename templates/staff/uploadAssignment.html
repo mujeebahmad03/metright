@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brint Online school | Report</title>
+    <title>Brint Online school | Assignment</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -59,14 +59,14 @@
                       {% endif %}
                     <br>
                     
-              <form class="text-left form-validate" method="POST" action="{% url "UploadReportSave" %}"  enctype="multipart/form-data">
+              <form class="text-left form-validate" method="POST" action="{% url "UploadAssignmentSave" %}"  enctype="multipart/form-data">
                 {% csrf_token %}
                 <input id="staff_name" type="text" hidden name="staff_name" value="{{ staff_name }}" required>
                
                 
                 <div class="form-group-material">
-                  <label for="image" class="label-material">Report File</label>
-                  <input id="image" type="file" name="image" required data-msg="Please Select Student report"
+                  <label for="image" class="label-material">Assignment File</label>
+                  <input id="image" type="file" name="image" required data-msg="Please Select Student Assignement"
                     class="input-material">
                 </div>
 
@@ -81,7 +81,7 @@
                   </div>
 
                   <div class="form-group text-center">
-                    <input id="register" type="submit" value="Upload Report" class="btn btn-primary">
+                    <input id="register" type="submit" value="Upload Assignment" class="btn btn-primary">
                   </div>
               </form>
                   </div>

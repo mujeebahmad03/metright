@@ -81,6 +81,8 @@ urlpatterns = [
     path('checkUsernameStaff', StaffView.checkUsernameStaff, name='CheckUsernameStaff'),
     path('uploadReport/', StaffView.uploadReport, name='UploadReport'),
     path('uploadReportSave/', StaffView.uploadReportSave, name='UploadReportSave'),
+    path('uploadAssignment/', StaffView.uploadAssignment, name='UploadAssignment'),
+    path('uploadAssignmentSave/', StaffView.uploadAssignmentSave, name='UploadAssignmentSave'),
 
 
     # url patterns for the student
@@ -95,6 +97,8 @@ urlpatterns = [
     path('editProfileSaveStudent/', StudentView.editProfileSaveStudent, name="EditProfileSaveStudent"),
     path('checkEmailStudent', StudentView.checkEmailStudent, name='CheckEmailStudent'),
     path('checkUsernameStudent', StudentView.checkUsernameStudent, name='CheckUsernameStudent'),
+    path('studentUploadAssignment', StudentView.studentUploadAssignment, name='StudentUploadAssignment'),
+    path('studentUploadAssignmentSave', StudentView.studentUploadAssignmentSave, name='StudentUploadAssignmentSave'),
 
 
 

@@ -28,6 +28,11 @@
           </li> -->
 
           
+          {% url "StudentUploadAssignment" as StudentUploadAssignment %}
+          <li class="{% if request.path == StudentUploadAssignment %} active {% endif %}">
+              <a href="{% url "StudentUploadAssignment" %}"> <i class="{%if request.path == StudentUploadAssignment %} active {% endif %} icon-home"></i> Submit Assignment</a>
+          </li>
+
           {% url "LeaveApplyStudent" as LeaveApplyStudent %}
           <li class="{% if request.path == LeaveApplyStudent %} active {% endif %}">
               <a href="{% url "LeaveApplyStudent" %}"> <i class="{%if request.path == LeaveApplyStudent %} active {% endif %} icon-home"></i> Leave Apply</a>

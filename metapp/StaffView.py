@@ -9,7 +9,7 @@ from .models import (
     Course, Subjects, Level,
     Attendance, AttendanceReport,
     LeaveReportStaff, FeedBackStaff,
-    Reports,
+    Reports, Assignments,AssignmentSubmission
 )
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
@@ -43,21 +43,42 @@ def home(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
     staff_count = students.count()
+    reports = Reports.objects.filter(staff=staff_name)
+    assignments = Assignments.objects.filter(staff=staff_name)
+    staff_name = request.user.first_name + " " + request.user.last_name
+    staff_profile = Staff.objects.get(admin=request.user)
+    link = staff_profile.link
+    assignmentSubmissions = AssignmentSubmission.objects.filter(staff=staff_name)
+    
     context = {
         "student": students,
         'staff_name': staff_name,
-        'staff_count': staff_count
+        'staff_count': staff_count,
+        'reports': reports,
+        'assignmentsubmit':assignmentSubmissions,
+        'assignments': assignments,
+        'link':link,
     }
     return render(request, 'staff/home.html', context)
+
+# upload student assignement
+
+
+def uploadAssignment(request):
+    staff_name = request.user.first_name + " " + request.user.last_name
+    students = Student.objects.filter(staff=staff_name)
+
+    context = {
+        "student": students,
+        'staff_name': staff_name,
+    }
+
+    return render(request, 'staff/uploadAssignment.html', context)
 
 
 def uploadReport(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
-    # file = request.FILES['file']
-    # fs = FileSystemStorage()
-    # filename = fs.save(file.name, file)
-    # file_url = fs.url(filename)
 
     context = {
         "student": students,
@@ -83,8 +104,6 @@ def uploadReportSave(request):
                 fs = FileSystemStorage()
                 filename = fs.save(profile_pic.name, profile_pic)
                 profile_pic_url = fs.url(filename)
-                print(profile_pic_url)
-                print(filename)
 
                 report_model = Reports(
                     staff=staff_name, student=student, report=profile_pic_url)
@@ -92,11 +111,40 @@ def uploadReportSave(request):
                 messages.success(request, "Report Added Successfully!")
                 return HttpResponseRedirect("/uploadReport")
             else:
-                messages.error(request, "No image uploaded!")
+                messages.error(request, "No file uploaded!")
                 return HttpResponseRedirect("/uploadReport")
         except:
             messages.error(request, "Error Adding report Info..!")
             return HttpResponseRedirect("/uploadReport")
+
+# save assignement
+
+
+def uploadAssignmentSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        staff_name = request.POST.get('staff_name')
+        student = request.POST.get('student')
+        report = request.POST.get('file')
+
+        try:
+            if 'image' in request.FILES:
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+                assignment_model = Assignments(
+                    staff=staff_name, student=student, assignment=profile_pic_url)
+                assignment_model.save()
+                messages.success(request, "Assignment Added Successfully!")
+                return HttpResponseRedirect("/uploadAssignment")
+            else:
+                messages.error(request, "No image uploaded!")
+                return HttpResponseRedirect("/uploadAssignment")
+        except:
+            messages.error(request, "Error Adding Assignement Info..!")
+            return HttpResponseRedirect("/uploadAssignment")
 
 
 # Taking the students attendance information views
