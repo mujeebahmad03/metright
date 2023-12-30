@@ -263,7 +263,6 @@ def editProfileSaveStudent(request):
             student = Student.objects.get(admin=customuser)
             student.address = address
             student.gender = gender
-            print(profile_pic_url)
             if profile_pic_url != None:
                 student.profile_pic = profile_pic_url
             student.save()

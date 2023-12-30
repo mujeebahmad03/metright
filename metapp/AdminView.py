@@ -245,7 +245,6 @@ def editStudentSave(request):
             student_model.address = address
             student_model.gender = gender
             student_model.staff = staff
-            print(profile_pic_url)
             
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url

@@ -25,6 +25,8 @@ class Staff(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.TextField()
     link = models.TextField(blank=True, null=True)
+    gender = models.CharField(max_length=100, blank=True, null=True)
+    profile_pic = models.FileField(upload_to="media/student_pic", blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
