@@ -27,6 +27,10 @@
             <a href="{% url "ViewAttendancePage" %}" class="{% if request.path == ViewAttendancePage %} active {% endif %}"> <i class=" icon-home"></i>View Attendance</a>
           </li> -->
 
+          {% url "StudentPayment" as StudentPayment %}
+          <li class="{% if request.path == StudentPayment %} active {% endif %}">
+              <a href="{% url "StudentPayment" %}"> <i class="{%if request.path == StudentPayment %} active {% endif %} icon-home"></i> Payments</a>
+          </li>
           
           {% url "StudentUploadAssignment" as StudentUploadAssignment %}
           <li class="{% if request.path == StudentUploadAssignment %} active {% endif %}">
@@ -40,7 +44,7 @@
 
           {% url "FeedbackMessageStudent" as FeedbackMessageStudent %}
           <li class="{% if request.path == FeedbackMessageStudent %} active {% endif %}">
-              <a href="{% url "FeedbackMessageStudent" %}"> <i class="{%if request.path == FeedbackMessageStudent %} active {% endif %} icon-home"></i> FeedBack</a>
+              <a href="{% url "FeedbackMessageStudent" %}"> <i class="{%if request.path == FeedbackMessageStudent %} active {% endif %} icon-home"></i>Message Admin</a>
           </li>
           
         </ul>

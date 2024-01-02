@@ -65,23 +65,22 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">Reply To: <span id="reply_name"></span> Feedback</h5>
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Reply To: <span id="reply_name"></span> Message</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
                             <div class="modal-body">
-                                <form class="text-left form-validate" method="POST" action="{% url "FeedbackSaveStudent" %}">
+                                <form class="text-left form-validate" method="POST" action="{% url "StudentFeedbackReply" %}">
                                     {% csrf_token %}
-                                    <input type="hidden" id="reply_id" name="reply_id">
-                                  <div class="form-group-material">
-                                    <label for="level" class="label-material">FeedBack Reply</label>
-                                    <textarea name="feedback_message" id="feedback_message" cols="30" rows="6" class="form-control" required data-msg='Please State FeedBack Message '></textarea>
+                                    <div class="form-group-material">
+                                    <label for="level" class="label-material">Message Reply</label>
+                                    <textarea name="feedback_message" id="feedback_message" cols="30" rows="6" class="form-control" required data-msg='Please State Message '></textarea>
                                   </div>
             
             
                                   <div class="form-group text-center">
-                                    <input id="reply_feedback" type="submit" value="Post FeedBack" class="btn btn-primary">
+                                    <input id="reply_feedback" type="submit" value="Post Message" class="btn btn-primary">
                                   </div>
                                 </form>
                             </div>
@@ -99,9 +98,9 @@
                               <!-- <th>ID</th> -->
                               <th>Date Sent</th>
                               <th>Name</th>
-                              <th>Level</th>
-                              <th> FeedBack Message</th>
-                              <th>FeedBack Reply</th>
+                              <!-- <th>Subsription</th> -->
+                              <th> Message</th>
+                              <th>Message Reply</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -110,7 +109,8 @@
                               <!-- <th scope="row">{{ feed.id }}</th> -->
                               <td>{{ feed.created }}</td>
                               <td>{{ feed.student_id.admin.first_name }} {{ feed.student_id.admin.last_name }}</td>
-                              <td>{{ feed.student_id.level.level }}</td>
+                              <!-- <td>{{ feed.student_id.level.level }}</td> -->
+                              <input type="hidden" id="reply_id" name="reply_id" value="{{feed.id}}">
                               <td>{{ feed.feedback }}</td>
                               <td>
                                   {% if feed.feedback_reply == "" %}
@@ -155,7 +155,8 @@
     <script>
         $(document).ready(function(){
             $(".reply_open_modal").click(function(){
-                var id = $(this).parents("tr").children("th:eq(0)").text();
+                //var id = $(this).parents("tr").children("th:eq(0)").text();
+                var id = $(this).closest("tr").find("#reply_id").val();
                 var name = $(this).parents("tr").children("td:eq(1)").text();
                 console.log(id)
                 console.log(name)
@@ -182,12 +183,12 @@
                     alert("Feedback Reply Sent")
                   }
                   else{
-                    alert("Error Sending Feedback Reply")
+                    alert("Error Sending Message Reply..")
                   }
                   location.reload()
                 })
                 .fail(function(){
-                  alert("Error Sending Feedback Reply")
+                  alert("Error Sending Message Reply")
                 })
               })
             })

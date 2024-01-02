@@ -76,6 +76,18 @@ class Student(models.Model):
     objects = models.Manager()
 
 
+class Reciepts(models.Model):
+    id = models.AutoField(primary_key=True)
+    student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    reciept = models.FileField(upload_to="media")
+    
+class Invoice(models.Model):
+    id = models.AutoField(primary_key=True)
+    student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    invoice = models.FileField(upload_to="media")
+
 # model for the reports upload by staff
 class Reports(models.Model):
     id = models.AutoField(primary_key=True)

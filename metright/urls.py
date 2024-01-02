@@ -60,6 +60,10 @@ urlpatterns = [
     path('getStudentAttendanceAdmin/', AdminView.getStudentAttendanceAdmin, name="GetStudentAttendanceAdmin"),
     path('userProfile/', AdminView.userProfile, name="UserProfile"),
     path('editProfileSave/', AdminView.editProfileSave, name="EditProfileSave"),
+    path('payments', AdminView.payments, name='Payments'),
+    path('paymentsInvoice', AdminView.paymentsInvoice, name='PaymentsInvoice'),
+    path('delete_staff/<int:staff_id>/', AdminView.delete_staff, name='DeleteStaff'),
+    path('delete_student/<int:student_id>/', AdminView.delete_student, name='DeleteStudent'),
 
 
     # url patterns for the staff
@@ -99,6 +103,8 @@ urlpatterns = [
     path('checkUsernameStudent', StudentView.checkUsernameStudent, name='CheckUsernameStudent'),
     path('studentUploadAssignment', StudentView.studentUploadAssignment, name='StudentUploadAssignment'),
     path('studentUploadAssignmentSave', StudentView.studentUploadAssignmentSave, name='StudentUploadAssignmentSave'),
+    path('studentPayment', StudentView.studentPayment, name='StudentPayment'),
+    path('studentRecieptSave', StudentView.studentRecieptSave, name='StudentRecieptSave'),
 
 
 

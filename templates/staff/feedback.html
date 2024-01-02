@@ -61,13 +61,13 @@
                     <form class="text-left form-validate" method="POST" action="{% url "FeedbackSave" %}">
                         {% csrf_token %}
                       <div class="form-group-material">
-                        <label for="level" class="label-material">FeedBack Message</label>
-                        <textarea name="feedback_message" id="feedback_message" cols="30" rows="6" class="form-control" required data-msg='Please State FeedBack Message '></textarea>
+                        <label for="level" class="label-material">Message Admin</label>
+                        <textarea name="feedback_message" id="feedback_message" cols="30" rows="6" class="form-control" required data-msg='Please State Message '></textarea>
                       </div>
 
 
                       <div class="form-group text-center">
-                        <input id="fetch_student" type="submit" value="Post FeedBack" class="btn btn-primary">
+                        <input id="fetch_student" type="submit" value="Post Message" class="btn btn-primary">
                       </div>
                     </form>
                     
@@ -83,8 +83,8 @@
                           <thead>
                             <tr>
                               <!-- <th>ID</th> -->
-                              <th> FeedBack</th>
-                              <th>FeedBack Reply</th>
+                              <th>Message</th>
+                              <th>Message Reply</th>
                               <th>Date Sent</th>
                             </tr>
                           </thead>

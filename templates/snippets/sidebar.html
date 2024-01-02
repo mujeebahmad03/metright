@@ -22,6 +22,11 @@
                 <a href="{% url "AdminHomePage" %}" class="{% if request.path == AdminHomePage %} active {% endif %}"> <i class=" icon-home"></i>Dashboard</a>
             </li>
                 
+              {% url 'Payments' as Payments %}
+              <li class="{% if request.path == Payments %} active {% endif %}">
+                <a href="{{ Payments }}" class="{%if request.path == Payments %} active {% endif %} href="{% url "Payments" %}"> <i class="icon-padnote"></i>Payments</a>
+              </li>
+              
                 {% url 'AddStaff' as AddStaff %}
                 <li class="{% if request.path == AddStaff %} active {% endif %}">
                   <a href="{{ AddStaff }}" class="{%if request.path == AddStaff %} active {% endif %} href="{% url "AddStaff" %}"> <i class="icon-padnote"></i>Add Staff</a>
@@ -73,12 +78,12 @@
                 
                 {% url "StaffFeedback" as StaffFeedback %}
                 <li class="{% if request.path == StaffFeedback %} active {% endif %}">
-                    <a href="{% url "StaffFeedback" %}"> <i class="{%if request.path == StaffFeedback %} active {% endif %} icon-rss-feed"></i>Staff Feedback</a>
+                    <a href="{% url "StaffFeedback" %}"> <i class="{%if request.path == StaffFeedback %} active {% endif %} icon-rss-feed"></i>Message Staff</a>
                 </li>
 
                 {% url "StudentFeedback" as StudentFeedback %}
                 <li class="{% if request.path == StudentFeedback %} active {% endif %}">
-                    <a href="{% url "StudentFeedback" %}"> <i class="{%if request.path == StudentFeedback %} active {% endif %} icon-rss-feed"></i>Student Feedback</a>
+                    <a href="{% url "StudentFeedback" %}"> <i class="{%if request.path == StudentFeedback %} active {% endif %} icon-rss-feed"></i>Message Student</a>
                 </li>
 
                 {% url "StaffLeave" as StaffLeave %}

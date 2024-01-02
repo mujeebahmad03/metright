@@ -61,7 +61,13 @@
                 </p>
               </div>
             </div>
-            <a href="{% url "UpdateStaff" staff_id=staff.admin.id %}" class="btn btn-success">Update</a>
+            <div style="display: flex; flex-direction:row;">
+              <a href="{% url "UpdateStaff" staff_id=staff.admin.id %}" class="btn btn-success" style="margin-right:5px;">Update</a>
+            <form method="post" action="{% url 'DeleteStaff' staff_id=staff.admin.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+            </div>
           </div>
         </div>
       </div>

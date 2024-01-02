@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Brintschool | Staff Feedback</title>
+  <title>Brintschool | Staff Message</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -67,7 +67,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalCenterTitle">Reply To: <span id="reply_name"></span>
-                        Feedback</h5>
+                        Message</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -75,16 +75,15 @@
                     <div class="modal-body">
                       <form class="text-left form-validate" method="POST" action="{% url "FeedbackSaveStudent" %}">
                         {% csrf_token %}
-                        <input type="hidden" id="reply_id" name="reply_id">
                         <div class="form-group-material">
-                          <label for="level" class="label-material">FeedBack Reply</label>
+                          <label for="level" class="label-material">Mesaage Reply</label>
                           <textarea name="feedback_message" id="feedback_message" cols="30" rows="6"
                             class="form-control" required data-msg='Please State FeedBack Message '></textarea>
                         </div>
 
 
-                        <div class="form-group text-center">
-                          <input id="reply_feedback" type="submit" value="Post FeedBack" class="btn btn-primary">
+                          <div class="form-group text-center">
+                          <input id="reply_feedback" type="submit" value="Post Message" class="btn btn-primary">
                         </div>
                       </form>
                     </div>
@@ -104,8 +103,8 @@
                       <!-- <th>ID</th> -->
                       <th>Date Sent</th>
                       <th>Name</th>
-                      <th> FeedBack Message</th>
-                      <th>FeedBack Reply</th>
+                      <th> Message</th>
+                      <th>Reply Message</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -115,12 +114,13 @@
                       <td>{{ feed.created }}</td>
                       <td>{{ feed.staff_id.admin.first_name }} {{ feed.staff_id.admin.last_name }}</td>
                       <td>{{ feed.feedback }}</td>
+                      <input type="hidden" id="reply_id" name="reply_id" value="{{feed.id}}">
                       <td>
                         {% if feed.feedback_reply == "" %}
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary reply_open_modal" data-toggle="modal"
                           data-target="#exampleModalCenter">
-                          Reply Feedback
+                          Reply Message
                         </button>
                         {% else %}
                         {{ feed.feedback_reply }}
@@ -160,7 +160,8 @@
   <script>
     $(document).ready(function () {
       $(".reply_open_modal").click(function () {
-        var id = $(this).parents("tr").children("th:eq(0)").text();
+        //var id = $(this).parents("tr").children("th:eq(0)").text();
+        var id = $(this).closest("tr").find("#reply_id").val();
         var name = $(this).parents("tr").children("td:eq(1)").text();
         console.log(id)
         console.log(name)
@@ -171,7 +172,7 @@
       $(document).on("click", "#reply_feedback", function () {
 
         $(this).attr("disabled", "disabled");
-        $(this).text("Sending Feedback Reply..");
+        $(this).text("Sending Message Reply..");
 
         var id = $("#reply_id").val();
         var name = $("#reply_name").val();
@@ -184,15 +185,15 @@
         })
           .done(function (response) {
             if (response == "True") {
-              alert("Feedback Reply Sent")
+              alert("Message Reply Sent")
             }
             else {
-              alert("Error Sending Feedback Reply")
+              alert("Error Sending Message Reply")
             }
             location.reload()
           })
           .fail(function () {
-            alert("Error Sending Feedback Reply")
+            alert("Error Sending Message Reply")
           })
       })
     })

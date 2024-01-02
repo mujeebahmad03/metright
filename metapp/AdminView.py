@@ -1,13 +1,14 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from metapp.EmailBackEnd import EmailBackEnd
-from django.http import  HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import logout, authenticate, login
-from django.contrib import  messages
-from .models import ( 
+from django.contrib import messages
+from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level,
     FeedBackStaff, FeedBackStudent,
     LeaveReportStaff, LeaveReportStudent, Attendance,
-    AttendanceReport, Reports, Assignments, AssignmentSubmission       
+    AttendanceReport, Reports, Assignments, AssignmentSubmission,
+    Reciepts, Invoice
 )
 from django.core.files.storage import FileSystemStorage
 import json
@@ -23,21 +24,59 @@ def AdminHome(request):
     assignment = Assignments.objects.all()
     assignmentsubmit = AssignmentSubmission.objects.all()
     context = {
-        'staff_count':staff_count,
-        'student_count':student_count,
-        'subject_count':subject_count,
-        "reports":reports,
-        'assignments':assignment,
-        'assignmentsubmit':assignmentsubmit,
+        'staff_count': staff_count,
+        'student_count': student_count,
+        'subject_count': subject_count,
+        "reports": reports,
+        'assignments': assignment,
+        'assignmentsubmit': assignmentsubmit,
     }
     return render(request, "admin/home.html", context)
+
+
+def payments(request):
+    students = Student.objects.all()
+    invoice = Invoice.objects.all()
+    receipts = Reciepts.objects.all()
+    context = {
+        'students': students,
+        'invoices': invoice,
+        'receipts': receipts}
+    return render(request, "admin/payments.html", context)
+
+
+def paymentsInvoice(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        student = request.POST.get('student')
+
+        try:
+            if 'image' in request.FILES:
+                invoice = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(invoice.name, invoice)
+                invoice_url = fs.url(filename)
+
+                invoice_model = Invoice(student=student, invoice=invoice_url)
+                invoice_model.save()
+                messages.success(request, "Invoice Added Successfully!")
+                return HttpResponseRedirect("/payments")
+            else:
+                messages.error(request, "No file uploaded!")
+                return HttpResponseRedirect("/payments")
+        except:
+            messages.error(request, "Error Adding Invoice Info..!")
+            return HttpResponseRedirect("/payments")
+
 
 # Function for displaying the page for adding new staff
 def addStaff(request):
     return render(request, "admin/addStaff.html")
 
-
 # Function for the saving of the information inputed in the add staffpage
+
+
 def addStaffSave(request):
     if request.method != "POST":
         return HttpResponse("Method Not Allowed")
@@ -52,14 +91,14 @@ def addStaffSave(request):
         gender = request.POST.get('gender')
         try:
             user = CustomUser.objects.create_user(
-            username = username,
-            first_name = first_name,
-            last_name = last_name,
-            email = email,
-            password = password,
-            user_type = 2,
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                user_type=2,
             )
-            
+
             if request.FILES.get('image', False):
                 profile_pic = request.FILES['image']
                 fs = FileSystemStorage()
@@ -69,7 +108,7 @@ def addStaffSave(request):
                 profile_pic_url = None
 
             user.staff.profile_pic = profile_pic_url
-            
+
             user.staff.address = address
             user.staff.link = link
             user.staff.gender = gender
@@ -81,12 +120,36 @@ def addStaffSave(request):
             return HttpResponseRedirect("/addStaff")
 
 # For managing the staffs
+
+
 def manageStaff(request):
     staffs = Staff.objects.all()
     context = {
-        'staffs':staffs
+        'staffs': staffs
     }
     return render(request, "admin/manageStaff.html", context)
+
+
+
+def delete_staff(request, staff_id):
+    staff = get_object_or_404(Staff, admin__id=staff_id)
+
+    if request.method == 'POST':
+        staff.delete()
+        #return redirect('manageStaff.html')  # Redirect to your staff list view after deletion
+        return HttpResponseRedirect("/adminHome/")
+
+    return render(request, '/adminHome.html')
+
+
+def delete_student(request, student_id):
+    student = get_object_or_404(Student, admin__id=student_id)
+
+    if request.method == 'POST':
+        student.delete()
+        return HttpResponseRedirect("/adminHome/")
+
+    return render(request, '/adminHome.html')
 
 
 # For updating the information of the staffs
@@ -99,6 +162,8 @@ def updateStaff(request, staff_id):
     return render(request, "admin/updateStaff.html", context)
 
 # For saving the information updated in the staff
+
+
 def editStaffSave(request):
     if request.method != "POST":
         return HttpResponse("Method Not Allowed")
@@ -112,28 +177,28 @@ def editStaffSave(request):
         link = request.POST.get('link')
         gender = request.POST.get('gender')
         staff_id = request.POST.get('staff_id')
-        
+
         if request.FILES.get('image', False):
-                profile_pic = request.FILES['image']
-                fs = FileSystemStorage()
-                filename = fs.save(profile_pic.name, profile_pic)
-                profile_pic_url = fs.url(filename)
+            profile_pic = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
         else:
             profile_pic_url = None
-            
+
         try:
             user = CustomUser.objects.get(id=staff_id)
             user.username = username
             user.first_name = first_name
             user.last_name = last_name
-            user.email = email                        
+            user.email = email
 
             user.save()
-             
+
             staff_model = Staff.objects.get(admin=staff_id)
             if profile_pic_url != None:
                 staff_model.profile_pic = profile_pic_url
-              
+
             staff_model.address = address
             staff_model.gender = gender
             staff_model.link = link
@@ -141,21 +206,21 @@ def editStaffSave(request):
             staff_model.save()
 
             messages.success(request, "Staff Updated Successfully!")
-            return HttpResponseRedirect("/updateStaff/" +staff_id)
+            return HttpResponseRedirect("/updateStaff/" + staff_id)
         except:
             messages.error(request, "Error Updating Staff Info..!")
-            return HttpResponseRedirect("/updateStaff/" + staff_id )
+            return HttpResponseRedirect("/updateStaff/" + staff_id)
 
 
 # Function for displaying the page for adding new student
 def addStudent(request):
     courses = Course.objects.all()
     level = Level.objects.all()
-    staff = CustomUser.objects.filter(user_type= 2)
+    staff = CustomUser.objects.filter(user_type=2)
     context = {
         'courses': courses,
-        'levels':level,
-        'staffs':staff
+        'levels': level,
+        'staffs': staff
     }
     return render(request, "admin/addStudent.html", context)
 
@@ -176,17 +241,14 @@ def addStudentSave(request):
         level_id = request.POST.get('level')
         staff = request.POST.get("staff")
 
-        
-
-
         try:
             user = CustomUser.objects.create_user(
-            username = username,
-            first_name = first_name,
-            last_name = last_name,
-            email = email,
-            password = password,
-            user_type = 3
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                user_type=3
             )
             course_obj = Course.objects.get(id=course_id)
             user.student.course_id = course_obj
@@ -195,7 +257,7 @@ def addStudentSave(request):
             user.student.staff = staff
             level_obj = Level.objects.get(id=level_id)
             user.student.level = level_obj
-            
+
             if request.FILES.get('image', False):
                 profile_pic = request.FILES['image']
                 fs = FileSystemStorage()
@@ -213,6 +275,8 @@ def addStudentSave(request):
             return HttpResponseRedirect("/addStudent")
 
 # For managing the students
+
+
 def manageStudent(request):
     students = Student.objects.all()
     context = {
@@ -226,13 +290,13 @@ def updateStudent(request, student_id):
     student = Student.objects.get(admin=student_id)
     course = Course.objects.all()
     level = Level.objects.all()
-    staff = CustomUser.objects.filter(user_type= 2)
+    staff = CustomUser.objects.filter(user_type=2)
     context = {
-        'student':student, 
-        'courses':course,
-        'id': student_id, 
-        'levels':level,
-        'staffs':staff
+        'student': student,
+        'courses': course,
+        'id': student_id,
+        'levels': level,
+        'staffs': staff
     }
     return render(request, "admin/updateStudent.html", context)
 
@@ -267,14 +331,14 @@ def editStudentSave(request):
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
-            
+
             user.save()
 
             student_model = Student.objects.get(admin=student_id)
             student_model.address = address
             student_model.gender = gender
             student_model.staff = staff
-            
+
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)
@@ -287,8 +351,7 @@ def editStudentSave(request):
             return HttpResponseRedirect("/updateStudent/" + student_id)
         except:
             messages.error(request, "Error Adding Student Info..!")
-            return HttpResponseRedirect("/updateStudent/" + student_id )
-
+            return HttpResponseRedirect("/updateStudent/" + student_id)
 
 
 # adding new Course in the app
@@ -312,10 +375,12 @@ def addCourseSave(request):
             return HttpResponseRedirect("/addCourse")
 
 # function for the management of the Course in the site
+
+
 def manageCourse(request):
     courses = Course.objects.all()
     context = {
-        'courses':courses
+        'courses': courses
     }
     return render(request, "admin/manageCourse.html", context)
 
@@ -329,6 +394,7 @@ def updateCourse(request, course_id):
     }
     return render(request, "admin/updateCourse.html", context)
 
+
 def editCourseSave(request):
     if request.method != "POST":
         return HttpResponse("Method Not Allowed")
@@ -341,16 +407,16 @@ def editCourseSave(request):
             course.save()
 
             messages.success(request, "Course Updated Successfully!")
-            return HttpResponseRedirect("/updateCourse/" + course_id )
+            return HttpResponseRedirect("/updateCourse/" + course_id)
         except:
             messages.error(request, "Error Updating Course!")
-            return HttpResponseRedirect("/updateCourse/" + course_id )
+            return HttpResponseRedirect("/updateCourse/" + course_id)
 
 
 # Function for the adding of new subjects in a particular Subject
 def addSubject(request):
     courses = Course.objects.all()
-    staffs = CustomUser.objects.filter(user_type= 2)
+    staffs = CustomUser.objects.filter(user_type=2)
     context = {
         'courses': courses,
         'staffs': staffs
@@ -369,7 +435,8 @@ def addSubjectSave(request):
         staff_id = request.POST.get('staff')
         staff = CustomUser.objects.get(id=staff_id)
         try:
-            subject = Subjects(subject=subject_name, course_id=course, staff_id=staff)
+            subject = Subjects(subject=subject_name,
+                               course_id=course, staff_id=staff)
             subject.save()
             messages.success(request, "Subject Added Successfully!")
             return HttpResponseRedirect("/addSubject")
@@ -382,7 +449,7 @@ def addSubjectSave(request):
 def manageSubject(request):
     subjects = Subjects.objects.all()
     context = {
-        'subjects':subjects
+        'subjects': subjects
     }
     return render(request, "admin/manageSubject.html", context)
 
@@ -399,10 +466,12 @@ def updateSubject(request, subject_id):
         'subject': subject,
         'id': subject_id
     }
-    
+
     return render(request, "admin/updateSubject.html", context)
 
 # Function for saving the information updated in the subjects
+
+
 def editSubjectSave(request):
     if request.method != "POST":
         return HttpResponse("Method Not Allowed")
@@ -416,16 +485,16 @@ def editSubjectSave(request):
             subject.save()
 
             messages.success(request, "Subject Updated Successfully!")
-            return HttpResponseRedirect("/updateSubject/" + subject_id )
+            return HttpResponseRedirect("/updateSubject/" + subject_id)
         except:
             messages.error(request, "Error Updating Subject!")
             return HttpResponseRedirect("/updateSubject/" + subject_id)
 
 
-
 # for addind levels in the site
 def addLevel(request):
     return render(request, "admin/addLevel.html")
+
 
 def addLevelSave(request):
     if request.method != "POST":
@@ -442,12 +511,15 @@ def addLevelSave(request):
             return HttpResponseRedirect("/addLevel")
 
 # for feedback reply of staff
+
+
 def staffFeedback(request):
     feedback_data = FeedBackStaff.objects.all()
     context = {
         'feedback_data': feedback_data
     }
     return render(request, "admin/staffFeedback.html", context)
+
 
 @csrf_exempt
 # reply function for the staff feedback
@@ -473,12 +545,12 @@ def studentFeedback(request):
     }
     return render(request, "admin/studentFeedback.html", context)
 
+
 @csrf_exempt
 # reply function for the student feedback
 def studentFeedbackReply(request):
     feedback_id = request.POST.get('id')
     feedback_message = request.POST.get('message')
-
     try:
         feedback = FeedBackStudent.objects.get(id=feedback_id)
         feedback.feedback_reply = feedback_message
@@ -511,6 +583,8 @@ def checkUsername(request):
         return HttpResponse(False)
 
 # staff leave views
+
+
 def staffLeave(request):
     leave_data = LeaveReportStaff.objects.all()
     context = {
@@ -519,6 +593,8 @@ def staffLeave(request):
     return render(request, "admin/staffLeave.html", context)
 
 # function for the approval of the Staff leave
+
+
 def staffLeaveApprove(request, leave_id):
     leave = LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status = 1
@@ -532,7 +608,7 @@ def staffLeaveDisapprove(request, leave_id):
     leave.leave_status = 2
     leave.save()
     return HttpResponseRedirect(reverse("StaffLeave"))
-    
+
 
 # student leave views
 def studentLeave(request):
@@ -543,6 +619,8 @@ def studentLeave(request):
     return render(request, "admin/studentLeave.html", context)
 
 # function for the approval of the student leave
+
+
 def studentLeaveApprove(request, leave_id):
     leave = LeaveReportStudent.objects.get(id=leave_id)
     leave.leave_status = 1
@@ -556,7 +634,7 @@ def studentLeaveDisapprove(request, leave_id):
     leave.leave_status = 2
     leave.save()
     return HttpResponseRedirect(reverse("StudentLeave"))
-    
+
 
 def viewAttendance(request):
     subject = Subjects.objects.all()
@@ -569,19 +647,23 @@ def viewAttendance(request):
     }
     return render(request, "admin/viewAttendance.html", context)
 
+
 @csrf_exempt
 def getAttendanceDate(request):
     subject = request.POST.get('subject')
     level_id = request.POST.get('level')
     subject_obj = Subjects.objects.get(id=subject)
     level_obj = Level.objects.get(id=level_id)
-    attendance = Attendance.objects.filter(subject_id=subject_obj, level=level_obj)
-    attendance_obj=[]
+    attendance = Attendance.objects.filter(
+        subject_id=subject_obj, level=level_obj)
+    attendance_obj = []
     for event in attendance:
-        data= {"id":event.id, "attendance_date":str(event.attendance_date), "level":event.level.id}
+        data = {"id": event.id, "attendance_date": str(
+            event.attendance_date), "level": event.level.id}
         attendance_obj.append(data)
-    
+
     return JsonResponse(json.dumps(attendance_obj), safe=False)
+
 
 @csrf_exempt
 def getStudentAttendanceAdmin(request):
@@ -591,7 +673,8 @@ def getStudentAttendanceAdmin(request):
     attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
     list_data = []
     for student in attendance_data:
-        data_select = {"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
+        data_select = {"id": student.student_id.admin.id, "name": student.student_id.admin.first_name +
+                       " "+student.student_id.admin.last_name, "status": student.status}
         list_data.append(data_select)
     return JsonResponse(json.dumps(list_data), content_type='application/json', safe=False)
 

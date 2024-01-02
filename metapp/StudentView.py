@@ -10,7 +10,7 @@ import datetime
 from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level, Attendance, AttendanceReport,
     LeaveReportStudent, FeedBackStudent, Reports, Assignments,
-    AssignmentSubmission,
+    AssignmentSubmission, Reciepts, Invoice
 )
 from django.core.files.storage import FileSystemStorage
 
@@ -112,6 +112,45 @@ def studentUploadAssignment(request):
     return render(request, 'student/uploadAssignment.html', context)
 
 
+# upload student payment reciept
+def studentPayment(request):
+    student = Student.objects.get(admin=request.user.id)
+    student_name = request.user.first_name + " " + request.user.last_name
+    studentInvoice = Invoice.objects.filter(student=student_name)
+    studentReciept = Reciepts.objects.filter(student=student_name)
+    context = {
+        "student": student,
+        'student_name': student_name,
+        'invoices':studentInvoice,
+        'reciepts':studentReciept
+    }
+
+    return render(request, 'student/payment.html', context)
+
+# save reciept
+def studentRecieptSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        student = request.POST.get('student_name')
+        try:
+            if 'image' in request.FILES:
+                receipt = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(receipt.name, receipt)
+                reciept_url = fs.url(filename)
+                reciept_model = Reciepts(student=student, reciept=reciept_url)
+                reciept_model.save()
+                messages.success(request, "Receipt Added Successfully!")
+                return HttpResponseRedirect("/studentPayment")
+            else:
+                messages.error(request, "No file uploaded!")
+                return HttpResponseRedirect("/studentPayment")
+        except:
+            messages.error(request, "Error Submitting Receipt Info..!")
+            return HttpResponseRedirect("/studentPayment")
+
+
 # module for the view of the attendance records by the student
 def viewAttendance(request):
     student = Student.objects.get(admin=request.user.id)
@@ -210,11 +249,11 @@ def feedbackSaveStudent(request):
                 student_id=student_obj, feedback=feedback_message, feedback_reply="")
             feedback.save()
 
-            messages.success(request, "Feedback Submitted")
+            messages.success(request, "Message Submitted")
             return HttpResponseRedirect(reverse("FeedbackMessageStudent"))
 
         except:
-            messages.error(request, "Error Submitting Feedback")
+            messages.error(request, "Error Submitting Message")
             return HttpResponseRedirect(reverse("FeedbackMessageStudent"))
 
 #  profile page for the Student of the app

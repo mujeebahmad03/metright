@@ -330,11 +330,11 @@ def feedbackSave(request):
                 staff_id=staff_obj, feedback=feedback_message, feedback_reply="")
             feedback.save()
 
-            messages.success(request, "Feedback Submitted")
+            messages.success(request, "Message Submitted")
             return HttpResponseRedirect(reverse("FeedbackMessage"))
 
         except:
-            messages.error(request, "Error Submitting Feedback")
+            messages.error(request, "Error Submitting Message")
             return HttpResponseRedirect(reverse("FeedbackMessage"))
 
 
