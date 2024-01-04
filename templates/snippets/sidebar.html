@@ -5,7 +5,10 @@
           <!-- Sidebar Header    -->
           <div class="sidenav-header d-flex align-items-center justify-content-center">
             <!-- User Info-->
-            <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/mockup5.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+
+            <!-- <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/mockup5.jpg" %}" alt="person" class="img-fluid rounded-circle"></a> -->
+              <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{% static "dashboard/img/brint.jpg" %}" alt="person" class="img-fluid rounded-circle"></a>
+            <!-- <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="brint.jpg" alt="person" class="img-fluid rounded-circle"></a> -->
               <h2 class="h5">{{ request.user.first_name }} {{ request.user.last_name }} </h2><span>{{ request.user.username }}</span>
               <br>
               <!-- <a href="{% url "UserProfile" %}" class="btn btn-success btn-block">Update Profile</a> -->
