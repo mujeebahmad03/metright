@@ -10,7 +10,7 @@ import datetime
 from .models import (
     CustomUser, Staff, Student, Course, Subjects, Level, Attendance, AttendanceReport,
     LeaveReportStudent, FeedBackStudent, Reports, Assignments,
-    AssignmentSubmission, Reciepts, Invoice
+    AssignmentSubmission, Reciepts, Invoice, Notes
 )
 from django.core.files.storage import FileSystemStorage
 
@@ -67,6 +67,18 @@ def home(request):
     }
     return render(request, 'student/home.html', context)
 
+
+def studentNotes(request):
+    student = Student.objects.get(admin=request.user.id)
+    student_name = request.user.first_name + " " + request.user.last_name
+    notes = Notes.objects.filter(student=student_name)
+    
+    context = {
+        'notes':notes,
+    }
+    
+    return render(request, "student/notes.html", context)
+    
 # save assignement
 def studentUploadAssignmentSave(request):
     if request.method != "POST":

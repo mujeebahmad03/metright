@@ -96,6 +96,17 @@ class Reports(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     report = models.FileField(upload_to="media")
 
+
+# model for the notes upload by staff
+class Notes(models.Model):
+    id = models.AutoField(primary_key=True)
+    staff = models.TextField()
+    student = models.TextField()
+    created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    note = models.FileField(upload_to="media")
+
+
+
 # model for the assignement upload by staff
 class Assignments(models.Model):
     id = models.AutoField(primary_key=True)

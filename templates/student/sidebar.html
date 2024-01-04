@@ -6,7 +6,7 @@
       <div class="sidenav-header d-flex align-items-center justify-content-center">
         <!-- User Info-->
         <div class="sidenav-header-inner text-center"><a href="pages-profile.html"><img src="{{ student.profile_pic }}" alt="person" class="img-fluid rounded-circle"></a>
-          <h2 class="h5">{{ user.first_name }} {{ user.last_name }} </h2><span>{{ user.username }}</span>
+          <h2 class="h5" style="color: white;">{{ user.first_name }} {{ user.last_name }} </h2><span style="color: white;">{{ user.username }}</span>
           <a href="{% url "UserProfileStudent" %}" class="btn btn-success btn-block">Update Profile</a>
         </div>
         <!-- Small Brand information, appears on minimized sidebar-->
@@ -32,6 +32,11 @@
               <a href="{% url "StudentPayment" %}"> <i class="{%if request.path == StudentPayment %} active {% endif %} icon-home"></i> Payments</a>
           </li>
           
+          {% url "StudentNotes" as StudentNotes %}
+          <li class="{% if request.path == StudentNotes %} active {% endif %}">
+              <a href="{% url "StudentNotes" %}"> <i class="{%if request.path == StudentNotes %} active {% endif %} icon-home"></i> Notes</a>
+          </li>
+
           {% url "StudentUploadAssignment" as StudentUploadAssignment %}
           <li class="{% if request.path == StudentUploadAssignment %} active {% endif %}">
               <a href="{% url "StudentUploadAssignment" %}"> <i class="{%if request.path == StudentUploadAssignment %} active {% endif %} icon-home"></i> Submit Assignment</a>

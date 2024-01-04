@@ -9,7 +9,7 @@ from .models import (
     Course, Subjects, Level,
     Attendance, AttendanceReport,
     LeaveReportStaff, FeedBackStaff,
-    Reports, Assignments,AssignmentSubmission
+    Reports, Assignments,AssignmentSubmission, Notes
 )
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
@@ -145,6 +145,51 @@ def uploadAssignmentSave(request):
         except:
             messages.error(request, "Error Adding Assignement Info..!")
             return HttpResponseRedirect("/uploadAssignment")
+
+
+
+
+def uploadNote(request):
+    staff_name = request.user.first_name + " " + request.user.last_name
+    students = Student.objects.filter(staff=staff_name)
+    notes = Notes.objects.filter(staff=staff_name)
+
+    context = {
+        "student": students,
+        'staff_name': staff_name,
+        'notes':notes,
+    }
+
+    return render(request, 'staff/uploadNote.html', context)
+
+
+
+def uploadNoteSave(request):
+    if request.method != "POST":
+        return HttpResponse("Method Not Allowed")
+    else:
+        staff_name = request.POST.get('staff_name')
+        student = request.POST.get('student')
+        note = request.POST.get('file')
+
+        try:
+            if 'image' in request.FILES:
+                profile_pic = request.FILES['image']
+                fs = FileSystemStorage()
+                filename = fs.save(profile_pic.name, profile_pic)
+                profile_pic_url = fs.url(filename)
+                notes_model = Notes(
+                    staff=staff_name, student=student, note=profile_pic_url)
+                notes_model.save()
+                messages.success(request, "Notes Added Successfully!")
+                return HttpResponseRedirect("/uploadNote")
+            else:
+                messages.error(request, "No file uploaded!")
+                return HttpResponseRedirect("/uploadNote")
+        except:
+            messages.error(request, "Error Adding Notes Info..!")
+            return HttpResponseRedirect("/uploadNote")
+
 
 
 # Taking the students attendance information views

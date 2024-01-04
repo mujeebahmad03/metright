@@ -26,6 +26,11 @@
                     <a href="{% url "UploadReport" %}"> <i class="{%if request.path == UploadReport %} active {% endif %} icon-home"></i> Upload Report</a>
                 </li>
 
+                {% url "UploadNote" as UploadNote %}
+                <li class="{% if request.path == UploadNote %} active {% endif %}">
+                    <a href="{% url "UploadNote" %}"> <i class="{%if request.path == UploadNote %} active {% endif %} icon-home"></i> Upload Note</a>
+                </li>
+
                 {% url "UploadAssignment" as UploadAssignment %}
                 <li class="{% if request.path == UploadAssignment %} active {% endif %}">
                     <a href="{% url "UploadAssignment" %}"> <i class="{%if request.path == UploadAssignment %} active {% endif %} icon-home"></i> Upload Assignment</a>

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brint Online school | Student </title>
+    <title>Brint Online school | Notes </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -36,78 +36,15 @@
         <!-- navbar-->
         {% include "snippets/header.html" %}
         
-        <!-- Statistics Section-->
-        <br>
-        <section class="statistics">
-            <div class="container-fluid">
-            <div class="row d-flex">
-                <div class="col-lg-4">
-                <!-- Income-->
-                <div class="card income text-center">
-                    <div class="icon"><i class="icon-line-chart"></i></div>
-                    <div class="number">{{ student.staff }}</div><strong class="text-primary">Staff</strong>
-                    <p style="color: black;">Responsible for your tutoring.</p>
-                </div>
-                </div>
-                <div class="col-lg-4">
-                    <!-- Income-->
-                    <div class="card income text-center">
-                        <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">
-                            {% for sta in staff %}
-                                {% if sta.admin.first_name|add:" "|add:sta.admin.last_name == student.staff %}
-                                    <a href="{{ sta.link }}" blank="true">Join Class</a>
-                                {% endif %}
-                            {% endfor %}
-                        </div><strong class="text-primary">Class Link</strong>
-                        <p style="color: black;">Use this to access your classroom.</p>
-                    </div>
-                </div>
-                <!-- <div class="col-lg-3">
-                    <div class="card income text-center">
-                        <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">{{ absent }}</div><strong class="text-primary">Absent</strong>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
-                    </div>
-                </div> -->
-                <div class="col-lg-4">
-                    <!-- Income-->
-                    <div class="card income text-center">
-                        <div class="icon"><i class="icon-line-chart"></i></div>
-                        <div class="number">{{ course.course }}</div><strong class="text-primary">Registered Subject</strong>
-                        <p style="color: black;">You will recieve tutoring on this subject</p>
-                    </div>
-                </div>
-            </div>
-           
-            </div>
-        </section>
-
         <br/>
         <br/>
         <section class="container-fluid card">
             <div class="row d-flex">
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                     <div class="card" >
-                        <strong class="text-primary" style="font-size: 25px;">Your Reports</strong>
-                    {% for report in reports %}
-                        <a href="{{report.report}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View report Posted On: {{report.created}} By {{report.staff}}</a>
-                    {% endfor %}
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card" >
-                        <strong class="text-primary" style="font-size: 25px;">Assignments</strong>
-                    {% for assignment in assignments %}
-                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Assignment Posted On: {{assignment.created}} By {{assignment.staff}}</a>
-                    {% endfor %}
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card" >
-                        <strong class="text-primary" style="font-size: 25px;">Assignments Submitted</strong>
-                    {% for assignment in assignmentsubmit %}
-                        <a href="{{assignment.assignment}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Assignment Submitted On: {{assignment.created}} For {{assignment.staff}}</a>
+                        <strong class="text-primary" style="font-size: 25px;">Your Notes</strong>
+                    {% for report in notes %}
+                        <a href="{{report.note}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Note Posted On: {{report.created}} By {{report.staff}}</a>
                     {% endfor %}
                     </div>
                 </div>

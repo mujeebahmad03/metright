@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Brint Online school | Payment</title>
+    <title>Brint Online school | Notes</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -31,7 +31,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
   </head>
   <body>
-      {% include "student/sidebar.html" %}
+      {% include "staff/sidebar.html" %}
         <div class="page">
         <!-- navbar-->
         {% include "snippets/header.html" %}
@@ -59,25 +59,29 @@
                       {% endif %}
                     <br>
                     
-              <form class="text-left form-validate" method="POST" action="{% url "StudentRecieptSave" %}"  enctype="multipart/form-data">
+              <form class="text-left form-validate" method="POST" action="{% url "UploadNoteSave" %}"  enctype="multipart/form-data">
                 {% csrf_token %}
-                <input id="student_name" type="text" hidden name="student_name" value="{{ student_name }}" required>               
+                <input id="staff_name" type="text" hidden name="staff_name" value="{{ staff_name }}" required>
+               
                 
                 <div class="form-group-material">
-                  <label for="image" class="label-material">Receipt File</label>
-                  <input id="image" type="file" name="image" required data-msg="Please Select Student receipt"
+                  <label for="image" class="label-material">Notes File</label>
+                  <input id="image" type="file" name="image" required data-msg="Please Select Note"
                     class="input-material">
                 </div>
 
-                  <!-- <div class="form-group-material">
+                  <div class="form-group-material">
                     <label for="student" class="label-material">Student</label>
                     <select id="student" type="text" name="student" required data-msg="Please enter Student Name"
                       class="form-control select-material">
+                      {% for stud in student %}
+                      <option value="{{ stud.admin.first_name }} {{stud.admin.last_name }}">{{ stud.admin.first_name }} {{stud.admin.last_name }}</option>
+                      {% endfor %}
                     </select>
-                  </div> -->
+                  </div>
 
                   <div class="form-group text-center">
-                    <input id="register" type="submit" value="Upload Receipt" class="btn btn-primary">
+                    <input id="register" type="submit" value="Upload Note" class="btn btn-primary">
                   </div>
               </form>
                   </div>
@@ -87,54 +91,19 @@
             </div>
             </div>
         </section>
+
         <section class="container-fluid card">
           <div class="row d-flex" style="padding: 20px;">
-              <div class="col-lg-4"  style="padding: 20px;">
-                  <div class="card"  style="padding: 20px;">
-                    <strong class="text-primary" style="font-size: 25px;">Make Payment To</strong>
-                    <p style="color: black;">4500025148</p>
-                    <p style="color: black;"> Brint schools</p>
-                    <p style="color: black;"> Ecobank</p>
-                    <p style="color: black;">+2347069156984</p>
+              <div class="col-lg-12">
+                  <div class="card">
+                      <strong class="text-primary" style="font-size: 25px;">Notes Sent</strong>
+                  {% for report in notes %}
+                      <a href="{{report.note}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Note Posted On: {{report.created}} For {{report.student}}</a>
+                  {% endfor %}
                   </div>
               </div>
-              <div class="col-lg-4"  style="padding: 20px;">
-                <div class="card"  style="padding: 20px;">
-                  <strong class="text-primary" style="font-size: 25px;">Make Payment To</strong>
-                  <p style="color: black;"> 3045530622</p>
-                  <p style="color: black;"> Ambali Aderonke Rukayat </p>
-                  <p style="color: black;"> First bank</p>
-                  <p style="color: black;">+2347069156984</p>
-                </div>
-            </div>
-            <div class="col-lg-4"  style="padding: 20px;">
-              <div class="card"  style="padding: 20px;">
-                <a href="https://www.youtube.com/shorts/ZkTzmeLaZIw" target="_blank" />How to Make Payment (Click This Link) </a>
-              </div>
-          </div>
           </div>
       </section>
-
-      <section class="container-fluid card">
-        <div class="row d-flex">
-            <div class="col-lg-6">
-                <div class="card" >
-                    <strong class="text-primary" style="font-size: 25px;">Your Invoices</strong>
-                {% for invoice in invoices %}
-                    <a href="{{invoice.invoice}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View Invoice Posted On: {{invoice.created}}</a>
-                {% endfor %}
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card" >
-                    <strong class="text-primary" style="font-size: 25px;">Your Reciepts</strong>
-                {% for reciept in reciepts %}
-                    <a href="{{reciept.reciept}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View reciept Uploaded On: {{reciept.created}}</a>
-                {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
 
         {% include "snippets/footer.html" %}
         </div>
