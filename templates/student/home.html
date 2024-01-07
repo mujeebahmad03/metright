@@ -46,6 +46,8 @@
                 <div class="card income text-center">
                     <div class="icon"><i class="icon-line-chart"></i></div>
                     <div class="number">{{ student.staff }}</div><strong class="text-primary">Staff</strong>
+                    <div class="number">{{ student.staff2 }}</div><strong class="text-primary">Staff</strong>
+                    <div class="number">{{ student.staff3 }}</div><strong class="text-primary">Staff</strong>
                     <p style="color: black;">Responsible for your tutoring.</p>
                 </div>
                 </div>
@@ -59,7 +61,22 @@
                                     <a href="{{ sta.link }}" blank="true">Join Class</a>
                                 {% endif %}
                             {% endfor %}
-                        </div><strong class="text-primary">Class Link</strong>
+                        </div>
+                        <div class="number">
+                            {% for sta in staff %}
+                                {% if sta.admin.first_name|add:" "|add:sta.admin.last_name == student.staff2 %}
+                                    <a href="{{ sta.link }}" blank="true">Join Class</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="number">
+                            {% for sta in staff %}
+                                {% if sta.admin.first_name|add:" "|add:sta.admin.last_name == student.staff3 %}
+                                    <a href="{{ sta.link }}" blank="true">Join Class</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <strong class="text-primary">Class Link</strong>
                         <p style="color: black;">Use this to access your classroom.</p>
                     </div>
                 </div>
@@ -75,6 +92,8 @@
                     <div class="card income text-center">
                         <div class="icon"><i class="icon-line-chart"></i></div>
                         <div class="number">{{ course.course }}</div><strong class="text-primary">Registered Subject</strong>
+                        <div class="number">{{ course2.course }}</div><strong class="text-primary">Registered Subject</strong>
+                        <div class="number">{{ course3.course }}</div><strong class="text-primary">Registered Subject</strong>
                         <p style="color: black;">You will recieve tutoring on this subject</p>
                     </div>
                 </div>

@@ -100,7 +100,7 @@
                     class="input-material">
                 </div>
                 <div class="form-group-material">
-                  <label for="course" class="label-material">Course</label>
+                  <label for="course" class="label-material">Course1</label>
                   <select id="course" type="text" name="course" required data-msg="Please enter Student Course"
                     class="form-control select-material">
                     {% for course in courses %}
@@ -109,7 +109,7 @@
                   </select>
                 </div>
                 <div class="form-group-material">
-                  <label for="staff" class="label-material">Staff</label>
+                  <label for="staff" class="label-material">Staff1</label>
                   <select id="staff" type="text" name="staff" required data-msg="Please enter Student Staff"
                     class="form-control select-material">
                     {% for staff in staffs %}
@@ -117,6 +117,50 @@
                     {% endfor %}
                   </select>
                 </div>
+
+                
+                <div class="form-group-material">
+                  <label for="course2" class="label-material">Course2</label>
+                  <select id="course2" type="text" name="course2" required data-msg="Please enter Student Course"
+                    class="form-control select-material">
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.course }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group-material">
+                  <label for="staff2" class="label-material">Staff2</label>
+                  <select id="staff2" type="text" name="staff2" required data-msg="Please enter Student Staff"
+                    class="form-control select-material">
+                    <option value="None">None</option>
+                    {% for staff in staffs %}
+                    <option value="{{ staff.first_name }} {{ staff.last_name }}">{{ staff.first_name }} {{ staff.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                
+                <div class="form-group-material">
+                  <label for="course"3 class="label-material">Course3</label>
+                  <select id="course3" type="text" name="course3" required data-msg="Please enter Student Course"
+                    class="form-control select-material">
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.course }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group-material">
+                  <label for="staff3" class="label-material">Staff3</label>
+                  <select id="staff3" type="text" name="staff3" required data-msg="Please enter Student Staff"
+                    class="form-control select-material">
+                    <option value="None">None</option>
+                    {% for staff in staffs %}
+                    <option value="{{ staff.first_name }} {{ staff.last_name }}">{{ staff.first_name }} {{ staff.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+
                 <label for="gender" class="label-material">Gender</label>
                 <div class="form-group-material">
                   <select id="gender" type="text" name="gender" required data-msg="Please enter Student Gender"

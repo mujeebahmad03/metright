@@ -39,6 +39,7 @@ def checkUsernameStudent(request):
 
 def home(request):
     student = Student.objects.get(admin=request.user.id)
+    print(student.staff2)
     student_name = request.user.first_name + " " + request.user.last_name
     attendance = AttendanceReport.objects.filter(student_id=student).count()
     attendance_present = AttendanceReport.objects.filter(
@@ -46,8 +47,11 @@ def home(request):
     attendance_absent = AttendanceReport.objects.filter(
         student_id=student, status=False).count()
     course = Course.objects.get(id=student.course_id.id)
+    course2 = Course.objects.get(id=student.course2_id.id)
+    course3 = Course.objects.get(id=student.course3_id.id)
     subjects = Subjects.objects.filter(course_id=course).count()
     staff = Staff.objects.all()
+    print(staff[2].admin.first_name)
     reports = Reports.objects.filter(student=student_name)
     assignments = Assignments.objects.filter(student=student_name)
     student_staff = request.user.student.staff
@@ -60,6 +64,8 @@ def home(request):
         'subjects': subjects,
         'student': student,
         'course': course,
+        'course2': course2,
+        'course3': course3,
         'staff': staff,
         'reports': reports,
         'assignmentsubmit':assignmentSubmissions,
@@ -113,12 +119,14 @@ def studentUploadAssignment(request):
     student = Student.objects.get(admin=request.user.id)
     student_name = request.user.first_name + " " + request.user.last_name
     student_staff = request.user.student.staff
+    staff = Staff.objects.all()
     assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name)
     context = {
         "student": student,
         'student_name': student_name,
         'student_staff': student_staff,
         'assignments':assignmentSubmissions,
+        'staff':staff,
     }
 
     return render(request, 'student/uploadAssignment.html', context)

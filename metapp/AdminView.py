@@ -237,9 +237,13 @@ def addStudentSave(request):
         password = request.POST.get('password')
         address = request.POST.get('address')
         course_id = request.POST.get('course')
+        course2_id = request.POST.get('course2')
+        course3_id = request.POST.get('course3')
         gender = request.POST.get('gender')
         level_id = request.POST.get('level')
         staff = request.POST.get("staff")
+        staff2 = request.POST.get("staff2")
+        staff3 = request.POST.get("staff3")
 
         try:
             user = CustomUser.objects.create_user(
@@ -251,10 +255,25 @@ def addStudentSave(request):
                 user_type=3
             )
             course_obj = Course.objects.get(id=course_id)
+            
+            if course2_id == 0:
+                pass
+            else:
+                course_obj2 = Course.objects.get(id=course2_id)
+            
+            if course3_id == 0:
+                pass
+            else:   
+                course_obj3 = Course.objects.get(id=course3_id)
+                
             user.student.course_id = course_obj
+            user.student.course2_id = course_obj2
+            user.student.course3_id = course_obj3
             user.student.address = address
             user.student.gender = gender
             user.student.staff = staff
+            user.student.staff2 = staff2
+            user.student.staff3 = staff3
             level_obj = Level.objects.get(id=level_id)
             user.student.level = level_obj
 
@@ -312,10 +331,14 @@ def editStudentSave(request):
         email = request.POST.get('email')
         address = request.POST.get('address')
         course_id = request.POST.get('course')
+        course2_id = request.POST.get('course2')
+        course3_id = request.POST.get('course3')
         gender = request.POST.get('gender')
         level_id = request.POST.get('level')
         student_id = request.POST.get('student_id')
-        staff = request.POST.get('staff')
+        staff = request.POST.get("staff")
+        staff2 = request.POST.get("staff2")
+        staff3 = request.POST.get("staff3")
 
         if request.FILES.get('image', False):
             profile_pic = request.FILES['image']
@@ -338,11 +361,19 @@ def editStudentSave(request):
             student_model.address = address
             student_model.gender = gender
             student_model.staff = staff
+            student_model.staff2 = staff2
+            student_model.staff3 = staff3
 
             if profile_pic_url != None:
                 student_model.profile_pic = profile_pic_url
             course_model = Course.objects.get(id=course_id)
+            course_model2 = Course.objects.get(id=course2_id)
+            course_model3 = Course.objects.get(id=course3_id)
+                
             student_model.course_id = course_model
+            student_model.course2_id = course_model2
+            student_model.course3_id = course_model3
+            
             level_model = Level.objects.get(id=level_id)
             student_model.level = level_model
             student_model.save()

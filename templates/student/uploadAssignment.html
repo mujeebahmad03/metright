@@ -62,8 +62,16 @@
               <form class="text-left form-validate" method="POST" action="{% url "StudentUploadAssignmentSave" %}"  enctype="multipart/form-data">
                 {% csrf_token %}
                 <input id="student_name" type="text" hidden name="student_name" value="{{ student_name }}" required>
-                <input id="student_staff" type="text" hidden name="student_staff" value="{{ student_staff }}" required>
-               
+                <!-- <input id="student_staff" type="text" hidden name="student_staff" value="{{ student_staff }}" required> -->
+                <div class="form-group-material">
+                  <label for="student_staff" class="label-material">Staff</label>
+                  <select id="student_staff" type="text" name="student_staff" required data-msg="Please enter Staff Name"
+                    class="form-control select-material">
+                    {% for stud in staff %}
+                    <option value="{{ stud.admin.first_name }} {{stud.admin.last_name }}">{{ stud.admin.first_name }} {{stud.admin.last_name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
                 
                 <div class="form-group-material">
                   <label for="image" class="label-material">Assignment File</label>
