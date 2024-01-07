@@ -48,6 +48,7 @@ def home(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     staff_profile = Staff.objects.get(admin=request.user)
     link = staff_profile.link
+    print(link)
     assignmentSubmissions = AssignmentSubmission.objects.filter(staff=staff_name)
     
     context = {
