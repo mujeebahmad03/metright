@@ -72,7 +72,7 @@ class Student(models.Model):
     staff2 = models.TextField(blank=True, null=True)
     staff3 = models.TextField(blank=True, null=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
-    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='primary_course_students')
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='primary_course_students', blank=True, null=True)
     course2_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='secondary_course_students', blank=True, null=True)
     course3_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='tertiary_course_students', blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
