@@ -52,6 +52,24 @@
                             <p>{{ stud.admin.first_name }} {{ stud.admin.last_name }}</p>
                         <!-- {% endif %} -->
                     {% endfor %}
+
+                    {% for students in students_2nd_course %}
+                            <p>{{ students.admin.first_name }} {{ students.admin.last_name }}</p>
+                    {% endfor %} 
+
+                    {% for part in students_3rd_course %}
+                            <p>{{ part.admin.first_name }} {{ part.admin.last_name }}</p>
+                    {% endfor %} 
+                     
+                    {% comment %} {% for category, students in category_students.items %}
+                        <h2>{{ category }}</h2>
+                        {% for stud in students %}
+                            <!-- Your conditional check for staff here -->
+                            <!-- {% if stud.staff == staff_name %} -->
+                                <p>{{ stud.admin.first_name }} {{ stud.admin.last_name }}</p>
+                            <!-- {% endif %} -->
+                        {% endfor %}
+                    {% endfor %} {% endcomment %}
                 </div>
                 </div>
                 <div class="col-lg-6">

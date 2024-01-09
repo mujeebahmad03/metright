@@ -58,9 +58,9 @@
                         <th>Staff</th>
                         <th>Address</th>
                         <th>Gender</th>
-                        <th>Date Joined</th>
-                        <th>Last Login</th>
-                        <th>Subscription</th>
+                        {% comment %} <th>Date Joined</th> {% endcomment %}
+                        {% comment %} <th>Last Login</th> {% endcomment %}
+                        {% comment %} <th>Subscription</th> {% endcomment %}
                       </tr>
                     </thead>
                     <tbody>
@@ -76,9 +76,9 @@
                         <td> {{ student.staff }}</td>
                         <td>{{ student.address }}</td>
                         <td>{{ student.gender }}</td>
-                        <td>{{ student.admin.date_joined }}</td>
-                        <td>{{ student.admin.last_login }}</td>
-                        <td>{{ student.level.level }}</td>
+                        {% comment %} <td>{{ student.admin.date_joined }}</td> {% endcomment %}
+                        {% comment %} <td>{{ student.admin.last_login }}</td> {% endcomment %}
+                        {% comment %} <td>{{ student.level.level }}</td> {% endcomment %}
                         <td>
                         <a class="btn-success btn btn-sm" href="{% url "UpdateStudent" student_id=student.admin.id  %}" style="margin-bottom:5px;">Update </a>
                         <form method="post" action="{% url 'DeleteStudent' student_id=student.admin.id %}">

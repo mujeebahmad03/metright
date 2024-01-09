@@ -116,6 +116,7 @@
                         <label for="staff2" class="label-material">Staff2</label>
                         <select id="staff2" type="text" name="staff2" required data-msg="Please enter Student Staff"
                           class="form-control select-material">
+                          <option value="None">None</option>
                           {% for staff in staffs %}
                           <option value="{{ staff.first_name }} {{ staff.last_name }}">{{ staff.first_name }} {{ staff.last_name }}</option>
                           {% endfor %}
@@ -136,6 +137,7 @@
                         <label for="staff3" class="label-material">Staff3</label>
                         <select id="staff3" type="text" name="staff3" required data-msg="Please enter Student Staff"
                           class="form-control select-material">
+                          <option value="None">None</option>
                           {% for staff in staffs %}
                           <option value="{{ staff.first_name }} {{ staff.last_name }}">{{ staff.first_name }} {{ staff.last_name }}</option>
                           {% endfor %}
@@ -151,8 +153,8 @@
                         </select>                        
                       </div>
                       <div class="form-group-material">
-                        <label for="level" class="label-material">Level</label>
-                        <select id="level" type="text" name="level" value="" required data-msg="Please enter Student Level" class="form-control select-material">
+                        <label for="level" class="label-material">Subscription</label>
+                        <select id="level" type="text" name="level" value="" required data-msg="Please enter Student Subscription" class="form-control select-material">
                             {% for level in levels %}
                                 <option value="{{ level.id }}" {% if level.id == student.level.id %} selected {% endif %}>{{ level.level }}</option>
                             {% endfor %}

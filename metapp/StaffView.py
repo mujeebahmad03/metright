@@ -9,7 +9,7 @@ from .models import (
     Course, Subjects, Level,
     Attendance, AttendanceReport,
     LeaveReportStaff, FeedBackStaff,
-    Reports, Assignments,AssignmentSubmission, Notes
+    Reports, Assignments, AssignmentSubmission, Notes
 )
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
@@ -42,22 +42,35 @@ def checkUsernameStaff(request):
 def home(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
-    staff_count = students.count()
+    students_2nd_course = Student.objects.filter(staff2=staff_name)
+    students_3rd_course = Student.objects.filter(staff3=staff_name)
+    # print(students_3rd_course)
+    for student in students_3rd_course:
+        print(student.admin.first_name + " " + student.admin.last_name)
+    staff_count = students.count() + students_2nd_course.count() + students_3rd_course.count()
     reports = Reports.objects.filter(staff=staff_name)
     assignments = Assignments.objects.filter(staff=staff_name)
     staff_name = request.user.first_name + " " + request.user.last_name
     staff_profile = Staff.objects.get(admin=request.user)
     link = staff_profile.link
-    assignmentSubmissions = AssignmentSubmission.objects.filter(staff=staff_name)
-    
+    assignmentSubmissions = AssignmentSubmission.objects.filter(
+        staff=staff_name)
+
     context = {
         "student": students,
+        "students_2nd_course": students_2nd_course,
+        "students_3rd_course": students_3rd_course,
+        "category_students": {
+            "First Course": students,
+            "Second Course": students_2nd_course,
+            "Third Course": students_3rd_course,
+        },
         'staff_name': staff_name,
         'staff_count': staff_count,
         'reports': reports,
-        'assignmentsubmit':assignmentSubmissions,
+        'assignmentsubmit': assignmentSubmissions,
         'assignments': assignments,
-        'link':link,
+        'link': link,
     }
     return render(request, 'staff/home.html', context)
 
@@ -147,8 +160,6 @@ def uploadAssignmentSave(request):
             return HttpResponseRedirect("/uploadAssignment")
 
 
-
-
 def uploadNote(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
@@ -157,11 +168,10 @@ def uploadNote(request):
     context = {
         "student": students,
         'staff_name': staff_name,
-        'notes':notes,
+        'notes': notes,
     }
 
     return render(request, 'staff/uploadNote.html', context)
-
 
 
 def uploadNoteSave(request):
@@ -189,7 +199,6 @@ def uploadNoteSave(request):
         except:
             messages.error(request, "Error Adding Notes Info..!")
             return HttpResponseRedirect("/uploadNote")
-
 
 
 # Taking the students attendance information views
@@ -407,17 +416,17 @@ def editProfileSaveStaff(request):
         link = request.POST.get('link')
         gender = request.POST.get('gender')
         staff_id = request.POST.get('Admin_id')
-        
+
         if request.FILES.get('image', False):
-                profile_pic = request.FILES['image']
-                fs = FileSystemStorage()
-                filename = fs.save(profile_pic.name, profile_pic)
-                profile_pic_url = fs.url(filename)
+            profile_pic = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
         else:
             profile_pic_url = None
-            
+
         try:
-            #staff = Staff.objects.get(id=request.user.id)
+            # staff = Staff.objects.get(id=request.user.id)
             customuser = CustomUser.objects.get(id=request.user.id)
             customuser.first_name = first_name
             customuser.last_name = last_name
@@ -428,10 +437,10 @@ def editProfileSaveStaff(request):
             customuser.save()
 
             staff = Staff.objects.get(admin=staff_id)
-            
+
             if profile_pic_url != None:
                 staff.profile_pic = profile_pic_url
-              
+
             staff.address = address
             staff.gender = gender
             staff.link = link
