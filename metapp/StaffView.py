@@ -47,12 +47,18 @@ def home(request):
     # print(students_3rd_course)
     for student in students_3rd_course:
         print(student.admin.first_name + " " + student.admin.last_name)
-    staff_count = students.count() + students_2nd_course.count() + students_3rd_course.count()
+    staff_count = students.count() + students_2nd_course.count() + \
+        students_3rd_course.count()
     reports = Reports.objects.filter(staff=staff_name)
     assignments = Assignments.objects.filter(staff=staff_name)
     staff_name = request.user.first_name + " " + request.user.last_name
     staff_profile = Staff.objects.get(admin=request.user)
     link = staff_profile.link
+
+    assignmentSubmissions = AssignmentSubmission.objects.filter(
+        staff=staff_name)
+
+    print(link)
     assignmentSubmissions = AssignmentSubmission.objects.filter(
         staff=staff_name)
 
