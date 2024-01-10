@@ -119,6 +119,21 @@ def studentUploadAssignment(request):
     student = Student.objects.get(admin=request.user.id)
     student_name = request.user.first_name + " " + request.user.last_name
     student_staff = request.user.student.staff
+    student_staff2 = request.user.student.staff2
+    student_staff3 = request.user.student.staff3
+    # Create an empty list to store the combined staff
+    combinedStaff = []
+
+    # Check if each staff list is not None and extend the combinedStaff list
+    if student_staff:
+        combinedStaff.append(student_staff)
+    if student_staff2:
+        combinedStaff.append(student_staff2)
+    if student_staff3:
+        combinedStaff.append(student_staff3)
+
+    print(combinedStaff)
+    
     staff = Staff.objects.all()
     assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name)
     context = {
@@ -127,6 +142,7 @@ def studentUploadAssignment(request):
         'student_staff': student_staff,
         'assignments':assignmentSubmissions,
         'staff':staff,
+        'combinedStaff':combinedStaff
     }
 
     return render(request, 'student/uploadAssignment.html', context)

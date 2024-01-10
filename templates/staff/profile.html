@@ -61,11 +61,11 @@
                     <form class="text-left form-validate" method="POST" action="{% url "EditProfileSaveStaff" %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group-material">
-                          <input id="firstname" type="text" name="firstname" value="{{ user_data.first_name }}" required data-msg="Please enter Admin Firstname" class="input-material">
+                          <input id="firstname" type="text" name="firstname" value="{{ user_data.first_name }}" required data-msg="Please enter Admin Firstname"  readonly class="input-material">
                           <label for="firstname" class="label-material">FirstName</label>
                         </div>
                         <div class="form-group-material">
-                          <input id="lastname" type="text" name="lastname" value="{{ user_data.last_name }}" required data-msg="Please enter Admin Lastname" class="input-material">
+                          <input id="lastname" type="text" name="lastname" value="{{ user_data.last_name }}" required data-msg="Please enter Admin Lastname"  readonly class="input-material">
                           <label for="lastname" class="label-material">LastName</label>
                         </div>
                         <div class="form-group-material">
@@ -73,7 +73,7 @@
                           <label for="username" class="label-material">Username</label>
                         </div>
                         <div class="form-group-material">
-                          <input id="email" type="email" name="email" value="{{ user_data.email }}" required data-msg="Please enter a valid email address" class="input-material">
+                          <input id="email" type="email" name="email" value="{{ user_data.email }}" required data-msg="Please enter a valid email address" readonly  class="input-material">
                           <label for="email" class="label-material">Email Address</label>
                         </div>
                         <div class="form-group-material">
@@ -100,7 +100,7 @@
                           </select>
                         </div>
                           <div class="form-group-material">
-                            <input id="link" type="text" name="link" value="{{user_data.staff.link}}" required data-msg="Please enter Staff Meeting Link" class="input-material">
+                            <input id="link" type="text" name="link" value="{{user_data.staff.link}}" required data-msg="Please enter Staff Meeting Link" readonly  class="input-material">
                             <label for="link" class="label-material">Link</label>
                           </div>
                         <div class="form-group text-center">

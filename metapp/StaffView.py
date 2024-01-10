@@ -45,7 +45,7 @@ def home(request):
     students_2nd_course = Student.objects.filter(staff2=staff_name)
     students_3rd_course = Student.objects.filter(staff3=staff_name)
     # print(students_3rd_course)
-    for student in students_3rd_course:
+    for student in students:
         print(student.admin.first_name + " " + student.admin.last_name)
     staff_count = students.count() + students_2nd_course.count() + \
         students_3rd_course.count()
@@ -58,7 +58,7 @@ def home(request):
     assignmentSubmissions = AssignmentSubmission.objects.filter(
         staff=staff_name)
 
-    print(link)
+    #print(link)
     assignmentSubmissions = AssignmentSubmission.objects.filter(
         staff=staff_name)
 
@@ -86,9 +86,13 @@ def home(request):
 def uploadAssignment(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
+    students2 = Student.objects.filter(staff2=staff_name)
+    students3 = Student.objects.filter(staff3=staff_name)
 
     context = {
         "student": students,
+        "student2": students2,
+        "student3": students3,
         'staff_name': staff_name,
     }
 
@@ -98,9 +102,13 @@ def uploadAssignment(request):
 def uploadReport(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
+    students2 = Student.objects.filter(staff2=staff_name)
+    students3 = Student.objects.filter(staff3=staff_name)
 
     context = {
         "student": students,
+        "student2": students2,
+        "student3": students3,
         'staff_name': staff_name,
     }
 
@@ -169,10 +177,14 @@ def uploadAssignmentSave(request):
 def uploadNote(request):
     staff_name = request.user.first_name + " " + request.user.last_name
     students = Student.objects.filter(staff=staff_name)
+    students2 = Student.objects.filter(staff2=staff_name)
+    students3 = Student.objects.filter(staff3=staff_name)
     notes = Notes.objects.filter(staff=staff_name)
 
     context = {
         "student": students,
+        "student2": students2,
+        "student3": students3,
         'staff_name': staff_name,
         'notes': notes,
     }

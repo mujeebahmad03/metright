@@ -67,8 +67,8 @@
                   <label for="student_staff" class="label-material">Staff</label>
                   <select id="student_staff" type="text" name="student_staff" required data-msg="Please enter Staff Name"
                     class="form-control select-material">
-                    {% for stud in staff %}
-                    <option value="{{ stud.admin.first_name }} {{stud.admin.last_name }}">{{ stud.admin.first_name }} {{stud.admin.last_name }}</option>
+                    {% for stud in combinedStaff %}
+                    <option value="{{ stud}}">{{ stud }}</option>
                     {% endfor %}
                   </select>
                 </div>
