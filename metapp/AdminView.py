@@ -192,6 +192,8 @@ def editStaffSave(request):
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
+            if password != None and password != "":
+                user.set_password(password)
 
             user.save()
 
@@ -329,6 +331,7 @@ def editStudentSave(request):
         last_name = request.POST.get('lastname')
         username = request.POST.get('username')
         email = request.POST.get('email')
+        password = request.POST.get('password')
         address = request.POST.get('address')
         course_id = request.POST.get('course')
         course2_id = request.POST.get('course2')
@@ -354,6 +357,8 @@ def editStudentSave(request):
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
+            if password != None and password != "":
+                user.set_password(password)
 
             user.save()
 
