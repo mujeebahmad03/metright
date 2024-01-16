@@ -108,7 +108,7 @@
             <div class="row d-flex">
                 <div class="col-lg-4">
                     <div class="card" >
-                        <strong class="text-primary" style="font-size: 25px;">Your Reports</strong>
+                        <strong class="text-primary" style="font-size: 25px;">Progress Report & Learning Goals</strong>
                     {% for report in reports %}
                         <a href="{{report.report}}" target="_blank" style="padding:5px"> <i class="icon-rss-feed"></i>View report Posted On: {{report.created}} By {{report.staff}}</a>
                     {% endfor %}
