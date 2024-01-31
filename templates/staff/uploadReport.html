@@ -61,8 +61,7 @@
                     
               <form class="text-left form-validate" method="POST" action="{% url "UploadReportSave" %}"  enctype="multipart/form-data">
                 {% csrf_token %}
-                <input id="staff_name" type="text" hidden name="staff_name" value="{{ staff_name }}" required>
-               
+                <input id="staff_name" type="text" hidden name="staff_name" value="{{ staff_name }}" required>         
                 
                 <div class="form-group-material">
                   <label for="image" class="label-material">Report File</label>
@@ -80,7 +79,7 @@
                       {% for stud2 in student2 %}
                       <option value="{{ stud2.admin.first_name }} {{stud2.admin.last_name }}">{{ stud2.admin.first_name }} {{stud2.admin.last_name }}</option>
                       {% endfor %}
-                      {% for stud in student %}
+                      {% for stud3 in student3 %}
                       <option value="{{ stud3.admin.first_name }} {{stud3.admin.last_name }}">{{ stud3.admin.first_name }} {{stud3.admin.last_name }}</option>
                       {% endfor %}
                     </select>
