@@ -20,9 +20,9 @@ def AdminHome(request):
     staff_count = Staff.objects.count()
     student_count = Student.objects.count()
     subject_count = Subjects.objects.count()
-    reports = Reports.objects.all()
-    assignment = Assignments.objects.all()
-    assignmentsubmit = AssignmentSubmission.objects.all()
+    reports = Reports.objects.all().order_by('-created')
+    assignment = Assignments.objects.all().order_by('-created')
+    assignmentsubmit = AssignmentSubmission.objects.all().order_by('-created')
     context = {
         'staff_count': staff_count,
         'student_count': student_count,
@@ -550,7 +550,7 @@ def addLevelSave(request):
 
 
 def staffFeedback(request):
-    feedback_data = FeedBackStaff.objects.all()
+    feedback_data = FeedBackStaff.objects.all().order_by('-created')
     context = {
         'feedback_data': feedback_data
     }
@@ -575,7 +575,7 @@ def staffFeedbackReply(request):
 
 # for feedback reply of students
 def studentFeedback(request):
-    feedback_data = FeedBackStudent.objects.all()
+    feedback_data = FeedBackStudent.objects.all().order_by('-created')
     context = {
         'feedback_data': feedback_data
     }

@@ -123,15 +123,15 @@ def uploadReportSave(request):
     else:
         staff_name = request.POST.get('staff_name')
         student = request.POST.get('student')
-        report = request.POST.get('file')
-
+        report = request.POST.get('image')
+    
         try:
             if 'image' in request.FILES:
                 profile_pic = request.FILES['image']
                 fs = FileSystemStorage()
                 filename = fs.save(profile_pic.name, profile_pic)
                 profile_pic_url = fs.url(filename)
-
+                print(profile_pic_url)
                 report_model = Reports(
                     staff=staff_name, student=student, report=profile_pic_url)
                 report_model.save()

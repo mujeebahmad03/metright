@@ -74,6 +74,7 @@
                     <select id="student" type="text" name="student" required data-msg="Please enter Student Name"
                       class="form-control select-material">
                       {% for stud in student %}
+                      
                       <option value="{{ stud.admin.first_name }} {{stud.admin.last_name }}">{{ stud.admin.first_name }} {{stud.admin.last_name }}</option>
                       {% endfor %}
                       {% for stud2 in student2 %}
