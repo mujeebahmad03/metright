@@ -52,10 +52,10 @@ def home(request):
     subjects = Subjects.objects.filter(course_id=course).count()
     staff = Staff.objects.all()
     print(staff[2].admin.first_name)
-    reports = Reports.objects.filter(student=student_name)
-    assignments = Assignments.objects.filter(student=student_name)
+    reports = Reports.objects.filter(student=student_name).order_by('-created')
+    assignments = Assignments.objects.filter(student=student_name).order_by('-created')
     student_staff = request.user.student.staff
-    assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name)
+    assignmentSubmissions = AssignmentSubmission.objects.filter(student=student_name).order_by('-created')
     
     context = {
         'total_attendance': attendance,
