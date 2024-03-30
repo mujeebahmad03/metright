@@ -2,7 +2,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.dispatch.dispatcher import receiver
 from django.db.models.signals import post_save
+from django.conf import settings
 
+AWS_STORAGE_BUCKET_NAME = 'brint-media-bkt-24'
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+MEDIA_ROOT = '/media/'
+MEDIA_URL =  f'https://{AWS_S3_CUSTOM_DOMAIN}{MEDIA_ROOT}'
 
 class CustomUser(AbstractUser):
     user_type_data = ((1, "HOD"), (2, "Staff"), (3, "Student"))
@@ -26,7 +32,7 @@ class Staff(models.Model):
     address = models.TextField()
     link = models.TextField(blank=True, null=True)
     gender = models.CharField(max_length=100, blank=True, null=True)
-    profile_pic = models.FileField(upload_to="media/student_pic", blank=True, null=True)
+    profile_pic = models.FileField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -66,7 +72,7 @@ class Student(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     gender = models.CharField(max_length=100)
-    profile_pic = models.FileField(upload_to="media/student_pic")
+    profile_pic = models.FileField()
     address = models.TextField()
     staff = models.TextField(blank=True, null=True)
     staff2 = models.TextField(blank=True, null=True)
@@ -79,18 +85,17 @@ class Student(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
-
 class Reciepts(models.Model):
     id = models.AutoField(primary_key=True)
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    reciept = models.FileField(upload_to="media")
+    reciept = models.FileField()
     
 class Invoice(models.Model):
     id = models.AutoField(primary_key=True)
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    invoice = models.FileField(upload_to="media")
+    invoice = models.FileField()
 
 # model for the reports upload by staff
 class Reports(models.Model):
@@ -98,7 +103,7 @@ class Reports(models.Model):
     staff = models.TextField()
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    report = models.FileField(upload_to="media")
+    report = models.FileField()
 
 
 # model for the notes upload by staff
@@ -107,7 +112,7 @@ class Notes(models.Model):
     staff = models.TextField()
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    note = models.FileField(upload_to="media")
+    note = models.FileField()
 
 
 
@@ -117,7 +122,7 @@ class Assignments(models.Model):
     staff = models.TextField()
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    assignment = models.FileField(upload_to="media")
+    assignment = models.FileField()
 
 # for students assignments submissions
 class AssignmentSubmission(models.Model):
@@ -125,7 +130,7 @@ class AssignmentSubmission(models.Model):
     staff = models.TextField()
     student = models.TextField()
     created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    assignment = models.FileField(upload_to="media")
+    assignment = models.FileField()
 
 
 

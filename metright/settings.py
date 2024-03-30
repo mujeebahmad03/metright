@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -159,14 +163,48 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'metright/static')]
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'metright/static')]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# AWS Configuration
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'brint-media-files-24'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_FILE_OVERWRITE = False
+
+# Storage Configuration for Amazon S3
+AWS_LOCATION = 'static'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/' 
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+# AWS_DEFAULT_ACL = 'public-read'
+
+# MEDIA_ROOT = '/media/'
+MEDIA_URL =  f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Add custom locations for different types of media files
+# NOTES_FILES_LOCATION = f'{MEDIA_URL}notes/'
+# RECEIPT_FILES_LOCATION = f'{MEDIA_URL}receipt/'
+# ASSIGNMENTS_FILES_LOCATION = f'{MEDIA_URL}assignments/'
+# ASSIGNMENTS_SUBMISSION_FILES_LOCATION = f'{MEDIA_URL}assignment_submission/'
+# REPORTS_FILES_LOCATION = f'{MEDIA_URL}reports/'
+# INVOICE_FILES_LOCATION = f'{MEDIA_URL}invoice/'
+# PROFILE_PIC_LOCATION = f'{MEDIA_URL}/profile-pic/'
+
 
 AUTH_USER_MODEL = 'metapp.CustomUser'
 AUTHENTICATION_BACKEND = 'metapp.EmailBackEnd.EmailBackEnd'
